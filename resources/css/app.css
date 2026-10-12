@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --radius-2xl: 0.75rem;
+    --radius-3xl: 0.75rem;
+}
+
+.news-ticker-track {
+    animation: news-ticker-scroll 32s linear infinite;
+}
+
+.news-ticker-sequence {
+    min-width: 100vw;
+}
+
+.news-ticker:hover .news-ticker-track,
+.news-ticker:focus-within .news-ticker-track {
+    animation-play-state: paused;
+}
+
+.news-ticker [lang='ne'] {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
+.news-ticker-static {
+    display: none;
+}
+
+@keyframes news-ticker-scroll {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .news-ticker-track {
+        display: none;
+    }
+
+    .news-ticker-static {
+        display: block;
+    }
+}

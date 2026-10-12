@@ -1,0 +1,15 @@
+{
+    "Admin Panel": "प्रशासन प्यानल",
+    "Dashboard": "ड्यासबोर्ड",
+    "Logout": "लगआउट",
+    "Welcome, :name": "स्वागत छ, :name",
+    "Cooperative administration": "सहकारी प्रशासन",
+    "Financial cooperative management": "वित्तीय सहकारी व्यवस्थापन",
+    "Admin access is active": "प्रशासन पहुँच सक्रिय छ",
+    "Your administrator account can access this secure workspace.": "तपाईंको प्रशासक खाताले यो सुरक्षित कार्यक्षेत्रमा पहुँच गर्न सक्छ।",
+    "Management modules are being added in phases.": "व्यवस्थापन मोड्युलहरू चरणबद्ध रूपमा थपिँदै छन्।",
+    "No financial totals are shown until verified records and authorized workflows are available.": "प्रमाणित अभिलेख र अधिकृत कार्यप्रवाह उपलब्ध नभएसम्म वित्तीय जम्मा देखाइने छैन।",
+    "Coming in a later phase": "पछिल्लो चरणमा उपलब्ध हुनेछ",
+    "Search will be available with the management modules.": "व्यवस्थापन मोड्युलसँगै खोज उपलब्ध हुनेछ।",
+    "Administrator": "प्रशासक"
+}

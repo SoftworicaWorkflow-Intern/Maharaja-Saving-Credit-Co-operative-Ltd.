@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#F2F5E8"/>
+      <stop offset="1" stop-color="#DCEBDD"/>
+    </linearGradient>
+    <linearGradient id="window" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#DDF1F2"/>
+      <stop offset="1" stop-color="#A8CFB0"/>
+    </linearGradient>
+    <linearGradient id="table" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#A66A3F"/>
+      <stop offset="1" stop-color="#70452F"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#wall)" d="M0 0h1920v1080H0z"/>
+  <path fill="#D7E8D7" d="M0 690c210-72 363-58 554 0v390H0z"/>
+  <path fill="#A8C9A5" d="M0 565c155-105 271-91 402 0 124-111 237-103 362 10v265H0z"/>
+  <path fill="#78A982" d="M0 644c124-76 224-61 338 13 138-103 249-72 355 15v184H0z"/>
+  <path fill="url(#window)" d="M65 95h490v570H65z"/>
+  <path fill="#EFF6E8" d="M300 95h22v570h-22zM65 365h490v22H65z"/>
+  <path fill="#F9F3D9" d="M0 0h1920v53H0z"/>
+  <path fill="#CBDCCB" d="M0 705h1920v20H0z"/>
+  <rect x="1220" y="95" width="515" height="255" rx="24" fill="#F7F7EC"/>
+  <circle cx="1350" cy="220" r="72" fill="#08713D"/>
+  <path d="M1314 238c13-27 56-27 71 0m-55-42c0-14 10-25 23-25s23 11 23 25-10 26-23 26-23-12-23-26Z" stroke="#FFD91A" stroke-width="13" stroke-linecap="round"/>
+  <path d="M1300 269c30 16 71 16 101 0" stroke="#FFD91A" stroke-width="12" stroke-linecap="round"/>
+  <text x="1450" y="215" fill="#075A34" font-family="sans-serif" font-size="40" font-weight="700">सहकारी</text>
+  <text x="1450" y="266" fill="#56705A" font-family="sans-serif" font-size="22">समुदायको साझा भरोसा</text>
+  <path fill="#3F7450" d="M1120 480c22-112 60-174 110-190 52 17 80 92 84 190z"/>
+  <path fill="#5F9864" d="M1060 477c20-75 47-111 80-117 32 8 53 48 58 117z"/>
+  <path fill="#5F9864" d="M1515 474c17-91 49-141 94-151 42 11 69 63 73 151z"/>
+  <path fill="#3F7450" d="M1585 485c19-104 53-163 103-175 49 14 77 72 81 175z"/>
+  <rect y="766" width="1920" height="314" fill="#E5E9D9"/>
+  <path fill="url(#table)" d="M715 813h1205v267H715z"/>
+  <path fill="#BD8553" d="M715 790h1205v47H715z"/>
+  <path fill="#E8D1A0" d="M1105 786h397v19h-397z"/>
+  <rect x="1170" y="723" width="257" height="18" rx="9" fill="#FDFDF8"/>
+  <rect x="1193" y="744" width="256" height="17" rx="8" fill="#FDFDF8"/>
+  <path fill="#138447" d="M1240 751h86v8h-86z"/>
+  <rect x="1438" y="711" width="18" height="55" rx="9" transform="rotate(34 1438 711)" fill="#D6E4D9"/>
+  <rect x="1480" y="704" width="18" height="58" rx="9" transform="rotate(34 1480 704)" fill="#E7C54B"/>
+  <!-- Cooperative officer -->
+  <path fill="#8C2345" d="M980 649c22-129 78-195 173-195s154 69 178 195l47 119H931z"/>
+  <path fill="#6B1837" d="M1060 509c31-36 63-55 96-55 40 0 75 23 106 65l-56 183h-97z"/>
+  <path fill="#E9B894" d="M1092 398c0-75 38-119 100-119s103 44 103 119-46 133-103 133-100-58-100-133Z"/>
+  <path fill="#202A28" d="M1085 397c-8-83 34-140 111-140 76 0 116 55 108 139-23-17-39-46-47-76-41 35-102 54-172 54Z"/>
+  <path fill="#1F2927" d="M1091 383c16-70 66-102 126-91 39 7 68 37 76 84-29-14-52-35-66-62-37 38-81 61-136 69Z"/>
+  <path stroke="#352B28" stroke-width="8" stroke-linecap="round" d="M1139 397c12-8 27-8 39 0m48 0c12-8 27-8 39 0"/>
+  <ellipse cx="1159" cy="412" rx="5" ry="7" fill="#27312D"/>
+  <ellipse cx="1207" cy="412" rx="5" ry="7" fill="#27312D"/>
+  <path stroke="#B87868" stroke-width="6" stroke-linecap="round" d="m1183 416-8 26 12 3"/>
+  <path stroke="#A64753" stroke-width="7" stroke-linecap="round" d="M1168 461c15 12 34 12 49 0"/>
+  <circle cx="1186" cy="375" r="8" fill="#A92743"/>
+  <circle cx="1098" cy="444" r="9" fill="#E7C369"/>
+  <circle cx="1290" cy="441" r="9" fill="#E7C369"/>
+  <path fill="#A33D50" d="M1149 465c23 18 49 25 75 21l-24 74-67-29z"/>
+  <path fill="#E1B76E" d="M1125 528h130l-38 190h-91z"/>
+  <path fill="#B63350" d="m1094 534 64 35-44 128-103-37z"/>
+  <path fill="#E9B894" d="M1015 646c68 21 119 32 162 30l62-4c23 0 36 10 36 23s-14 20-35 21l-88 13c-61 5-121-5-174-22z"/>
+  <path fill="#E9B894" d="M1330 619c39-1 65 13 94 30l67 38c16 10 19 24 10 34-9 10-23 8-39 0l-91-39-56-5z"/>
+  <path fill="#F1D8C0" d="M1283 713h193v18h-193z"/>
+  <!-- Elderly member in a Dhaka topi -->
+  <path fill="#456B83" d="M1484 584c38-70 94-108 159-108 75 0 137 48 176 133l47 171h-436z"/>
+  <path fill="#263F55" d="M1575 550c32-42 69-64 111-64 55 0 103 35 139 105l-117 92-122-21z"/>
+  <path fill="#E5B892" d="M1573 403c0-80 43-125 109-125s113 45 113 125-51 136-113 136-109-56-109-136Z"/>
+  <path fill="#D6B9A0" d="M1558 333c20-64 67-100 132-100 69 0 118 35 136 100l-19 26h-230z"/>
+  <path fill="#A87E67" d="m1564 335 248 0-19 55h-210z"/>
+  <path fill="#EBD6C4" d="M1594 343h187v15h-187z"/>
+  <path fill="#EBD6C4" d="M1605 369h165v13h-165z"/>
+  <path stroke="#7A5142" stroke-width="7" stroke-linecap="round" d="M1628 395c12-7 25-7 37 0m49 0c12-7 25-7 37 0"/>
+  <path fill="#2E3937" d="M1632 402c0 7 6 12 13 12s13-5 13-12-6-12-13-12-13 5-13 12Zm84 0c0 7 6 12 13 12s13-5 13-12-6-12-13-12-13 5-13 12Z"/>
+  <path stroke="#AE7560" stroke-width="6" stroke-linecap="round" d="m1678 412-8 31 13 4"/>
+  <path stroke="#9B5F50" stroke-width="7" stroke-linecap="round" d="M1660 466c17 14 42 17 61 4m-94-30 21 4m91-4 19-4"/>
+  <path stroke="#BC8F78" stroke-width="5" stroke-linecap="round" d="M1605 422h18m167 0h17"/>
+  <path fill="#D7A97F" d="M1622 527h118l34 133h-203z"/>
+  <path fill="#E5B892" d="M1518 667c49-18 94-30 146-28l70 7c19 2 30 12 27 25-3 12-15 17-33 16l-87 1c-41 3-80 19-119 38z"/>
+  <!-- Community member listening -->
+  <path fill="#A96B48" d="M1784 524c24-46 59-69 103-69s79 24 101 69l24 251h-250z"/>
+  <path fill="#E1B18D" d="M1821 391c0-58 29-92 75-92s75 34 75 92-34 99-75 99-75-41-75-99Z"/>
+  <path fill="#242C2A" d="M1814 384c-2-65 27-106 83-106 54 0 83 42 79 106-23-13-44-34-55-61-24 27-60 47-107 61Z"/>
+  <path fill="#E1B18D" d="M1810 490h170l30 175h-218z"/>
+  <path fill="#F5E6D4" d="M1816 520h111l-24 219h-113z"/>
+  <path fill="#E1B18D" d="M1774 653c48 6 93 21 132 42l45 25c12 7 15 18 9 27-7 9-18 8-30 2l-67-28c-43-17-86-20-127-21z"/>
+  <path fill="#53685A" d="M0 1033h1920v47H0z"/>
+  <text x="104" y="1000" fill="#FFF9E9" font-family="sans-serif" font-size="27" font-weight="700">सहकार्य • विश्वास • समृद्धि</text>
+</svg>
