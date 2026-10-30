@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ContactInquiryController as AdminContactInquiryController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\LeadershipProfileController as AdminLeadershipProfileController;
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\MembershipApplicationController as AdminMembershipApplicationController;
 use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
@@ -15,6 +16,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'home'])->name('home');
+Route::get('/leadership/{leader}/portrait', [FrontendController::class, 'leadershipPortrait'])
+    ->whereIn('leader', ['chairperson', 'secretary'])
+    ->name('leadership.portrait');
+Route::get('/leadership/{leader}', [FrontendController::class, 'showLeadershipMessage'])
+    ->whereIn('leader', ['chairperson', 'secretary'])
+    ->name('leadership.show');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
 Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
@@ -69,6 +76,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     Route::middleware('permission:staff.manage')->group(function () {
         Route::get('/staff', [AdminStaffController::class, 'index'])->name('staff.index');
+        Route::get('/leadership', [AdminLeadershipProfileController::class, 'index'])->name('leadership.index');
+        Route::put('/leadership/{leader}', [AdminLeadershipProfileController::class, 'update'])
+            ->whereIn('leader', ['chairperson', 'secretary'])
+            ->name('leadership.update');
         Route::post('/staff/roles', [AdminStaffController::class, 'assignRole'])->name('staff.roles.assign');
         Route::put('/staff/roles/{role}/permissions', [AdminStaffController::class, 'updatePermissions'])->name('staff.roles.permissions');
     });

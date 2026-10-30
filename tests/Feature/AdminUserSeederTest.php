@@ -33,6 +33,18 @@ class AdminUserSeederTest extends TestCase
         $this->assertTrue(Hash::check('secure admin password', $admin->password));
     }
 
+    public function test_database_seeding_skips_admin_creation_when_no_password_is_configured(): void
+    {
+        config([
+            'services.admin.email' => 'admin@example.com',
+            'services.admin.password' => null,
+        ]);
+
+        $this->seed();
+
+        $this->assertDatabaseMissing('users', ['email' => 'admin@example.com']);
+    }
+
     public function test_reseeding_does_not_replace_an_existing_admin_password(): void
     {
         $admin = User::factory()->create(['email' => 'admin@example.com']);

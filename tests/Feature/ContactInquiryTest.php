@@ -42,6 +42,18 @@ class ContactInquiryTest extends TestCase
         ]);
     }
 
+    public function test_contact_confirmation_is_displayed_in_the_selected_nepali_language(): void
+    {
+        $this->withSession(['locale' => 'ne'])
+            ->post(route('contact.submit'), [
+                'name' => 'Example Visitor',
+                'email' => 'visitor@example.com',
+                'message' => 'सहकारीबारे जानकारी चाहियो।',
+            ])
+            ->assertRedirect(route('contact'))
+            ->assertSessionHas('status', 'धन्यवाद। तपाईंको सन्देश सहकारीमा पठाइएको छ।');
+    }
+
     public function test_contact_form_validates_required_fields_without_saving(): void
     {
         $this->from(route('contact'))

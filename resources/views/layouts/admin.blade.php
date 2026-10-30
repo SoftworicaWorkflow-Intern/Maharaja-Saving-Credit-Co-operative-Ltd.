@@ -50,6 +50,10 @@
                         <span aria-hidden="true">⚙</span>
                         {{ __('Staff & permissions') }}
                     </a>
+                    <a href="{{ route('admin.leadership.index') }}" class="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                        <span aria-hidden="true">♙</span>
+                        Leadership profiles
+                    </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('contact_inquiries.manage'))
                     <a href="{{ route('admin.contact-inquiries.index') }}" class="mt-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
@@ -84,6 +88,7 @@
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('staff.manage'))
                                     <a href="{{ route('admin.staff.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Staff & permissions') }}</a>
+                                    <a href="{{ route('admin.leadership.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">Leadership profiles</a>
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('contact_inquiries.manage'))
                                     <a href="{{ route('admin.contact-inquiries.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Contact inquiries') }}</a>

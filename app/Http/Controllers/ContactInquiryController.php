@@ -14,6 +14,6 @@ class ContactInquiryController extends Controller
 
         return redirect()
             ->route('contact')
-            ->with('status', 'Thank you. Your message has been sent to the cooperative.');
+            ->with('status', __('Thank you. Your message has been sent to the cooperative.'));
     }
 }

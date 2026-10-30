@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Maharaj Bachat | Secure Savings. A Stronger Future.')
+@section('title', __('Maharaj Bachat | Secure Savings. A Stronger Future.'))
 
 @section('content')
 @php
@@ -58,11 +58,11 @@
     @endif
 
     <section class="px-4 sm:px-6 lg:px-8 {{ $tickerNotices->isNotEmpty() ? 'pb-10 pt-0 lg:pb-14' : 'py-10 lg:py-14' }}">
-        <div data-hero-carousel class="relative mx-auto flex min-h-[540px] max-w-7xl items-center overflow-hidden rounded-xl bg-[#04552F] shadow-[0_25px_50px_rgba(8,113,61,0.16)] sm:min-h-[600px]" aria-roledescription="carousel" aria-label="Maharaj Bachat cooperative">
+        <div data-hero-carousel class="relative mx-auto flex min-h-[540px] max-w-7xl items-center overflow-hidden rounded-xl bg-[#04552F] shadow-[0_25px_50px_rgba(8,113,61,0.16)] sm:min-h-[600px]" aria-roledescription="carousel" aria-label="{{ __('Maharaj Bachat cooperative') }}">
             <div class="absolute inset-0">
-                <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="A cooperative staff member serving an elderly Nepali member" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500" aria-hidden="false">
-                <img data-hero-slide src="{{ asset('images/savings-growth.png') }}" alt="Growing plants and coins representing savings and financial growth" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
-                <img data-hero-slide src="{{ asset('images/nepali-cooperative-community.svg') }}" alt="Illustration of Nepali cooperative members meeting together" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
+                <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="{{ __('A cooperative staff member serving an elderly Nepali member') }}" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500" aria-hidden="false">
+                <img data-hero-slide src="{{ asset('images/savings-growth.png') }}" alt="{{ __('Growing plants and coins representing savings and financial growth') }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
+                <img data-hero-slide src="{{ asset('images/nepali-cooperative-community.svg') }}" alt="{{ __('Illustration of Nepali cooperative members meeting together') }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
                 <div class="absolute inset-0 bg-gradient-to-r from-[#033B22]/90 via-[#04552F]/65 to-[#04552F]/20"></div>
             </div>
 
@@ -76,19 +76,17 @@
                         </span>
                     @endforeach
                 </h1>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">
-                    We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member’s future.
-                </p>
+                <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">{{ __('We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member’s future.') }}</p>
             </div>
 
             <div class="absolute bottom-6 right-6 z-10 flex items-center gap-3 sm:bottom-8 sm:right-8">
-                <button type="button" data-hero-previous aria-label="Previous image" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">‹</button>
-                <div class="flex items-center gap-2" aria-label="Choose an image">
-                    <button type="button" data-hero-indicator aria-label="Show image 1" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="Show image 2" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="Show image 3" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                <button type="button" data-hero-previous aria-label="{{ __('Previous image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">‹</button>
+                <div class="flex items-center gap-2" aria-label="{{ __('Choose an image') }}">
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
                 </div>
-                <button type="button" data-hero-next aria-label="Next image" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">›</button>
+                <button type="button" data-hero-next aria-label="{{ __('Next image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">›</button>
             </div>
         </div>
     </section>
@@ -96,19 +94,19 @@
         <section class="border-y border-[#DCE9DF] bg-[#EFF8F1]">
         <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">Total Members</div>
+                <div class="text-sm text-[#617067]">{{ __('Total Members') }}</div>
                 <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
             </div>
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">Total Savings</div>
+                <div class="text-sm text-[#617067]">{{ __('Total Savings') }}</div>
                 <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
             </div>
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">Total Loans</div>
+                <div class="text-sm text-[#617067]">{{ __('Total Loans') }}</div>
                 <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
             </div>
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">Total Branches</div>
+                <div class="text-sm text-[#617067]">{{ __('Total Branches') }}</div>
                 <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
             </div>
         </div>
@@ -116,24 +114,71 @@
 
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mb-10 text-center">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">What we offer</p>
-            <h2 class="mt-3 text-3xl font-bold text-[#182A22]">Financial services built around members</h2>
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('What we offer') }}</p>
+            <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Financial services built around members') }}</h2>
         </div>
         <div class="grid gap-6 md:grid-cols-3">
             <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
                 <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">💰</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">Savings Products</h3>
-                <p class="mt-3 text-[#617067]">Flexible savings schemes designed to help members build security and long-term financial confidence.</p>
+                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Savings Products') }}</h3>
+                <p class="mt-3 text-[#617067]">{{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}</p>
             </div>
             <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
                 <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">🏦</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">Loan Support</h3>
-                <p class="mt-3 text-[#617067]">Need-based credit options for personal, business, agricultural, and emergency requirements.</p>
+                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Loan Support') }}</h3>
+                <p class="mt-3 text-[#617067]">{{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}</p>
             </div>
             <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
                 <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">📣</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">Notices & Updates</h3>
-                <p class="mt-3 text-[#617067]">Clear information on schemes, announcements, and member notices in one accessible place.</p>
+                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Notices & Updates') }}</h3>
+                <p class="mt-3 text-[#617067]">{{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership-messages" class="bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+            <div class="mx-auto mb-10 max-w-2xl text-center">
+                <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#08713D]">{{ __('LEADERSHIP MESSAGES') }}</p>
+                <h2 class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">{{ __('Words from Our Leadership') }}</h2>
+            </div>
+
+            <div class="space-y-8">
+                @foreach ($leadershipMessages as $leader => $message)
+                    @php
+                        $leaderName = $message['name'];
+                        $portraitFirst = $leader === 'chairperson';
+                    @endphp
+                    <article class="grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
+                        <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
+                            @if ($message['has_portrait'])
+                                <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
+                            @else
+                                <div role="img" aria-label="{{ __('Portrait not provided for :designation', ['designation' => __($message['designation'])]) }}" class="absolute inset-0 flex items-center justify-center text-[#08713D]/35">
+                                    <svg aria-hidden="true" class="h-32 w-32 sm:h-40 sm:w-40" viewBox="0 0 120 120" fill="none">
+                                        <circle cx="60" cy="40" r="23" stroke="currentColor" stroke-width="5"/>
+                                        <path d="M18 108c2-24 19-39 42-39s40 15 42 39" stroke="currentColor" stroke-linecap="round" stroke-width="5"/>
+                                    </svg>
+                                </div>
+                            @endif
+                        </div>
+                        <div class="{{ $portraitFirst ? 'order-2 lg:order-2' : 'order-2 lg:order-1' }} flex min-w-0 flex-col justify-center p-6 sm:p-10 lg:p-12">
+                            <div aria-hidden="true" class="mb-5 inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#FFD91A] text-[#04552F] shadow-sm">
+                                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M7.2 11.1c1.8 0 3.1 1.3 3.1 3.1 0 1.9-1.4 3.3-3.3 3.3S3.5 16 3.5 13.3c0-4.4 2.4-7 6.1-8.2v2.5c-1.6.8-2.4 1.9-2.4 3.5Zm10 0c1.8 0 3.1 1.3 3.1 3.1 0 1.9-1.4 3.3-3.3 3.3S13.5 16 13.5 13.3c0-4.4 2.4-7 6.1-8.2v2.5c-1.6.8-2.4 1.9-2.4 3.5Z"/>
+                                </svg>
+                            </div>
+                            <p class="text-xs font-bold uppercase tracking-[0.16em] text-[#08713D]">{{ __($message['label']) }}</p>
+                            <h3 class="mt-2 text-2xl font-bold leading-tight text-[#04552F] sm:text-3xl">{{ __($message['title']) }}</h3>
+                            <p class="mt-3 text-sm font-semibold text-[#08713D]">{{ $leaderName ?: __($message['designation']) }}</p>
+                            <p class="mt-4 line-clamp-4 text-sm leading-7 text-[#344054]">{{ __($message['paragraphs'][0]) }}</p>
+                            <a href="{{ route('leadership.show', $leader) }}" class="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-[#08713D] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#04552F] focus:outline-none focus:ring-2 focus:ring-[#FFD91A] focus:ring-offset-2">
+                                {{ __('Read Full Message') }}
+                                <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </article>
+                @endforeach
             </div>
         </div>
     </section>
@@ -142,26 +187,26 @@
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
                 <div>
-                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFD91A]">Why members trust us</p>
-                    <h2 class="mt-4 text-3xl font-bold">Community-first cooperative values</h2>
-                    <p class="mt-4 text-green-100">We combine member-oriented service, transparent guidance, and financially responsible operations to support local prosperity.</p>
+                    <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFD91A]">{{ __('Why members trust us') }}</p>
+                    <h2 class="mt-4 text-3xl font-bold">{{ __('Community-first cooperative values') }}</h2>
+                    <p class="mt-4 text-green-100">{{ __('We combine member-oriented service, transparent guidance, and financially responsible operations to support local prosperity.') }}</p>
                 </div>
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                        <div class="text-2xl font-bold text-[#FFD91A]">Trust</div>
-                        <p class="mt-2 text-sm text-green-100">Transparent processes and member care.</p>
+                        <div class="text-2xl font-bold text-[#FFD91A]">{{ __('Trust') }}</div>
+                        <p class="mt-2 text-sm text-green-100">{{ __('Transparent processes and member care.') }}</p>
                     </div>
                     <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                        <div class="text-2xl font-bold text-[#FFD91A]">Service</div>
-                        <p class="mt-2 text-sm text-green-100">Responsive support for every stage.</p>
+                        <div class="text-2xl font-bold text-[#FFD91A]">{{ __('Service') }}</div>
+                        <p class="mt-2 text-sm text-green-100">{{ __('Responsive support for every stage.') }}</p>
                     </div>
                     <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                        <div class="text-2xl font-bold text-[#FFD91A]">Growth</div>
-                        <p class="mt-2 text-sm text-green-100">Savings solutions that grow with you.</p>
+                        <div class="text-2xl font-bold text-[#FFD91A]">{{ __('Growth') }}</div>
+                        <p class="mt-2 text-sm text-green-100">{{ __('Savings solutions that grow with you.') }}</p>
                     </div>
                     <div class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
-                        <div class="text-2xl font-bold text-[#FFD91A]">Community</div>
-                        <p class="mt-2 text-sm text-green-100">Shared progress and local empowerment.</p>
+                        <div class="text-2xl font-bold text-[#FFD91A]">{{ __('Community') }}</div>
+                        <p class="mt-2 text-sm text-green-100">{{ __('Shared progress and local empowerment.') }}</p>
                     </div>
                 </div>
             </div>
@@ -171,22 +216,22 @@
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mb-8 flex items-end justify-between gap-4">
             <div>
-                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">Latest updates</p>
-                <h2 class="mt-2 text-3xl font-bold text-[#182A22]">Notices & announcements</h2>
+                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Latest updates') }}</p>
+                <h2 class="mt-2 text-3xl font-bold text-[#182A22]">{{ __('Notices & announcements') }}</h2>
             </div>
-            <a href="{{ route('notices') }}" class="text-sm font-semibold text-[#08713D]">View all notices</a>
+            <a href="{{ route('notices') }}" class="text-sm font-semibold text-[#08713D]">{{ __('View all notices') }}</a>
         </div>
         <div class="grid gap-6 lg:grid-cols-3">
             @forelse($featuredNotices as $notice)
                 <article class="rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
                     <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#08713D]">{{ $notice->category }}</span>
                     <h3 class="mt-4 text-xl font-semibold text-[#182A22]"><a lang="{{ app()->getLocale() }}" href="{{ route('notices.show', $notice) }}" class="hover:text-[#08713D] hover:underline">{{ app()->getLocale() === 'ne' ? ($notice->title_np ?: $notice->title_en) : ($notice->title_en ?: $notice->title_np) }}</a></h3>
-                    <p class="mt-3 text-sm text-[#617067]">{{ Str::limit(strip_tags($notice->body_en ?: $notice->body_np), 120) }}</p>
+                    <p class="mt-3 text-sm text-[#617067]">{{ Str::limit(strip_tags(app()->getLocale() === 'ne' ? ($notice->body_np ?: $notice->body_en) : ($notice->body_en ?: $notice->body_np)), 120) }}</p>
                     <div class="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</div>
                 </article>
             @empty
                 <div class="rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-8 text-[#617067] lg:col-span-3">
-                    No published notices available yet.
+                    {{ __('No published notices available yet.') }}
                 </div>
             @endforelse
         </div>

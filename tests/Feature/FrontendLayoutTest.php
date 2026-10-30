@@ -29,6 +29,11 @@ class FrontendLayoutTest extends TestCase
 
         $response
             ->assertOk()
+            ->assertSee('xl:flex', false)
+            ->assertSee('xl:hidden', false)
+            ->assertSee('whitespace-nowrap rounded-full bg-white px-3 py-2 text-sm font-semibold text-[#04552F]', false)
+            ->assertSee('>About Us</a>', false)
+            ->assertSee('>Become a Member</a>', false)
             ->assertSee('data-rotating-headline', false)
             ->assertSee('data-headline-slide', false)
             ->assertSee('Secure Savings,')
@@ -47,11 +52,45 @@ class FrontendLayoutTest extends TestCase
 
         $this->get(route('home'))
             ->assertOk()
+            ->assertSee('<html lang="ne">', false)
+            ->assertSee('हाम्रो बारेमा')
+            ->assertSee('बचत')
+            ->assertSee('सूचनाहरू')
+            ->assertSee('सदस्य बन्नुहोस्')
+            ->assertSee('सदस्य केन्द्रित वित्तीय सेवाहरू')
+            ->assertSee('लचिलो बचत योजनाहरू')
+            ->assertSee('ऋण सहायता')
+            ->assertSee('नेतृत्वका सन्देशहरू')
+            ->assertSee('विश्वास र सहकार्यबाट सँगै अघि बढ्दै')
+            ->assertSee('अध्यक्षको सन्देश')
+            ->assertSee('पूरा सन्देश पढ्नुहोस्')
             ->assertSee('सुरक्षित बचत,')
             ->assertSee('तपाईंको विश्वास,')
             ->assertSee('सँगै अघि बढौँ,')
             ->assertSee('सहकारी वित्तमार्फत')
             ->assertDontSee('Brighter Futures.');
+    }
+
+    public function test_public_information_pages_render_in_nepali_after_language_selection(): void
+    {
+        $pages = [
+            'about' => ['सहकारीबारे', 'हाम्रो परिचय', 'ध्येय र दृष्टि'],
+            'savings' => ['सदस्य बचत योजनाहरू', 'नियमित बचत', 'अहिले आवेदन दिनुहोस्'],
+            'loans' => ['सदस्यका आवश्यकताका लागि वित्तीय सहयोग', 'व्यक्तिगत ऋण', 'जानकारी माग्नुहोस्'],
+            'notices' => ['नवीनतम घोषणाहरू', 'सबै वर्ग', 'छान्नुहोस्', 'कुनै सूचना फेला परेन।'],
+            'contact' => ['सहकारीसँग सम्पर्क गर्नुहोस्', 'कार्यालयको जानकारी', 'सन्देश पठाउनुहोस्', 'हाम्रो कार्यालय खोज्नुहोस्'],
+        ];
+
+        foreach ($pages as $page => $translatedTexts) {
+            $response = $this->withSession(['locale' => 'ne'])
+                ->get(route($page))
+                ->assertOk()
+                ->assertSee('<html lang="ne">', false);
+
+            foreach ($translatedTexts as $translatedText) {
+                $response->assertSee($translatedText);
+            }
+        }
     }
 
     public function test_login_and_registration_pages_include_password_visibility_controls(): void

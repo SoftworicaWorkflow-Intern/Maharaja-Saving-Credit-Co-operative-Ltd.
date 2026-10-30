@@ -169,6 +169,10 @@ document.querySelectorAll('[data-mobile-nav-toggle]').forEach((button) => {
         setNavigationOpen(button.getAttribute('aria-expanded') !== 'true');
     });
 
+    document.querySelectorAll('[data-print-page]').forEach((button) => {
+        button.addEventListener('click', () => window.print());
+    });
+
     navigation.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', () => setNavigationOpen(false));
     });

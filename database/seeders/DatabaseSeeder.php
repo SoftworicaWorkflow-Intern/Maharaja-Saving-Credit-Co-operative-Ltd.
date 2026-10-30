@@ -14,9 +14,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            RolePermissionSeeder::class,
-            AdminUserSeeder::class,
-        ]);
+        $this->call(RolePermissionSeeder::class);
+
+        if (blank(config('services.admin.password'))) {
+            $this->command?->warn('ADMIN_PASSWORD is not configured; administrator account creation was skipped.');
+
+            return;
+        }
+
+        $this->call(AdminUserSeeder::class);
     }
 }

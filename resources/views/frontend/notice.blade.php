@@ -17,7 +17,7 @@
 
     <div class="mt-6 rounded-xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-10">
         <div class="flex flex-wrap items-center gap-3">
-            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#08713D]">{{ $notice->category }}</span>
+            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#08713D]">{{ __(ucfirst($notice->category)) }}</span>
             @if ($notice->published_at)
                 <time datetime="{{ $notice->published_at->toIso8601String() }}" class="text-sm text-[#617067]">{{ $notice->published_at->translatedFormat('M j, Y') }}</time>
             @endif

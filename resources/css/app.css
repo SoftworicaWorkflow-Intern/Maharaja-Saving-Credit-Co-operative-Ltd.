@@ -31,6 +31,11 @@
     display: none;
 }
 
+.leadership-message-page [lang='ne'],
+#leadership-messages [lang='ne'] {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+}
+
 @keyframes news-ticker-scroll {
     from {
         transform: translateX(0);
@@ -44,6 +49,19 @@
 @media (prefers-reduced-motion: reduce) {
     .news-ticker-track {
         display: none;
+    }
+
+    @media print {
+        .leadership-message-page {
+            max-width: none;
+            padding: 0;
+        }
+
+        .leadership-message-page > div {
+            border: 0;
+            padding: 0;
+            box-shadow: none;
+        }
     }
 
     .news-ticker-static {
