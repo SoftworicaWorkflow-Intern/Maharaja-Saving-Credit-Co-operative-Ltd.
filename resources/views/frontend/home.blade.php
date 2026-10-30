@@ -183,6 +183,57 @@
         </div>
     </section>
 
+        <!-- Photo Gallery Section -->
+    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl">
+            <div class="mb-10 text-center">
+                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Our Gallery') }}</p>
+                <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Moments from our community') }}</h2>
+                <p class="mt-4 text-[#617067] max-w-2xl mx-auto">{{ __('Glimpses of our cooperative activities, member interactions, and community programs.') }}</p>
+            </div>
+
+            @php
+                $galleryImages = [
+                    ['src' => 'images/gallery/gallery-1.jpg', 'alt' => __('Members receiving support packages'), 'caption' => __('Community Support')],
+                    ['src' => 'images/gallery/gallery-2.jpg', 'alt' => __('Staff interacting with a mother and child'), 'caption' => __('Member Care')],
+                    ['src' => 'images/gallery/gallery-3.jpg', 'alt' => __('Annual general meeting group photo'), 'caption' => __('Annual General Meeting')],
+                    ['src' => 'images/gallery/gallery-4.jpg', 'alt' => __('Staff posing with project review banner'), 'caption' => __('Project Review Workshop')],
+                    ['src' => 'images/gallery/gallery-5.jpg', 'alt' => __('Community gathering in a rural area'), 'caption' => __('Rural Outreach')],
+                    ['src' => 'images/gallery/gallery-6.jpg', 'alt' => __('Large group photo of members and staff'), 'caption' => __('Team & Members')],
+                ];
+            @endphp
+
+            <!-- Mobile: Horizontal Scroll | Desktop: Single Row Grid -->
+            <div class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                @foreach ($galleryImages as $image)
+                    <div class="group relative aspect-[3/4] w-64 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#DCE9DF] sm:w-72 lg:w-auto lg:shrink">
+                        <img src="{{ asset($image['src']) }}" 
+                             alt="{{ $image['alt'] }}" 
+                             loading="lazy"
+                             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                        
+                        <!-- Hover Overlay -->
+                        <div class="absolute inset-0 flex items-end bg-gradient-to-t from-[#033B22]/80 via-[#033B22]/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                            <div class="p-4 text-white transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+                                <span class="inline-block rounded-full bg-[#FFD91A] px-2.5 py-1 text-[10px] font-bold text-[#04552F] mb-1.5 uppercase tracking-wider">
+                                    {{ __('View') }}
+                                </span>
+                                <h3 class="text-sm font-semibold leading-tight">{{ $image['caption'] }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            
+            <!-- Optional: Scroll hint for mobile -->
+            <p class="mt-2 text-center text-xs text-[#617067] lg:hidden">
+                {{ __('Swipe to see more →') }}
+            </p>
+        </div>
+    </section>
+</div>
+
+
     <section class="fade-in bg-[#04552F] py-16 text-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
@@ -236,5 +287,6 @@
             @endforelse
         </div>
     </section>
-</div>
+
+
 @endsection
