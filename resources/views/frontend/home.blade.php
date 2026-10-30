@@ -26,7 +26,7 @@
                 ? ($notice->title_np ?: $notice->title_en)
                 : ($notice->title_en ?: $notice->title_np);
         @endphp
-        <section class="px-4 pt-6 sm:px-6 lg:px-8" aria-label="{{ $locale === 'ne' ? 'ताजा समाचार' : 'Latest news' }}">
+        <section class="fade-in px-4 pt-6 sm:px-6 lg:px-8" aria-label="{{ $locale === 'ne' ? 'ताजा समाचार' : 'Latest news' }}">
             <div data-news-ticker lang="{{ $locale }}" class="news-ticker mx-auto flex max-w-7xl overflow-hidden rounded-xl border border-[#08713D]/20 bg-[#EFF8F1] shadow-sm">
                 <div class="z-10 flex shrink-0 items-center gap-2 bg-[#08713D] px-3 py-3 text-xs font-bold tracking-wide text-white sm:px-4 sm:text-sm">
                     <svg aria-hidden="true" class="h-4 w-4 shrink-0 text-[#FFD91A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -57,7 +57,7 @@
         </section>
     @endif
 
-    <section class="px-4 sm:px-6 lg:px-8 {{ $tickerNotices->isNotEmpty() ? 'pb-10 pt-0 lg:pb-14' : 'py-10 lg:py-14' }}">
+    <section class="fade-in px-4 sm:px-6 lg:px-8 {{ $tickerNotices->isNotEmpty() ? 'pb-10 pt-0 lg:pb-14' : 'py-10 lg:py-14' }}">
         <div data-hero-carousel class="relative mx-auto flex min-h-[540px] max-w-7xl items-center overflow-hidden rounded-xl bg-[#04552F] shadow-[0_25px_50px_rgba(8,113,61,0.16)] sm:min-h-[600px]" aria-roledescription="carousel" aria-label="{{ __('Maharaj Bachat cooperative') }}">
             <div class="absolute inset-0">
                 <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="{{ __('A cooperative staff member serving an elderly Nepali member') }}" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500" aria-hidden="false">
@@ -91,7 +91,7 @@
         </div>
     </section>
 
-        <section class="border-y border-[#DCE9DF] bg-[#EFF8F1]">
+        <section class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1]">
         <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
                 <div class="text-sm text-[#617067]">{{ __('Total Members') }}</div>
@@ -112,7 +112,7 @@
         </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="fade-in mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mb-10 text-center">
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('What we offer') }}</p>
             <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Financial services built around members') }}</h2>
@@ -136,7 +136,7 @@
         </div>
     </section>
 
-    <section id="leadership-messages" class="bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
+    <section id="leadership-messages" class="fade-in bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
         <div class="mx-auto max-w-7xl">
             <div class="mx-auto mb-10 max-w-2xl text-center">
                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#08713D]">{{ __('LEADERSHIP MESSAGES') }}</p>
@@ -149,7 +149,7 @@
                         $leaderName = $message['name'];
                         $portraitFirst = $leader === 'chairperson';
                     @endphp
-                    <article class="grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
+                    <article class="fade-in grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
                         <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
                             @if ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
@@ -183,7 +183,7 @@
         </div>
     </section>
 
-    <section class="bg-[#04552F] py-16 text-white">
+    <section class="fade-in bg-[#04552F] py-16 text-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
                 <div>

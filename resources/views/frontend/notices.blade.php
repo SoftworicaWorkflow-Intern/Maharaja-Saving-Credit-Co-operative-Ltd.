@@ -3,7 +3,7 @@
 @section('title', __('Notices'))
 
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+<section class="fade-in mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-10 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Notices') }}</p>
@@ -23,7 +23,7 @@
 
     <div class="grid gap-6 lg:grid-cols-3">
         @forelse($notices as $notice)
-            <article class="rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
+            <article class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
                 <div class="flex items-center justify-between gap-4">
                     <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[#08713D]">{{ __(ucfirst($notice->category)) }}</span>
                     @if($notice->featured)
@@ -35,7 +35,7 @@
                 <div class="mt-5 text-xs font-medium uppercase tracking-[0.12em] text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</div>
             </article>
         @empty
-            <div class="lg:col-span-3 rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-10 text-center text-[#617067]">
+            <div class="fade-in lg:col-span-3 rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-10 text-center text-[#617067]">
                 {{ __('No notices found.') }}
             </div>
         @endforelse

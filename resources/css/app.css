@@ -36,6 +36,17 @@
     font-family: 'Noto Sans Devanagari', sans-serif;
 }
 
+.fade-in {
+    opacity: 0;
+    transform: translateY(2rem);
+    transition: opacity 700ms ease, transform 700ms ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @keyframes news-ticker-scroll {
     from {
         transform: translateX(0);
@@ -47,6 +58,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .fade-in.show {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
     .news-ticker-track {
         display: none;
     }

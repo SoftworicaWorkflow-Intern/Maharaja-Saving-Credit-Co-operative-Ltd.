@@ -3,7 +3,7 @@
 @section('title', __('Contact'))
 
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+<section class="fade-in mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-10 text-center">
         <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Contact') }}</p>
         <h1 class="mt-3 text-4xl font-bold text-[#182A22]">{{ __('Get in touch with the cooperative') }}</h1>
@@ -13,7 +13,7 @@
     @endif
 
     <div class="grid gap-8 md:grid-cols-2">
-        <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
+        <div class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
             <h2 class="text-2xl font-bold text-[#182A22]">{{ __('Office information') }}</h2>
             <ul class="mt-6 space-y-4 text-[#617067]">
                 <li><strong class="text-[#182A22]">{{ __('Phone') }}:</strong> <a href="tel:078540530" class="hover:text-[#08713D]">078-540530</a></li>
@@ -22,7 +22,7 @@
             </ul>
         </div>
 
-        <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
+        <div class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
             <h2 class="text-2xl font-bold text-[#182A22]">{{ __('Send a message') }}</h2>
             <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Send us your question and our team will get back to you.') }}</p>
             <form method="POST" action="{{ route('contact.submit') }}" class="mt-6 space-y-4">
@@ -58,7 +58,7 @@
             </form>
         </div>
 
-        <div class="overflow-hidden rounded-3xl border border-[#DCE9DF] bg-white p-5 shadow-sm sm:p-8 md:col-span-2">
+        <div class="fade-in overflow-hidden rounded-3xl border border-[#DCE9DF] bg-white p-5 shadow-sm sm:p-8 md:col-span-2">
             <h2 class="text-2xl font-bold text-[#182A22]">{{ __('Find our office') }}</h2>
             <p class="mt-2 text-sm text-[#617067]">{{ __('Kawasoti -2 BP Chowk, Nawalpur') }}</p>
             <div class="mt-5 overflow-hidden rounded-2xl border border-[#DCE9DF]">

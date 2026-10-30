@@ -3,7 +3,7 @@
 @section('title', __('Loan Services'))
 
 @section('content')
-<section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+<section class="fade-in mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="mb-10 text-center">
         <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Loans') }}</p>
         <h1 class="mt-3 text-4xl font-bold text-[#182A22]">{{ __('Financial support for member needs') }}</h1>
@@ -18,7 +18,7 @@
             [__('Emergency Loan'), __('Responsive support for urgent and unforeseen member needs.')],
             [__('Other Products'), __('Customized cooperative loan solutions as approved by management.')]
         ] as $loan)
-            <div class="rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
+            <div class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
                 <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-xl text-[#08713D]">🏦</div>
                 <h2 class="text-xl font-semibold text-[#182A22]">{{ $loan[0] }}</h2>
                 <p class="mt-3 text-[#617067]">{{ $loan[1] }}</p>

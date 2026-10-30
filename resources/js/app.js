@@ -1,3 +1,28 @@
+document.querySelectorAll('.fade-in').forEach((element) => {
+    element.classList.toggle('show', window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+});
+
+const revealElements = document.querySelectorAll('.fade-in:not(.show)');
+
+if (revealElements.length > 0) {
+    if (!('IntersectionObserver' in window)) {
+        revealElements.forEach((element) => element.classList.add('show'));
+    } else {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach((element) => revealObserver.observe(element));
+    }
+}
+
 document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
     const slides = [...carousel.querySelectorAll('[data-hero-slide]')];
     const indicators = [...carousel.querySelectorAll('[data-hero-indicator]')];

@@ -1,37 +1,78 @@
+```blade
 @extends('layouts.app')
 
 @section('title', __('About Us'))
 
 @section('content')
+
 <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <div class="mb-10 text-center">
-        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('About the Cooperative') }}</p>
-        <h1 class="mt-3 text-4xl font-bold text-[#182A22]">{{ __('Serving members with trust and purpose') }}</h1>
+
+    {{-- Page heading --}}
+    <div class="mb-10 text-center fade-in">
+        <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">
+            {{ __('About the Cooperative') }}
+        </p>
+
+        <h1 class="mt-3 text-4xl font-bold text-[#182A22]">
+            {{ __('Serving members with trust and purpose') }}
+        </h1>
     </div>
+
+    {{-- Introduction and Mission --}}
     <div class="grid gap-8 lg:grid-cols-2">
-        <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
-            <h2 class="text-2xl font-bold text-[#182A22]">{{ __('Our introduction') }}</h2>
-            <p class="mt-4 text-[#617067]">{{ __('Maharaj Bachat tatha Rin Sahakari Sanstha Ltd. is committed to promoting savings discipline, responsible lending, and member development through cooperative principles and ethical service.') }}</p>
-            <p class="mt-4 text-[#617067]">{{ __('The cooperative works to strengthen individuals and communities by creating practical, accessible financial services centered on trust, transparency, and member welfare.') }}</p>
+
+        <div class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
+            <h2 class="text-2xl font-bold text-[#182A22]">
+                {{ __('Our introduction') }}
+            </h2>
+
+            <p class="mt-4 text-[#617067]">
+                {{ __('Maharaj Bachat tatha Rin Sahakari Sanstha Ltd. is committed to promoting savings discipline, responsible lending, and member development through cooperative principles and ethical service.') }}
+            </p>
+
+            <p class="mt-4 text-[#617067]">
+                {{ __('The cooperative works to strengthen individuals and communities by creating practical, accessible financial services centered on trust, transparency, and member welfare.') }}
+            </p>
         </div>
-        <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
-            <h2 class="text-2xl font-bold text-[#182A22]">{{ __('Mission & vision') }}</h2>
+
+        <div class="fade-in rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
+            <h2 class="text-2xl font-bold text-[#182A22]">
+                {{ __('Mission & vision') }}
+            </h2>
+
             <div class="mt-4 space-y-4 text-[#617067]">
                 <div>
-                    <h3 class="text-lg font-semibold text-[#182A22]">{{ __('Mission') }}</h3>
-                    <p class="mt-2">{{ __('To provide economic, social and cultural development through efficient financial leadership, efficient management, policy, method and technology, and by providing financial and non-financial services to the members and the community.') }}</p>
+                    <h3 class="text-lg font-semibold text-[#182A22]">
+                        {{ __('Mission') }}
+                    </h3>
+
+                    <p class="mt-2">
+                        {{ __('To provide economic, social and cultural development through efficient financial leadership, efficient management, policy, method and technology, and by providing financial and non-financial services to the members and the community.') }}
+                    </p>
                 </div>
+
                 <div>
-                    <h3 class="text-lg font-semibold text-[#182A22]">{{ __('Vision') }}</h3>
-                    <p class="mt-2">{{ __('A financially sound business organization based in the community with quality service.') }}</p>
+                    <h3 class="text-lg font-semibold text-[#182A22]">
+                        {{ __('Vision') }}
+                    </h3>
+
+                    <p class="mt-2">
+                        {{ __('A financially sound business organization based in the community with quality service.') }}
+                    </p>
                 </div>
             </div>
         </div>
+
     </div>
 
+    {{-- Core values, Objectives and Structure --}}
     <div class="mt-10 grid gap-8 lg:grid-cols-3">
-        <div class="rounded-3xl bg-[#EFF8F1] p-8">
-            <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Core values') }}</h3>
+
+        <div class="fade-in rounded-3xl bg-[#EFF8F1] p-8">
+            <h3 class="text-xl font-semibold text-[#182A22]">
+                {{ __('Core values') }}
+            </h3>
+
             <ul class="mt-4 space-y-2 text-[#617067]">
                 <li>{{ __('Member welfare') }}</li>
                 <li>{{ __('Transparency') }}</li>
@@ -39,8 +80,12 @@
                 <li>{{ __('Community service') }}</li>
             </ul>
         </div>
-        <div class="rounded-3xl bg-[#EFF8F1] p-8">
-            <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Objectives') }}</h3>
+
+        <div class="fade-in rounded-3xl bg-[#EFF8F1] p-8">
+            <h3 class="text-xl font-semibold text-[#182A22]">
+                {{ __('Objectives') }}
+            </h3>
+
             <ul class="mt-4 space-y-2 text-[#617067]">
                 <li>{{ __('Expand accessible savings') }}</li>
                 <li>{{ __('Support productive lending') }}</li>
@@ -48,10 +93,20 @@
                 <li>{{ __('Strengthen local ownership') }}</li>
             </ul>
         </div>
-        <div class="rounded-3xl bg-[#EFF8F1] p-8">
-            <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Organizational structure') }}</h3>
-            <p class="mt-4 text-[#617067]">{{ __('The cooperative is led by the board and management team in accordance with cooperative governance and member oversight.') }}</p>
+
+        <div class="fade-in rounded-3xl bg-[#EFF8F1] p-8">
+            <h3 class="text-xl font-semibold text-[#182A22]">
+                {{ __('Organizational structure') }}
+            </h3>
+
+            <p class="mt-4 text-[#617067]">
+                {{ __('The cooperative is led by the board and management team in accordance with cooperative governance and member oversight.') }}
+            </p>
         </div>
+
     </div>
+
 </section>
+
 @endsection
+```
