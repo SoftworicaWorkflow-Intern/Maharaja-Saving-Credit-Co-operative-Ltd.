@@ -79,36 +79,73 @@
                 <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">{{ __('We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member’s future.') }}</p>
             </div>
 
-            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-3 sm:bottom-8 sm:right-8">
-                <button type="button" data-hero-previous aria-label="{{ __('Previous image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">‹</button>
-                <div class="flex items-center gap-2" aria-label="{{ __('Choose an image') }}">
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                </div>
-                <button type="button" data-hero-next aria-label="{{ __('Next image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">›</button>
+            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-2 sm:bottom-8 sm:right-8" aria-label="{{ __('Choose an image') }}">
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
             </div>
         </div>
     </section>
 
-        <section class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1]">
+        @php
+        $isNepali = app()->getLocale() === 'ne';
+        $toNepaliDigits = function ($number) {
+            $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+            $np = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+            return str_replace($en, $np, (string) $number);
+        };
+        $stats = [
+            [
+                'label' => __('Total Members'),
+                'target' => 15420,
+                'prefix' => '',
+                'suffix' => '+',
+                'separator' => true,
+            ],
+            [
+                'label' => __('Total Savings'),
+                'target' => 85,
+                'prefix' => $isNepali ? 'रु. ' : 'Rs. ',
+                'suffix' => $isNepali ? ' करोड+' : ' Cr+',
+                'separator' => false,
+            ],
+            [
+                'label' => __('Total Loans'),
+                'target' => 62,
+                'prefix' => $isNepali ? 'रु. ' : 'Rs. ',
+                'suffix' => $isNepali ? ' करोड+' : ' Cr+',
+                'separator' => false,
+            ],
+            [
+                'label' => __('Total Branches'),
+                'target' => 12,
+                'prefix' => '',
+                'suffix' => '+',
+                'separator' => false,
+            ],
+        ];
+    @endphp
+
+    <section id="stats-section" data-locale="{{ app()->getLocale() }}" class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1]">
         <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Members') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Savings') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Loans') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Branches') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
+            @foreach ($stats as $stat)
+                @php
+                    $formattedVal = $stat['separator'] ? number_format($stat['target']) : (string) $stat['target'];
+                    if ($isNepali) {
+                        $formattedVal = $toNepaliDigits($formattedVal);
+                    }
+                    $initialDisplay = $stat['prefix'] . $formattedVal . $stat['suffix'];
+                @endphp
+                <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
+                    <div class="text-sm text-[#617067]">{{ $stat['label'] }}</div>
+                    <div class="mt-3 text-3xl font-bold tabular-nums text-[#08713D]"
+                         data-counter
+                         data-target="{{ $stat['target'] }}"
+                         data-prefix="{{ $stat['prefix'] }}"
+                         data-suffix="{{ $stat['suffix'] }}"
+                         data-separator="{{ $stat['separator'] ? 'true' : 'false' }}">{{ $initialDisplay }}</div>
+                </div>
+            @endforeach
         </div>
     </section>
 
@@ -218,53 +255,78 @@
     </section>
 
         <!-- Photo Gallery Section -->
-    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-7xl">
-            <div class="mb-10 text-center">
-                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Our Gallery') }}</p>
-                <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Moments from our community') }}</h2>
-                <p class="mt-4 text-[#617067] max-w-2xl mx-auto">{{ __('Glimpses of our cooperative activities, member interactions, and community programs.') }}</p>
-            </div>
+<section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8"
+         x-data="{ open: false, src: '', alt: '', caption: '' }">
+    <div class="mx-auto max-w-7xl">
+        <div class="mb-10 text-center">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Our Gallery') }}</p>
+            <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Moments from our community') }}</h2>
+            <p class="mt-4 text-[#617067] max-w-2xl mx-auto">{{ __('Glimpses of our cooperative activities, member interactions, and community programs.') }}</p>
+        </div>
 
-            @php
-                $galleryImages = [
-                    ['src' => 'images/gallery/gallery-1.jpg', 'alt' => __('Members receiving support packages'), 'caption' => __('Community Support')],
-                    ['src' => 'images/gallery/gallery-2.jpg', 'alt' => __('Staff interacting with a mother and child'), 'caption' => __('Member Care')],
-                    ['src' => 'images/gallery/gallery-3.jpg', 'alt' => __('Annual general meeting group photo'), 'caption' => __('Annual General Meeting')],
-                    ['src' => 'images/gallery/gallery-4.jpg', 'alt' => __('Staff posing with project review banner'), 'caption' => __('Project Review Workshop')],
-                    ['src' => 'images/gallery/gallery-5.jpg', 'alt' => __('Community gathering in a rural area'), 'caption' => __('Rural Outreach')],
-                    ['src' => 'images/gallery/gallery-6.jpg', 'alt' => __('Large group photo of members and staff'), 'caption' => __('Team & Members')],
-                ];
-            @endphp
+        @php
+            $galleryImages = [
+                ['src' => 'images/gallery/gallery-1.jpg', 'alt' => __('Members receiving support packages'), 'caption' => __('Community Support')],
+                ['src' => 'images/gallery/gallery-2.jpg', 'alt' => __('Staff interacting with a mother and child'), 'caption' => __('Member Care')],
+                ['src' => 'images/gallery/gallery-3.jpg', 'alt' => __('Annual general meeting group photo'), 'caption' => __('Annual General Meeting')],
+                ['src' => 'images/gallery/gallery-4.jpg', 'alt' => __('Staff posing with project review banner'), 'caption' => __('Project Review Workshop')],
+                ['src' => 'images/gallery/gallery-5.jpg', 'alt' => __('Community gathering in a rural area'), 'caption' => __('Rural Outreach')],
+                ['src' => 'images/gallery/gallery-6.jpg', 'alt' => __('Large group photo of members and staff'), 'caption' => __('Team & Members')],
+            ];
+        @endphp
 
-            <!-- Mobile: Horizontal Scroll | Desktop: Single Row Grid -->
-            <div class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                @foreach ($galleryImages as $image)
-                    <div class="group relative aspect-[3/4] w-64 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#DCE9DF] sm:w-72 lg:w-auto lg:shrink">
-                        <img src="{{ asset($image['src']) }}" 
-                             alt="{{ $image['alt'] }}" 
-                             loading="lazy"
-                             class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-                        
-                        <!-- Hover Overlay -->
-                        <div class="absolute inset-0 flex items-end bg-gradient-to-t from-[#033B22]/80 via-[#033B22]/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                            <div class="p-4 text-white transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                                <span class="inline-block rounded-full bg-[#FFD91A] px-2.5 py-1 text-[10px] font-bold text-[#04552F] mb-1.5 uppercase tracking-wider">
-                                    {{ __('View') }}
-                                </span>
-                                <h3 class="text-sm font-semibold leading-tight">{{ $image['caption'] }}</h3>
-                            </div>
+        <!-- Mobile: Horizontal Scroll | Desktop: Single Row Grid -->
+        <div class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            @foreach ($galleryImages as $image)
+                <div
+                    @click="open = true; src = @js(asset($image['src'])); alt = @js($image['alt']); caption = @js($image['caption'])"
+                    class="group relative aspect-[3/4] w-64 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#DCE9DF] sm:w-72 lg:w-auto lg:shrink cursor-pointer"
+                >
+                    <img src="{{ asset($image['src']) }}"
+                         alt="{{ $image['alt'] }}"
+                         loading="lazy"
+                         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+
+                    <!-- Hover Overlay (Caption only) -->
+                    <div class="absolute inset-0 flex items-end bg-gradient-to-t from-[#033B22]/80 via-[#033B22]/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
+                        <div class="p-4 text-white transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
+                            <h3 class="text-sm font-semibold leading-tight">{{ $image['caption'] }}</h3>
                         </div>
                     </div>
-                @endforeach
-            </div>
-            
-            <!-- Optional: Scroll hint for mobile -->
-            <p class="mt-2 text-center text-xs text-[#617067] lg:hidden">
-                {{ __('Swipe to see more →') }}
-            </p>
+                </div>
+            @endforeach
         </div>
-    </section>
+
+        <p class="mt-2 text-center text-xs text-[#617067] lg:hidden">
+            {{ __('Swipe to see more →') }}
+        </p>
+    </div>
+
+    <!-- Lightbox Modal -->
+    <div
+        x-show="open"
+        x-transition.opacity
+        x-cloak
+        @keydown.escape.window="open = false"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
+        @click.self="open = false"
+    >
+        <button
+            @click="open = false"
+            class="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition"
+            aria-label="{{ __('Close') }}"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <figure class="max-h-[90vh] max-w-5xl">
+            <img :src="src" :alt="alt" class="max-h-[80vh] w-auto rounded-lg object-contain shadow-2xl">
+            <figcaption class="mt-3 text-center text-sm text-white/80" x-text="caption"></figcaption>
+        </figure>
+    </div>
+</section>
 </div>
 
 
@@ -333,5 +395,92 @@
         </div>
     </section>
 
+    <script type="text/javascript">
+        (function () {
+            function setupCounterAnimation() {
+                const statsSection = document.getElementById('stats-section');
+                if (!statsSection) return;
 
+                const counters = statsSection.querySelectorAll('[data-counter]');
+                if (!counters.length) return;
+
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    return;
+                }
+
+                const isNepali = (statsSection.getAttribute('data-locale') || document.documentElement.lang) === 'ne';
+                const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+
+                function formatNumber(num, useSeparator) {
+                    const formatted = useSeparator ? num.toLocaleString() : String(num);
+                    if (!isNepali) {
+                        return formatted;
+                    }
+                    return formatted.replace(/[0-9]/g, (digit) => nepaliDigits[Number(digit)]);
+                }
+
+                let animated = false;
+
+                function animateCounters() {
+                    if (animated) return;
+                    animated = true;
+
+                    const duration = 1800;
+
+                    counters.forEach((counter) => {
+                        const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
+                        const prefix = counter.getAttribute('data-prefix') || '';
+                        const suffix = counter.getAttribute('data-suffix') || '';
+                        const useSeparator = counter.getAttribute('data-separator') === 'true';
+
+                        let startTime = null;
+
+                        function step(currentTime) {
+                            if (!startTime) startTime = currentTime;
+                            const elapsed = currentTime - startTime;
+                            const progress = Math.min(elapsed / duration, 1);
+                            // Ease-out cubic for a smooth deceleration effect
+                            const easeOut = 1 - Math.pow(1 - progress, 3);
+                            const currentVal = Math.floor(easeOut * target);
+
+                            counter.textContent = prefix + formatNumber(currentVal, useSeparator) + suffix;
+
+                            if (progress < 1) {
+                                requestAnimationFrame(step);
+                            } else {
+                                counter.textContent = prefix + formatNumber(target, useSeparator) + suffix;
+                            }
+                        }
+
+                        requestAnimationFrame(step);
+                    });
+                }
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries, obs) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                animateCounters();
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.15 });
+
+                    observer.observe(statsSection);
+                } else {
+                    animateCounters();
+                }
+            }
+
+            function initAll() {
+                setupCounterAnimation();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initAll);
+            } else {
+                initAll();
+            }
+        })();
+    </script>
 @endsection

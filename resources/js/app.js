@@ -24,9 +24,15 @@ if (revealElements.length > 0) {
 }
 
 document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
+    if (carousel.dataset.heroAutoplayInitialized) return;
+    carousel.dataset.heroAutoplayInitialized = 'true';
+
     const slides = [...carousel.querySelectorAll('[data-hero-slide]')];
     const indicators = [...carousel.querySelectorAll('[data-hero-indicator]')];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const autoInterval = 4500;
     let activeIndex = 0;
+    let timer = null;
 
     const showSlide = (index) => {
         activeIndex = (index + slides.length) % slides.length;
@@ -50,17 +56,51 @@ document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
         });
     };
 
+    const nextSlide = () => {
+        showSlide(activeIndex + 1);
+    };
+
+    const startAutoPlay = () => {
+        if (!reducedMotion.matches && slides.length > 1 && timer === null) {
+            timer = window.setInterval(nextSlide, autoInterval);
+        }
+    };
+
+    const stopAutoPlay = () => {
+        if (timer !== null) {
+            window.clearInterval(timer);
+            timer = null;
+        }
+    };
+
+    const resetAutoPlay = () => {
+        stopAutoPlay();
+        startAutoPlay();
+    };
+
     carousel.querySelector('[data-hero-previous]')?.addEventListener('click', () => {
         showSlide(activeIndex - 1);
+        resetAutoPlay();
     });
 
     carousel.querySelector('[data-hero-next]')?.addEventListener('click', () => {
         showSlide(activeIndex + 1);
+        resetAutoPlay();
     });
 
     indicators.forEach((indicator, index) => {
-        indicator.addEventListener('click', () => showSlide(index));
+        indicator.addEventListener('click', () => {
+            showSlide(index);
+            resetAutoPlay();
+        });
     });
+
+    carousel.addEventListener('mouseenter', stopAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    carousel.addEventListener('focusin', stopAutoPlay);
+    carousel.addEventListener('focusout', startAutoPlay);
+
+    startAutoPlay();
 });
 
 document.querySelectorAll('[data-rotating-headline]').forEach((headline) => {
