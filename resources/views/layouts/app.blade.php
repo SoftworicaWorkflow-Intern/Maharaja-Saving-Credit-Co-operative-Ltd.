@@ -160,7 +160,7 @@
         @yield('content')
     </main>
 
-    <footer class="border-t border-[#DCE9DF] bg-[#04552F] text-white print:hidden">
+    <footer class="border-t border-gray-700 bg-gray-800 text-white print:hidden">
         <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div>
                 <div class="mb-4 flex items-center gap-3">
@@ -170,11 +170,11 @@
                         <div class="text-sm font-semibold">महाराज बचत तथा ऋण सहकारी संस्था लि.</div>
                     </div>
                 </div>
-                <p class="text-sm text-green-100">Strong Savings, Prosperous Future</p>
+                <p class="text-sm text-gray-300">Strong Savings, Prosperous Future</p>
             </div>
             <div>
                 <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">{{ __('Quick Links') }}</h3>
-                <ul class="space-y-2 text-sm text-green-100">
+                <ul class="space-y-2 text-sm text-gray-300">
                     <li><a href="{{ route('about') }}">{{ __('About Us') }}</a></li>
                     <li><a href="{{ route('savings') }}">{{ __('Savings') }}</a></li>
                     <li><a href="{{ route('loans') }}">{{ __('Loans') }}</a></li>
@@ -183,7 +183,7 @@
             </div>
             <div>
                 <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">Contact</h3>
-                <ul class="space-y-2 text-sm text-green-100">
+                <ul class="space-y-2 text-sm text-gray-300">
                     <li>Phone: 078-540530</li>
                     <li>Email: saccosmaharaja@gmail.com</li>
                     <li>Address: Kawasoti -2 BP Chowk, Nawalpur</li>
@@ -191,7 +191,7 @@
             </div>
             <div>
                 <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">Legal</h3>
-                <ul class="space-y-2 text-sm text-green-100">
+                <ul class="space-y-2 text-sm text-gray-300">
                     <li>Registered Cooperative</li>
                     <li>Member-first policy</li>
                     <li>Privacy & data protection</li>
