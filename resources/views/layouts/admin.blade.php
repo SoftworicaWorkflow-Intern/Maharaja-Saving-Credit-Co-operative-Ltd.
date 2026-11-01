@@ -68,9 +68,19 @@
                     </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('notices.manage'))
-                    <a href="{{ route('admin.notices.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.notices.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.notices.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">▣</span>
                         <span class="sidebar-text">{{ __('Notices') }}</span>
+                    </a>
+                @endif
+                @if (auth()->user()->hasPermissionTo('website.manage') || auth()->user()->hasPermissionTo('notices.manage'))
+                    <a href="{{ route('admin.services.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.services.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
+                        <span aria-hidden="true" class="shrink-0 text-lg">💼</span>
+                        <span class="sidebar-text">{{ __('Services') }}</span>
+                    </a>
+                    <a href="{{ route('admin.faqs.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.faqs.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
+                        <span aria-hidden="true" class="shrink-0 text-lg">❓</span>
+                        <span class="sidebar-text">{{ __('FAQs') }}</span>
                     </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('staff.manage'))
@@ -133,6 +143,10 @@
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('notices.manage'))
                                     <a href="{{ route('admin.notices.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Notices') }}</a>
+                                @endif
+                                @if (auth()->user()->hasPermissionTo('website.manage') || auth()->user()->hasPermissionTo('notices.manage'))
+                                    <a href="{{ route('admin.services.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Services') }}</a>
+                                    <a href="{{ route('admin.faqs.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('FAQs') }}</a>
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('staff.manage'))
                                     <a href="{{ route('admin.staff.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Staff & permissions') }}</a>

@@ -158,7 +158,7 @@
             <div class="grid gap-6 md:grid-cols-3">
 
                 {{-- Savings Products Card --}}
-                <a href="{{ route('savings') }}"
+                <a href="{{ route('services') }}#savings"
                     class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
                     <div>
                         <div class="mb-5 flex items-center justify-between">
@@ -184,7 +184,7 @@
                 </a>
 
                 {{-- Loan Support Card --}}
-                <a href="{{ route('loans') }}"
+                <a href="{{ route('services') }}#loans"
                     class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
                     <div>
                         <div class="mb-5 flex items-center justify-between">

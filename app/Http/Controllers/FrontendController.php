@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Faq;
 use App\Models\Notice;
+use App\Models\Service;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
@@ -88,6 +90,39 @@ class FrontendController extends Controller
     public function employees(): View
     {
         return view('frontend.about-employees');
+    }
+
+    public function services(): View
+    {
+        $savings = Schema::hasTable('services')
+            ? Service::query()->active()->savings()->orderBy('display_order')->get()
+            : collect();
+        $loans = Schema::hasTable('services')
+            ? Service::query()->active()->loans()->orderBy('display_order')->get()
+            : collect();
+        $memberSupport = Schema::hasTable('services')
+            ? Service::query()->active()->memberSupport()->orderBy('display_order')->get()
+            : collect();
+        $faqs = Schema::hasTable('faqs')
+            ? Faq::query()->active()->orderBy('display_order')->get()
+            : collect();
+
+        return view('frontend.services', compact('savings', 'loans', 'memberSupport', 'faqs'));
+    }
+
+    public function showService(Service $service): View
+    {
+        abort_unless($service->is_active, 404);
+
+        $relatedServices = Service::query()
+            ->active()
+            ->where('category', $service->category)
+            ->where('id', '!=', $service->id)
+            ->orderBy('display_order')
+            ->limit(3)
+            ->get();
+
+        return view('frontend.service-detail', compact('service', 'relatedServices'));
     }
 
     public function savings(): View

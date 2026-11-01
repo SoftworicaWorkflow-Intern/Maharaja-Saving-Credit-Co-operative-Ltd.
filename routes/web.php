@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\Admin\ContactInquiryController as AdminContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FaqController as AdminFaqController;
 use App\Http\Controllers\Admin\LeadershipProfileController as AdminLeadershipProfileController;
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\MembershipApplicationController as AdminMembershipApplicationController;
 use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
+use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactInquiryController;
@@ -27,6 +29,8 @@ Route::get('/about/vision-mission', [FrontendController::class, 'visionMission']
 Route::get('/about/board-of-directors', [FrontendController::class, 'boardOfDirectors'])->name('about.board-of-directors');
 Route::get('/about/other-committees', [FrontendController::class, 'otherCommittees'])->name('about.other-committees');
 Route::get('/about/employees', [FrontendController::class, 'employees'])->name('about.employees');
+Route::get('/services', [FrontendController::class, 'services'])->name('services');
+Route::get('/services/{service:slug}', [FrontendController::class, 'showService'])->name('services.show');
 Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
 Route::get('/notices', [FrontendController::class, 'notices'])->name('notices');
@@ -54,6 +58,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('notices', AdminNoticeController::class)
         ->except('show')
         ->middleware('permission:notices.manage');
+
+    Route::resource('services', AdminServiceController::class)
+        ->except('show')
+        ->middleware('permission:website.manage');
+
+    Route::resource('faqs', AdminFaqController::class)
+        ->except('show')
+        ->middleware('permission:website.manage');
 
     Route::middleware('permission:applications.view')->group(function () {
         Route::get('/applications', [AdminMembershipApplicationController::class, 'index'])->name('applications.index');

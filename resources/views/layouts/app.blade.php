@@ -75,8 +75,7 @@
                         <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Employees') }}</a>
                     </div>
                 </details>
-                <a href="{{ route('savings') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('savings') ? 'text-[#FFD91A]' : '' }}">{{ __('Savings') }}</a>
-                <a href="{{ route('loans') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('loans') ? 'text-[#FFD91A]' : '' }}">{{ __('Loans') }}</a>
+                <a href="{{ route('services') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('services*') ? 'text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>
                 <a href="{{ route('notices') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('notices') ? 'text-[#FFD91A]' : '' }}">{{ __('Notices') }}</a>
                 <a href="{{ route('contact') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('contact') ? 'text-[#FFD91A]' : '' }}">{{ __('Contact') }}</a>
             </nav>
@@ -135,8 +134,7 @@
                         <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Employees') }}</a>
                     </div>
                 </details>
-                <a href="{{ route('savings') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Savings') }}</a>
-                <a href="{{ route('loans') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Loans') }}</a>
+                <a href="{{ route('services') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10 {{ request()->routeIs('services*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>
                 <a href="{{ route('notices') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Notices') }}</a>
                 <a href="{{ route('contact') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Contact') }}</a>
                 <div class="mt-2 flex items-center justify-between border-t border-white/15 py-3">
@@ -180,9 +178,9 @@
                 <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">{{ __('Quick Links') }}</h3>
                 <ul class="space-y-2 text-sm text-gray-300">
                     <li><a href="{{ route('about') }}">{{ __('About Us') }}</a></li>
-                    <li><a href="{{ route('savings') }}">{{ __('Savings') }}</a></li>
-                    <li><a href="{{ route('loans') }}">{{ __('Loans') }}</a></li>
+                    <li><a href="{{ route('services') }}">{{ __('Services') }}</a></li>
                     <li><a href="{{ route('notices') }}">{{ __('Notices') }}</a></li>
+                    <li><a href="{{ route('contact') }}">{{ __('Contact') }}</a></li>
                 </ul>
             </div>
             <div>
