@@ -126,8 +126,8 @@
         ];
     @endphp
 
-    <section id="stats-section" data-locale="{{ app()->getLocale() }}" class="fade-in border-y border-[#04552F] bg-[#08713D]">
-        <div class="mx-auto max-w-3xl px-4 pt-12 text-center sm:px-6 lg:px-8">
+    <section id="stats-section" data-locale="{{ app()->getLocale() }}" class="fade-in mb-16 border-y border-[#04552F] bg-[#08713D]">
+        <div class="mx-auto max-w-3xl px-4 pt-12 mb-12 text-center sm:px-6 lg:px-8">
             <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFD91A]">{{ __('Our Impact') }}</p>
             <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl">{{ __('Growing Together With Our Members') }}</h2>
             <p class="mt-4 text-sm leading-7 text-emerald-100 sm:text-base">{{ __('A trusted cooperative building stronger financial futures through savings, credit, and community service.') }}</p>
