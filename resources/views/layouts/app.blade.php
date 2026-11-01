@@ -164,7 +164,7 @@
         @yield('content')
     </main>
 
-    <footer class="border-t border-gray-300 bg-gray-100 text-gray-800 print:hidden">
+    <footer class="border-t border-gray-400 bg-gray-200 text-gray-800 print:hidden">
         <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div>
                 <div class="mb-4 flex items-center gap-3">
