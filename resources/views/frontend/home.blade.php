@@ -135,21 +135,21 @@
     </section>
 
     {{-- ============================================================
-         Financial Services Section — 3 cards each linking to their own page
+         Financial Services Section — What We Offer (Light Gray Background)
     ============================================================ --}}
-    <section id="what-we-offer" class="fade-in bg-[#08713D] py-16 text-white sm:py-20" aria-labelledby="what-we-offer-heading">
+    <section id="what-we-offer" class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1] py-16 sm:py-20" aria-labelledby="what-we-offer-heading">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center">
-                <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
+                <span class="inline-flex items-center gap-2 rounded-full border border-[#DCE9DF] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#08713D] shadow-sm">
                     {{ __('What we offer') }}
                 </span>
-                <h2 id="what-we-offer-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                <h2 id="what-we-offer-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-[#04552F] sm:text-4xl lg:text-5xl">
                     {{ __('Financial services built around members') }}
                 </h2>
-                <p class="mx-auto mt-4 max-w-2xl text-base text-emerald-100 sm:text-lg">
+                <p class="mx-auto mt-4 max-w-2xl text-base text-[#617067] sm:text-lg">
                     {{ __('Explore our member-first savings plans, flexible credit schemes, and official cooperative updates.') }}
                 </p>
-                <p class="mt-2 text-xs font-semibold uppercase tracking-wider text-[#FFD91A]">
+                <p class="mt-2 text-xs font-semibold uppercase tracking-wider text-[#08713D]">
                     {{ __('Click a service card below to view full details and options') }}
                 </p>
             </div>
@@ -159,13 +159,13 @@
 
                 {{-- Savings Products Card --}}
                 <a href="{{ route('savings') }}"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white text-[#182A22] shadow-2xl hover:scale-[1.02] hover:shadow-[0_30px_60px_rgba(8,113,61,0.22)]">
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
                     <div>
                         <div class="mb-5 flex items-center justify-between">
                             <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">💰</span>
-                            <span class="rounded-full bg-[#08713D] px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl">{{ __('Savings Products') }}</h3>
+                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Savings Products') }}</h3>
                         <p class="mt-3 text-sm leading-relaxed text-[#617067]">
                             {{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}
                         </p>
@@ -175,7 +175,7 @@
                             <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __("Children's & Senior Citizen Plans") }}</li>
                         </ul>
                     </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
+                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
                         <span>{{ __('View All Savings Plans') }}</span>
                         <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
@@ -185,23 +185,23 @@
 
                 {{-- Loan Support Card --}}
                 <a href="{{ route('loans') }}"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-[1.02]">
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
                     <div>
                         <div class="mb-5 flex items-center justify-between">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl text-white shadow-inner transition group-hover:scale-110">🏦</span>
-                            <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">🏦</span>
+                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">{{ __('Loan Support') }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-white/80">
+                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Loan Support') }}</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
                             {{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-white/70">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Personal & Business Loans') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Agricultural & Education Loans') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('48-hour approval process') }}</li>
+                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Personal & Business Loans') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Agricultural & Education Loans') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('48-hour approval process') }}</li>
                         </ul>
                     </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wider text-white">
+                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
                         <span>{{ __('View All Loan Schemes') }}</span>
                         <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
@@ -211,23 +211,23 @@
 
                 {{-- Notices & Updates Card --}}
                 <a href="{{ route('notices') }}"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-[1.02]">
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
                     <div>
                         <div class="mb-5 flex items-center justify-between">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl text-white shadow-inner transition group-hover:scale-110">📣</span>
-                            <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">📣</span>
+                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">{{ __('Notices & Updates') }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-white/80">
+                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Notices & Updates') }}</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
                             {{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}
                         </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-white/70">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('AGM & Official Notices') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Dividend & Financial Reports') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Scheme & Holiday Updates') }}</li>
+                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('AGM & Official Notices') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Dividend & Financial Reports') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Scheme & Holiday Updates') }}</li>
                         </ul>
                     </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wider text-white">
+                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
                         <span>{{ __('Browse All Notices') }}</span>
                         <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
