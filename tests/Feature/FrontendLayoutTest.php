@@ -117,4 +117,40 @@ class FrontendLayoutTest extends TestCase
             ->assertSee(route('about'), false)
             ->assertSee(route('register'), false);
     }
+
+    public function test_what_we_offer_cards_link_to_their_dedicated_pages(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('id="what-we-offer"', false)
+            ->assertSee('bg-[#08713D]', false)
+            ->assertSee('What we offer')
+            ->assertSee('Financial services built around members')
+            ->assertSee('data-offer-link="savings" href="'.route('savings').'"', false)
+            ->assertSee('data-offer-link="loans" href="'.route('loans').'"', false)
+            ->assertSee('data-offer-link="notices" href="'.route('notices').'"', false)
+            ->assertSee('Savings Products')
+            ->assertSee('Loan Support')
+            ->assertSee('Notices & Updates')
+            ->assertDontSee('data-offer-panel', false)
+            ->assertDontSee('data-offer-tab', false)
+            ->assertDontSee('Regular Savings')
+            ->assertDontSee('Personal & Household Loan')
+            ->assertDontSee('Stay Informed With Official Cooperative Notices');
+
+        $this->withSession(['locale' => 'ne'])
+            ->get(route('home'))
+            ->assertOk()
+            ->assertSee('id="what-we-offer"', false)
+            ->assertSee('bg-[#08713D]', false)
+            ->assertSee('data-offer-link="savings" href="'.route('savings').'"', false)
+            ->assertSee('data-offer-link="loans" href="'.route('loans').'"', false)
+            ->assertSee('data-offer-link="notices" href="'.route('notices').'"', false)
+            ->assertSee('हामी के प्रदान गर्छौँ')
+            ->assertSee('सदस्य केन्द्रित वित्तीय सेवाहरू')
+            ->assertSee('बचत योजनाहरू')
+            ->assertSee('ऋण सहायता')
+            ->assertSee('सूचना तथा ताजा जानकारी');
+    }
 }

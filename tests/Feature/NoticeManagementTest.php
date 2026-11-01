@@ -72,6 +72,24 @@ class NoticeManagementTest extends TestCase
             ->assertDontSee('data-news-ticker', false);
     }
 
+    public function test_homepage_notice_cards_link_to_the_full_notice(): void
+    {
+        $notice = $this->createNotice([
+            'title_en' => 'Annual member meeting',
+            'body_en' => 'Full details about the annual member meeting and its agenda.',
+        ]);
+
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('<a lang="en" href="'.route('notices.show', $notice).'"', false)
+            ->assertSee('Annual member meeting')
+            ->assertSee('Read Full Notice');
+
+        $this->get(route('notices.show', $notice))
+            ->assertOk()
+            ->assertSee('Full details about the annual member meeting and its agenda.');
+    }
+
     public function test_public_notice_detail_is_available_only_after_publication(): void
     {
         $this->freezeTime();

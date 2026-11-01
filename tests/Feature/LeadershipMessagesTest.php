@@ -22,7 +22,7 @@ class LeadershipMessagesTest extends TestCase
             ->assertSeeInOrder([
                 'LEADERSHIP MESSAGES',
                 'Words from Our Leadership',
-                'Portrait not provided for Chairperson',
+                'images/chairperson-message.png',
                 'CHAIRPERSON&#039;S MESSAGE',
                 'Building a Prosperous Future Together',
                 'Portrait not provided for Secretary',
@@ -32,7 +32,8 @@ class LeadershipMessagesTest extends TestCase
             ], false);
 
         $this->assertSame(2, substr_count($response->getContent(), 'Read Full Message'));
-        $response->assertSee('order-1 lg:order-2', false)
+        $response->assertSee('order-1 lg:order-1', false)
+            ->assertSee('order-1 lg:order-2', false)
             ->assertSee('order-2 lg:order-1', false);
     }
 
@@ -100,7 +101,8 @@ class LeadershipMessagesTest extends TestCase
 
         $this->get(route('home'))
             ->assertSee('Portrait of Verified Chairperson')
-            ->assertSee('Portrait of Verified Secretary');
+            ->assertSee('Portrait of Verified Secretary')
+            ->assertSee('images/chairperson-message.png');
     }
 
     public function test_only_staff_managers_can_edit_leadership_profiles(): void

@@ -112,30 +112,62 @@
         </div>
     </section>
 
-    <section class="fade-in mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="mb-10 text-center">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('What we offer') }}</p>
-            <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Financial services built around members') }}</h2>
+    <section id="what-we-offer" class="fade-in bg-[#08713D] py-16 text-white sm:py-20" aria-labelledby="what-we-offer-heading">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-12 text-center">
+            <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
+                {{ __('What we offer') }}
+            </span>
+            <h2 id="what-we-offer-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                {{ __('Financial services built around members') }}
+            </h2>
+            <p class="mx-auto mt-4 max-w-2xl text-base text-emerald-100 sm:text-lg">
+                {{ __('Explore our member-first savings plans, flexible credit schemes, and official cooperative updates.') }}
+            </p>
+            <p class="mt-2 text-xs font-semibold uppercase tracking-wider text-[#FFD91A]">
+                {{ __('Click a service card below to view full details and options') }}
+            </p>
         </div>
-        <div class="grid gap-6 md:grid-cols-3">
-            <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
-                <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">💰</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Savings Products') }}</h3>
-                <p class="mt-3 text-[#617067]">{{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}</p>
-            </div>
-            <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
-                <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">🏦</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Loan Support') }}</h3>
-                <p class="mt-3 text-[#617067]">{{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}</p>
-            </div>
-            <div class="rounded-3xl border border-[#DCE9DF] bg-white p-8 shadow-sm">
-                <div class="mb-4 inline-flex rounded-2xl bg-[#EFF8F1] p-3 text-[#08713D]">📣</div>
-                <h3 class="text-xl font-semibold text-[#182A22]">{{ __('Notices & Updates') }}</h3>
-                <p class="mt-3 text-[#617067]">{{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}</p>
-            </div>
-        </div>
-    </section>
 
+        <div class="grid gap-6 md:grid-cols-3">
+            <a data-offer-link="savings" href="{{ route('savings') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
+                <div>
+                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">💰</span>
+                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Savings Products') }}</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}</p>
+                </div>
+                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
+                    {{ __('Explore All Savings Products') }}
+                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
+                </span>
+            </a>
+
+            <a data-offer-link="loans" href="{{ route('loans') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
+                <div>
+                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">🏦</span>
+                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Loan Support') }}</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}</p>
+                </div>
+                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
+                    {{ __('View Full Loan Schemes') }}
+                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
+                </span>
+            </a>
+
+            <a data-offer-link="notices" href="{{ route('notices') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
+                <div>
+                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">📣</span>
+                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Notices & Updates') }}</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}</p>
+                </div>
+                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
+                    {{ __('Browse All Notices') }}
+                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
+                </span>
+            </a>
+        </div>
+    </div>
+</section>
     <section id="leadership-messages" class="fade-in bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
         <div class="mx-auto max-w-7xl">
             <div class="mx-auto mb-10 max-w-2xl text-center">
@@ -151,7 +183,9 @@
                     @endphp
                     <article class="fade-in grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
                         <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
-                            @if ($message['has_portrait'])
+                            @if ($leader === 'chairperson')
+                                <img src="{{ asset('images/chairperson-message.png') }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
+                            @elseif ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
                             @else
                                 <div role="img" aria-label="{{ __('Portrait not provided for :designation', ['designation' => __($message['designation'])]) }}" class="absolute inset-0 flex items-center justify-center text-[#08713D]/35">
@@ -274,12 +308,23 @@
         </div>
         <div class="grid gap-6 lg:grid-cols-3">
             @forelse($featuredNotices as $notice)
-                <article class="rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
-                    <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#08713D]">{{ $notice->category }}</span>
-                    <h3 class="mt-4 text-xl font-semibold text-[#182A22]"><a lang="{{ app()->getLocale() }}" href="{{ route('notices.show', $notice) }}" class="hover:text-[#08713D] hover:underline">{{ app()->getLocale() === 'ne' ? ($notice->title_np ?: $notice->title_en) : ($notice->title_en ?: $notice->title_np) }}</a></h3>
-                    <p class="mt-3 text-sm text-[#617067]">{{ Str::limit(strip_tags(app()->getLocale() === 'ne' ? ($notice->body_np ?: $notice->body_en) : ($notice->body_en ?: $notice->body_np)), 120) }}</p>
-                    <div class="mt-6 text-xs font-medium uppercase tracking-[0.12em] text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</div>
-                </article>
+                @php
+                    $noticeLocale = app()->getLocale();
+                    $noticeTitle = $noticeLocale === 'ne' ? ($notice->title_np ?: $notice->title_en) : ($notice->title_en ?: $notice->title_np);
+                    $noticeBody = $noticeLocale === 'ne' ? ($notice->body_np ?: $notice->body_en) : ($notice->body_en ?: $notice->body_np);
+                @endphp
+                <a lang="{{ $noticeLocale }}" href="{{ route('notices.show', $notice) }}" class="group flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#08713D]/40 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#08713D] focus:ring-offset-2">
+                    <span class="w-fit rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#08713D]">{{ __(ucfirst($notice->category)) }}</span>
+                    <h3 class="mt-4 text-xl font-semibold text-[#182A22] transition group-hover:text-[#08713D] group-hover:underline">{{ $noticeTitle }}</h3>
+                    <p class="mt-3 text-sm leading-6 text-[#617067]">{{ Str::limit(strip_tags($noticeBody), 120) }}</p>
+                    <div class="mt-auto flex items-center justify-between gap-4 pt-6">
+                        <time @if ($notice->published_at) datetime="{{ $notice->published_at->toIso8601String() }}" @endif class="text-xs font-medium uppercase tracking-[0.12em] text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</time>
+                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-[#08713D]">
+                            {{ __('Read Full Notice') }}
+                            <span aria-hidden="true" class="transition group-hover:translate-x-1">→</span>
+                        </span>
+                    </div>
+                </a>
             @empty
                 <div class="rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-8 text-[#617067] lg:col-span-3">
                     {{ __('No published notices available yet.') }}
