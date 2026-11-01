@@ -400,6 +400,37 @@
         </div>
     </section>
 
+    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="member-testimonials-heading">
+        <div class="mx-auto max-w-7xl">
+            <div class="mx-auto mb-10 max-w-2xl text-center">
+                <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Member voices') }}</p>
+                <h2 id="member-testimonials-heading" class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">{{ __('What Our Members Say') }}</h2>
+                <p class="mt-4 text-sm leading-7 text-[#617067] sm:text-base">{{ __('Real experiences from members who are growing with our cooperative.') }}</p>
+            </div>
+
+            <div class="grid gap-6 md:grid-cols-3">
+                @foreach ([
+                    ['quote' => 'The cooperative team makes saving simple, clear, and dependable for my family.', 'name' => 'Sita Gurung', 'role' => 'Member since 2018'],
+                    ['quote' => 'I received friendly guidance when I needed credit to expand my small business.', 'name' => 'Ramesh Thapa', 'role' => 'Small business member'],
+                    ['quote' => 'The service feels personal because the staff understands and supports our community.', 'name' => 'Maya K.C.', 'role' => 'Member since 2020'],
+                ] as $testimonial)
+                    <figure class="flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-8">
+                        <div class="flex gap-1 text-[#FFD91A]" aria-label="5 stars">
+                            @for ($star = 0; $star < 5; $star++)
+                                <span aria-hidden="true">★</span>
+                            @endfor
+                        </div>
+                        <blockquote class="mt-5 flex-1 text-base leading-7 text-[#344054]">“{{ __($testimonial['quote']) }}”</blockquote>
+                        <figcaption class="mt-6 border-t border-[#DCE9DF] pt-5">
+                            <div class="font-semibold text-[#04552F]">{{ $testimonial['name'] }}</div>
+                            <div class="mt-1 text-sm text-[#617067]">{{ __($testimonial['role']) }}</div>
+                        </figcaption>
+                    </figure>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
     <script type="text/javascript">
         (function () {
             function setupCounterAnimation() {
