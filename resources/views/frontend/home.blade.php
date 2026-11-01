@@ -290,6 +290,8 @@
     </section>
 
 
+
+
     {{-- ============================================================
          Why Members Trust Us
     ============================================================ --}}
@@ -322,6 +324,118 @@
             </div>
         </div>
     </section>
+
+    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="gallery-heading">
+    <div class="mx-auto max-w-7xl">
+        <!-- Section Header -->
+        <div class="mx-auto mb-10 max-w-2xl text-center">
+            <p class="inline-flex rounded-full border border-[#08713D]/30 bg-white px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">
+                {{ __('Our Community') }}
+            </p>
+            <h2 id="gallery-heading" class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">
+                {{ __('Gallery') }}
+            </h2>
+            <p class="mt-4 text-sm leading-7 text-[#617067] sm:text-base">
+                {{ __('Click on any image to view it in full size.') }}
+            </p>
+        </div>
+
+        <!-- Single Row Image Grid (Scrollable on mobile/tablet) -->
+        <div class="flex overflow-x-auto gap-4 pb-4 snap-x snap-mandatory hide-scrollbar">
+            @php
+                $images = [
+                    'gallery-1.jpg',
+                    'gallery-2.jpg',
+                    'gallery-3.jpg',
+                    'gallery-4.jpg',
+                    'gallery-5.jpg',
+                    'gallery-6.jpg'
+                ];
+            @endphp
+
+            @foreach ($images as $image)
+                <!-- Each item takes up full width on mobile, half on tablet, and 1/3 on small desktop, but on large desktop we fit all 6 -->
+                <div class="group relative shrink-0 cursor-pointer overflow-hidden rounded-2xl border border-[#DCE9DF] bg-white shadow-sm transition-all duration-300 hover:shadow-md snap-start w-[85vw] sm:w-[45vw] md:w-[30vw] lg:w-[calc(16.666%-13.33px)]" 
+                     onclick="openLightbox('{{ asset('images/gallery/' . $image) }}')">
+                    
+                    <img src="{{ asset('images/gallery/' . $image) }}" 
+                         alt="Gallery Image" 
+                         class="h-48 w-full object-cover object-center transition-transform duration-500 group-hover:scale-105">
+                    
+                    <!-- Hover Overlay -->
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <svg class="h-10 w-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                        </svg>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Lightbox Modal (Hidden by default) -->
+    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onclick="closeLightbox(event)">
+        <!-- Close Button -->
+        <button class="absolute right-6 top-6 text-white hover:text-gray-300 focus:outline-none" onclick="closeLightbox(event)">
+            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+        </button>
+        
+        <!-- Full Image -->
+        <img id="lightbox-img" src="" alt="Full size image" class="max-h-[90vh] max-w-full rounded-lg object-contain shadow-2xl">
+    </div>
+</section>
+
+<!-- Custom CSS to hide the scrollbar but keep functionality -->
+<style>
+    .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+</style>
+
+<!-- JavaScript for Lightbox functionality -->
+<script>
+    function openLightbox(imageSrc) {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        
+        lightboxImg.src = imageSrc;
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        
+        // Prevent background scrolling
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(event) {
+        // Only close if clicking the background overlay or close button, not the image itself
+        if (event.target.id === 'lightbox' || event.target.closest('button')) {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            
+            // Restore background scrolling
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    // Close on Escape key press
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('hidden')) {
+                lightbox.classList.add('hidden');
+                lightbox.classList.remove('flex');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    });
+</script>
 
     {{-- ============================================================
          Latest Updates — Notices & Announcements (up to 7 cards)
@@ -375,94 +489,42 @@
             @endforelse
         </div>
     </section>
-    {{-- ============================================================
-         Member Voices / Testimonials — bottom of page
-    ============================================================ --}}
-    <section class="fade-in bg-[#EFF8F1] py-16">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center">
-                <span class="inline-flex items-center rounded-full border border-[#DCE9DF] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#08713D]">
-                    {{ __('Member Voices') }}
-                </span>
-                <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-[#04552F] sm:text-4xl">
-                    {{ __('What Our Members Say') }}
-                </h2>
-                <p class="mx-auto mt-3 max-w-2xl text-base text-[#617067]">
-                    {{ __('Real experiences from members who are growing with our cooperative.') }}
-                </p>
-            </div>
 
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {{-- Testimonial 1 --}}
-                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
-                    <div>
-                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
-                            @for ($i = 0; $i < 5; $i++)
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                            @endfor
-                        </div>
-                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
-                            "{{ __('The cooperative team makes saving simple, clear, and dependable for my family.') }}"
-                        </p>
-                    </div>
-                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">SG</div>
-                        <div>
-                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Sita Gurung') }}</div>
-                            <div class="text-xs text-[#617067]">{{ __('Member since 2018') }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Testimonial 2 --}}
-                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
-                    <div>
-                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
-                            @for ($i = 0; $i < 5; $i++)
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                            @endfor
-                        </div>
-                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
-                            "{{ __('I received friendly guidance when I needed credit to expand my small business.') }}"
-                        </p>
-                    </div>
-                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#04552F] text-sm font-bold text-white">RT</div>
-                        <div>
-                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Ramesh Thapa') }}</div>
-                            <div class="text-xs text-[#617067]">{{ __('Small business member') }}</div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Testimonial 3 --}}
-                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
-                    <div>
-                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
-                            @for ($i = 0; $i < 5; $i++)
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-                                </svg>
-                            @endfor
-                        </div>
-                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
-                            "{{ __('The service feels personal because the staff understands and supports our community.') }}"
-                        </p>
-                    </div>
-                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
-                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">MK</div>
-                        <div>
-                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Maya K.C.') }}</div>
-                            <div class="text-xs text-[#617067]">{{ __('Member since 2020') }}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="member-testimonials-heading">
+    <div class="mx-auto max-w-7xl">
+        <div class="mx-auto mb-10 max-w-2xl text-center">
+            <p class="inline-flex rounded-full border border-[#08713D]/30 bg-white px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Member voices') }}</p>
+            <h2 id="member-testimonials-heading" class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">{{ __('What Our Members Say') }}</h2>
+            <p class="mt-4 text-sm leading-7 text-[#617067] sm:text-base">{{ __('Real experiences from members who are growing with our cooperative.') }}</p>
         </div>
+
+        <div class="grid gap-6 md:grid-cols-3">
+            @foreach ([
+                ['quote' => 'The cooperative team makes saving simple, clear, and dependable for my family.', 'name' => 'Sita Gurung', 'role' => 'Member since 2018', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                ['quote' => 'I received friendly guidance when I needed credit to expand my small business.', 'name' => 'Ramesh Thapa', 'role' => 'Small business member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                ['quote' => 'The service feels personal because the staff understands and supports our community.', 'name' => 'Maya K.C.', 'role' => 'Member since 2020', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+            ] as $testimonial)
+                <figure class="flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-8">
+                    <div class="flex gap-1 text-[#FFD91A]" aria-label="5 stars">
+                        @for ($star = 0; $star < 5; $star++)
+                            <span aria-hidden="true">★</span>
+                        @endfor
+                    </div>
+                    <blockquote class="mt-5 flex-1 text-base leading-7 text-[#344054]">“{{ __($testimonial['quote']) }}”</blockquote>
+                    <figcaption class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
+                        <img src="{{ $testimonial['image'] }}" alt="{{ $testimonial['name'] }}" class="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-[#EFF8F1]">
+                        <div>
+                            <div class="font-semibold text-[#04552F]">{{ $testimonial['name'] }}</div>
+                            <div class="mt-1 text-sm text-[#617067]">{{ __($testimonial['role']) }}</div>
+                        </div>
+                    </figcaption>
+                </figure>
+            @endforeach
+        </div>
+    </div>
+</section>
+
+    
     </section>
 </div>
 
