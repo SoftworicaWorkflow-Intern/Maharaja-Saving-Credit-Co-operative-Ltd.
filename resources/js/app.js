@@ -249,3 +249,70 @@ document.querySelectorAll('[data-mobile-nav-toggle]').forEach((button) => {
         }
     });
 });
+
+const initCounterAnimations = () => {
+    const counterElements = document.querySelectorAll('[data-counter]');
+    if (!counterElements.length) return;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const runCounter = (el) => {
+        if (el.dataset.counterStarted === 'true') return;
+        el.dataset.counterStarted = 'true';
+
+        const target = parseInt(el.getAttribute('data-target') || '0', 10);
+        const prefix = el.getAttribute('data-prefix') || '';
+        const suffix = el.getAttribute('data-suffix') || '';
+        const format = el.getAttribute('data-format') || 'int';
+
+        const formatNumber = (val) => {
+            if (format === 'comma') {
+                return val.toLocaleString();
+            }
+            return String(val);
+        };
+
+        if (reducedMotion) {
+            el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+            return;
+        }
+
+        const duration = 2000;
+        const startTime = performance.now();
+
+        const tick = (now) => {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = Math.round(easeOut * target);
+
+            el.textContent = `${prefix}${formatNumber(current)}${suffix}`;
+
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+            }
+        };
+
+        requestAnimationFrame(tick);
+    };
+
+    if (!('IntersectionObserver' in window)) {
+        counterElements.forEach(runCounter);
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                runCounter(entry.target);
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    counterElements.forEach((el) => observer.observe(el));
+};
+
+initCounterAnimations();

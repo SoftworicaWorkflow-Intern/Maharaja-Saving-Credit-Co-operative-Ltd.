@@ -91,23 +91,45 @@
         </div>
     </section>
 
-    <section class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1]">
-        <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Members') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+    {{-- OUR IMPACT section --}}
+    <section class="fade-in bg-[#08713D] py-16 text-white">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
+                    {{ __('Our Impact') }}
+                </span>
+                <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+                    {{ __('Growing Together With Our Members') }}
+                </h2>
+                <p class="mx-auto mt-3 max-w-2xl text-base text-emerald-100">
+                    {{ __('A trusted cooperative building stronger financial futures through savings, credit, and community service.') }}
+                </p>
             </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Savings') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Loans') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
-            </div>
-            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                <div class="text-sm text-[#617067]">{{ __('Total Branches') }}</div>
-                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                    <div class="text-sm font-medium text-[#617067]">{{ __('Total Members') }}</div>
+                    <div class="mt-3 text-3xl font-extrabold text-[#08713D] sm:text-4xl">
+                        <span data-counter data-target="15420" data-prefix="" data-suffix="+" data-format="comma">15,420+</span>
+                    </div>
+                </div>
+                <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                    <div class="text-sm font-medium text-[#617067]">{{ __('Total Savings') }}</div>
+                    <div class="mt-3 text-3xl font-extrabold text-[#08713D] sm:text-4xl">
+                        <span data-counter data-target="85" data-prefix="Rs. " data-suffix=" Cr+" data-format="int">Rs. 85 Cr+</span>
+                    </div>
+                </div>
+                <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                    <div class="text-sm font-medium text-[#617067]">{{ __('Total Loans') }}</div>
+                    <div class="mt-3 text-3xl font-extrabold text-[#08713D] sm:text-4xl">
+                        <span data-counter data-target="62" data-prefix="Rs. " data-suffix=" Cr+" data-format="int">Rs. 62 Cr+</span>
+                    </div>
+                </div>
+                <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
+                    <div class="text-sm font-medium text-[#617067]">{{ __('Total Branches') }}</div>
+                    <div class="mt-3 text-3xl font-extrabold text-[#08713D] sm:text-4xl">
+                        <span data-counter data-target="12" data-prefix="" data-suffix="+" data-format="int">12+</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -267,6 +289,7 @@
         </div>
     </section>
 
+
     {{-- ============================================================
          Why Members Trust Us
     ============================================================ --}}
@@ -352,5 +375,161 @@
             @endforelse
         </div>
     </section>
+    {{-- ============================================================
+         Member Voices / Testimonials — bottom of page
+    ============================================================ --}}
+    <section class="fade-in bg-[#EFF8F1] py-16">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <span class="inline-flex items-center rounded-full border border-[#DCE9DF] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#08713D]">
+                    {{ __('Member Voices') }}
+                </span>
+                <h2 class="mt-4 text-3xl font-extrabold tracking-tight text-[#04552F] sm:text-4xl">
+                    {{ __('What Our Members Say') }}
+                </h2>
+                <p class="mx-auto mt-3 max-w-2xl text-base text-[#617067]">
+                    {{ __('Real experiences from members who are growing with our cooperative.') }}
+                </p>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {{-- Testimonial 1 --}}
+                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
+                    <div>
+                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
+                            @for ($i = 0; $i < 5; $i++)
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
+                            "{{ __('The cooperative team makes saving simple, clear, and dependable for my family.') }}"
+                        </p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">SG</div>
+                        <div>
+                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Sita Gurung') }}</div>
+                            <div class="text-xs text-[#617067]">{{ __('Member since 2018') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Testimonial 2 --}}
+                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
+                    <div>
+                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
+                            @for ($i = 0; $i < 5; $i++)
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
+                            "{{ __('I received friendly guidance when I needed credit to expand my small business.') }}"
+                        </p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#04552F] text-sm font-bold text-white">RT</div>
+                        <div>
+                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Ramesh Thapa') }}</div>
+                            <div class="text-xs text-[#617067]">{{ __('Small business member') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Testimonial 3 --}}
+                <div class="flex flex-col justify-between rounded-2xl border border-[#DCE9DF] bg-white p-6 shadow-sm">
+                    <div>
+                        <div class="flex gap-0.5 text-[#FFD91A]" aria-label="{{ __('5 out of 5 stars') }}">
+                            @for ($i = 0; $i < 5; $i++)
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                </svg>
+                            @endfor
+                        </div>
+                        <p class="mt-4 text-sm leading-relaxed text-[#344054]">
+                            "{{ __('The service feels personal because the staff understands and supports our community.') }}"
+                        </p>
+                    </div>
+                    <div class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
+                        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">MK</div>
+                        <div>
+                            <div class="text-sm font-semibold text-[#182A22]">{{ __('Maya K.C.') }}</div>
+                            <div class="text-xs text-[#617067]">{{ __('Member since 2020') }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </div>
+
+<script>
+    (function () {
+        const counterElements = document.querySelectorAll('[data-counter]');
+        if (!counterElements.length) return;
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        const runCounter = (el) => {
+            if (el.dataset.counterStarted === 'true') return;
+            el.dataset.counterStarted = 'true';
+
+            const target = parseInt(el.getAttribute('data-target') || '0', 10);
+            const prefix = el.getAttribute('data-prefix') || '';
+            const suffix = el.getAttribute('data-suffix') || '';
+            const format = el.getAttribute('data-format') || 'int';
+
+            const formatNumber = (val) => {
+                if (format === 'comma') {
+                    return val.toLocaleString();
+                }
+                return String(val);
+            };
+
+            if (reducedMotion) {
+                el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+                return;
+            }
+
+            const duration = 2000;
+            const startTime = performance.now();
+
+            const tick = (now) => {
+                const elapsed = now - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(easeOut * target);
+
+                el.textContent = `${prefix}${formatNumber(current)}${suffix}`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(tick);
+                } else {
+                    el.textContent = `${prefix}${formatNumber(target)}${suffix}`;
+                }
+            };
+
+            requestAnimationFrame(tick);
+        };
+
+        if (!('IntersectionObserver' in window)) {
+            counterElements.forEach(runCounter);
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    runCounter(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        counterElements.forEach((el) => observer.observe(el));
+    })();
+</script>
 @endsection
