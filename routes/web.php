@@ -23,6 +23,10 @@ Route::get('/leadership/{leader}', [FrontendController::class, 'showLeadershipMe
     ->whereIn('leader', ['chairperson', 'secretary'])
     ->name('leadership.show');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
+Route::get('/about/vision-mission', [FrontendController::class, 'visionMission'])->name('about.vision-mission');
+Route::get('/about/board-of-directors', [FrontendController::class, 'boardOfDirectors'])->name('about.board-of-directors');
+Route::get('/about/other-committees', [FrontendController::class, 'otherCommittees'])->name('about.other-committees');
+Route::get('/about/employees', [FrontendController::class, 'employees'])->name('about.employees');
 Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
 Route::get('/notices', [FrontendController::class, 'notices'])->name('notices');

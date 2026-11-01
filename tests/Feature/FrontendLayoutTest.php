@@ -32,7 +32,7 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('xl:flex', false)
             ->assertSee('xl:hidden', false)
             ->assertSee('whitespace-nowrap rounded-full bg-white px-3 py-2 text-sm font-semibold text-[#04552F]', false)
-            ->assertSee('>About Us</a>', false)
+            ->assertSee('About Us')
             ->assertSee('>Become a Member</a>', false)
             ->assertSee('data-rotating-headline', false)
             ->assertSee('data-headline-slide', false)
@@ -74,7 +74,11 @@ class FrontendLayoutTest extends TestCase
     public function test_public_information_pages_render_in_nepali_after_language_selection(): void
     {
         $pages = [
-            'about' => ['सहकारीबारे', 'हाम्रो परिचय', 'ध्येय र दृष्टि'],
+            'about' => ['सहकारीबारे', 'महाराज बचतको बारेमा', 'हाम्रो परिचय'],
+            'about.vision-mission' => ['हाम्रो दिशा', 'दृष्टि र ध्येय', 'ध्येय', 'दृष्टि'],
+            'about.board-of-directors' => ['सहकारी नेतृत्व', 'सञ्चालक समिति'],
+            'about.other-committees' => ['सहकारी नेतृत्व', 'अन्य समितिहरू', 'लेखा समिति', 'ऋण उपसमिति', 'शिक्षा उपसमिति', 'महिला समिति', 'सेवा समिति'],
+            'about.employees' => ['हाम्रो टोली', 'कर्मचारीहरू', 'कर्मचारी परिचय छिट्टै आउँदैछ'],
             'savings' => ['सदस्य बचत योजनाहरू', 'नियमित बचत', 'अहिले आवेदन दिनुहोस्'],
             'loans' => ['सदस्यका आवश्यकताका लागि वित्तीय सहयोग', 'व्यक्तिगत ऋण', 'जानकारी माग्नुहोस्'],
             'notices' => ['नवीनतम घोषणाहरू', 'सबै वर्ग', 'छान्नुहोस्', 'कुनै सूचना फेला परेन।'],
@@ -116,6 +120,95 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('id="mobile-navigation"', false)
             ->assertSee(route('about'), false)
             ->assertSee(route('register'), false);
+    }
+
+    public function test_about_us_dropdown_links_to_all_about_page_sections_on_desktop_and_mobile(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('data-about-dropdown', false)
+            ->assertSee('About Maharaj Bachat')
+            ->assertSee('Vision & Mission')
+            ->assertSee('Board of Directors')
+            ->assertSee('Other Committees')
+            ->assertSee('Accounts Committee')
+            ->assertDontSee('Accounts Committee (लेखा समिति)')
+            ->assertSee('Loan Sub-Committee')
+            ->assertSee('Education Sub-Committee')
+            ->assertSee('Women Committee')
+            ->assertSee('Service Committee')
+            ->assertSee('Employees');
+
+        $this->assertSame(2, substr_count($response->getContent(), 'data-about-dropdown'));
+        $this->assertSame(2, substr_count($response->getContent(), 'data-committees-dropdown'));
+
+        foreach (['about.vision-mission', 'about.board-of-directors', 'about.employees'] as $routeName) {
+            $this->assertSame(
+                2,
+                substr_count($response->getContent(), 'href="'.route($routeName).'"'),
+            );
+        }
+
+        foreach ([
+            '#accounts-committee',
+            '#loan-sub-committee',
+            '#education-sub-committee',
+            '#women-committee',
+            '#service-committee',
+        ] as $committeeAnchor) {
+            $this->assertSame(
+                2,
+                substr_count($response->getContent(), route('about.other-committees').$committeeAnchor),
+            );
+        }
+
+        $this->assertGreaterThanOrEqual(2, substr_count($response->getContent(), route('about')));
+    }
+
+    public function test_about_pages_have_separate_content_and_board_poster(): void
+    {
+        $this->get(route('about'))
+            ->assertOk()
+            ->assertSee('About Maharaj Bachat')
+            ->assertSee('Maharaj Bachat tatha Rin Sahakari Sanstha Ltd.')
+            ->assertDontSee('id="vision-mission"', false);
+
+        $this->get(route('about.vision-mission'))
+            ->assertOk()
+            ->assertSee('id="vision-mission"', false)
+            ->assertSee('To provide economic, social and cultural development')
+            ->assertSee('A financially sound business organization');
+
+        $this->get(route('about.board-of-directors'))
+            ->assertOk()
+            ->assertSee('id="board-of-directors"', false)
+            ->assertSee('images/board-of-directors.png')
+            ->assertSee('alt="Board of Directors of Maharaj Bachat"', false)
+            ->assertDontSee('id="accounts-committee"', false);
+
+        $this->get(route('about.other-committees'))
+            ->assertOk()
+            ->assertSee('id="other-committees"', false)
+            ->assertSee('id="accounts-committee"', false)
+            ->assertSee('Accounts Committee')
+            ->assertSee('images/accounts-committee.png')
+            ->assertSee('alt="Accounts Committee poster"', false)
+            ->assertDontSee('Accounts Committee (लेखा समिति)')
+            ->assertSee('id="loan-sub-committee"', false)
+            ->assertSee('images/loan-sub-committee.png')
+            ->assertSee('alt="Loan Sub-Committee poster"', false)
+            ->assertSee('id="education-sub-committee"', false)
+            ->assertSee('images/education-sub-committee.png')
+            ->assertSee('alt="Education Sub-Committee poster"', false)
+            ->assertSee('id="women-committee"', false)
+            ->assertSee('id="service-committee"', false);
+
+        $this->get(route('about.employees'))
+            ->assertOk()
+            ->assertSee('id="employees"', false)
+            ->assertSee('Employee profiles coming soon')
+            ->assertSee('Employee details will be added here.');
     }
 
     public function test_what_we_offer_cards_link_to_their_dedicated_pages(): void

@@ -33,7 +33,7 @@ class FrontendController extends Controller
                 ->get()
             : collect();
 
-        $featuredNotices = $tickerNotices->take(3);
+        $featuredNotices = $tickerNotices->take(7);
 
         return view('frontend.home', compact('settings', 'featuredNotices', 'tickerNotices', 'leadershipMessages'));
     }
@@ -70,6 +70,26 @@ class FrontendController extends Controller
         return view('frontend.about');
     }
 
+    public function visionMission(): View
+    {
+        return view('frontend.about-vision-mission');
+    }
+
+    public function boardOfDirectors(): View
+    {
+        return view('frontend.about-board-of-directors');
+    }
+
+    public function otherCommittees(): View
+    {
+        return view('frontend.about-other-committees');
+    }
+
+    public function employees(): View
+    {
+        return view('frontend.about-employees');
+    }
+
     public function savings(): View
     {
         return view('frontend.savings');
@@ -102,7 +122,7 @@ class FrontendController extends Controller
             $query->where('category', $request->input('category'));
         }
 
-        $notices = $query->orderByDesc('published_at')->paginate(9);
+        $notices = $query->orderByDesc('published_at')->paginate(7);
 
         return view('frontend.notices', compact('notices'));
     }
@@ -113,8 +133,16 @@ class FrontendController extends Controller
             ->activePublished()
             ->whereKey($notice->getKey())
             ->firstOrFail();
+        $relatedNotices = Notice::query()
+            ->activePublished()
+            ->where('category', $notice->category)
+            ->where('id', '!=', $notice->getKey())
+            ->orderByDesc('published_at')
+            ->orderByDesc('id')
+            ->limit(3)
+            ->get();
 
-        return view('frontend.notice', compact('notice'));
+        return view('frontend.notice', compact('notice', 'relatedNotices'));
     }
 
     public function contact(): View

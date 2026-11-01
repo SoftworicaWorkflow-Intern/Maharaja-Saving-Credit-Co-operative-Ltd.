@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__.'/compat.php';
+
 use App\Http\Middleware\ApplySessionLocale;
 use App\Http\Middleware\EnsureApprovedMember;
 use App\Http\Middleware\EnsureUserIsAdmin;

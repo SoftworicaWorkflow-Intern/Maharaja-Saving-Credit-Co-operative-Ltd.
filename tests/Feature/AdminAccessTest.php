@@ -39,6 +39,19 @@ class AdminAccessTest extends TestCase
             ->assertSee('No financial totals are shown until verified records and authorized workflows are available.');
     }
 
+    public function test_admin_layout_confirms_logout_from_desktop_and_mobile_menus(): void
+    {
+        $admin = User::factory()->create();
+        $admin->forceFill(['is_admin' => true])->save();
+
+        $response = $this->actingAs($admin)->get(route('admin.dashboard'));
+
+        $response->assertOk()
+            ->assertSee('onsubmit="return window.confirm(this.dataset.confirm)"', false)
+            ->assertSee('data-confirm="Are you sure you want to log out?"', false);
+        $this->assertSame(2, substr_count($response->getContent(), 'data-confirm="Are you sure you want to log out?"'));
+    }
+
     public function test_admin_dashboard_shows_permission_aware_operational_counts(): void
     {
         $admin = User::factory()->create();

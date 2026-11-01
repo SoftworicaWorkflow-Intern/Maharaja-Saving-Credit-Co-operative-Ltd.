@@ -91,10 +91,12 @@
                 @endif
             </nav>
 
-            <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-8">
+            <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-8" data-confirm="{{ __('Are you sure you want to log out?') }}" onsubmit="return window.confirm(this.dataset.confirm)">
                 @csrf
-                <button type="submit" class="sidebar-link flex w-full items-center gap-3 rounded-xl border border-white/25 px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
-                    <span class="shrink-0 text-lg">⎋</span>
+                <button type="submit" class="sidebar-link flex w-full items-center gap-3 rounded-xl border border-white/25 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">
+                    <svg aria-hidden="true" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 15l3-3m0 0-3-3m3 3H9"/>
+                    </svg>
                     <span class="sidebar-text">{{ __('Logout') }}</span>
                 </button>
             </form>
@@ -139,9 +141,14 @@
                                 @if (auth()->user()->hasPermissionTo('contact_inquiries.manage'))
                                     <a href="{{ route('admin.contact-inquiries.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Contact inquiries') }}</a>
                                 @endif
-                                <form method="POST" action="{{ route('logout') }}" class="border-t border-[#DCE9DF] pt-3">
+                                <form method="POST" action="{{ route('logout') }}" class="border-t border-[#DCE9DF] pt-3" data-confirm="{{ __('Are you sure you want to log out?') }}" onsubmit="return window.confirm(this.dataset.confirm)">
                                     @csrf
-                                    <button type="submit" class="w-full rounded-xl px-4 py-2 text-left text-sm font-semibold text-[#08713D]">{{ __('Logout') }}</button>
+                                    <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-left text-sm font-semibold text-[#08713D] transition hover:bg-[#E7F4EB] focus:outline-none focus:ring-2 focus:ring-[#08713D]">
+                                        <svg aria-hidden="true" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M18 15l3-3m0 0-3-3m3 3H9"/>
+                                        </svg>
+                                        <span>{{ __('Logout') }}</span>
+                                    </button>
                                 </form>
                             </nav>
                         </details>

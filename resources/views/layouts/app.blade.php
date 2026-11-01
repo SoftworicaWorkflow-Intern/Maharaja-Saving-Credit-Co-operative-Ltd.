@@ -42,7 +42,35 @@
             </a>
             <nav class="hidden shrink-0 items-center gap-4 whitespace-nowrap text-sm font-medium xl:flex">
                 <a href="{{ route('home') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('home') ? 'text-[#FFD91A]' : '' }}">{{ __('Home') }}</a>
-                <a href="{{ route('about') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('about') ? 'text-[#FFD91A]' : '' }}">{{ __('About Us') }}</a>
+                <details data-about-dropdown class="group relative">
+                    <summary class="flex cursor-pointer list-none items-center gap-1 whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('about*') ? 'text-[#FFD91A]' : '' }}">
+                        {{ __('About Us') }}
+                        <svg aria-hidden="true" class="h-4 w-4 transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </summary>
+                    <div class="absolute left-0 top-full z-50 mt-2 flex min-w-56 flex-col gap-1 rounded-xl border border-[#DCE9DF] bg-white p-2 text-[#04552F] shadow-xl">
+                        <a href="{{ route('about') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('About Maharaj Bachat') }}</a>
+                        <a href="{{ route('about.vision-mission') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Vision & Mission') }}</a>
+                        <a href="{{ route('about.board-of-directors') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Board of Directors') }}</a>
+                        <details data-committees-dropdown class="group/committees relative">
+                            <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">
+                                {{ __('Other Committees') }}
+                                <svg aria-hidden="true" class="h-4 w-4 transition group-open/committees:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/>
+                                </svg>
+                            </summary>
+                            <div class="absolute left-full top-0 z-50 ml-1 hidden min-w-56 flex-col gap-1 rounded-xl border border-[#DCE9DF] bg-white p-2 text-[#04552F] shadow-xl group-open/committees:flex">
+                                <a href="{{ route('about.other-committees') }}#accounts-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Accounts Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#loan-sub-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Loan Sub-Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#education-sub-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Education Sub-Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#women-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Women Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#service-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Service Committee') }}</a>
+                            </div>
+                        </details>
+                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Employees') }}</a>
+                    </div>
+                </details>
                 <a href="{{ route('savings') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('savings') ? 'text-[#FFD91A]' : '' }}">{{ __('Savings') }}</a>
                 <a href="{{ route('loans') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('loans') ? 'text-[#FFD91A]' : '' }}">{{ __('Loans') }}</a>
                 <a href="{{ route('notices') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('notices') ? 'text-[#FFD91A]' : '' }}">{{ __('Notices') }}</a>
@@ -74,7 +102,35 @@
         <nav id="mobile-navigation" data-mobile-nav hidden class="hidden border-t border-white/15 px-4 py-3 xl:hidden" aria-label="{{ __('Mobile navigation') }}">
             <div class="mx-auto flex max-w-7xl flex-col gap-1">
                 <a href="{{ route('home') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Home') }}</a>
-                <a href="{{ route('about') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('About Us') }}</a>
+                <details data-about-dropdown class="group">
+                    <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">
+                        {{ __('About Us') }}
+                        <svg aria-hidden="true" class="h-4 w-4 transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </summary>
+                    <div class="flex flex-col gap-1 px-3 pb-2 pl-7 text-sm">
+                        <a href="{{ route('about') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('About Maharaj Bachat') }}</a>
+                        <a href="{{ route('about.vision-mission') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Vision & Mission') }}</a>
+                        <a href="{{ route('about.board-of-directors') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Board of Directors') }}</a>
+                        <details data-committees-dropdown class="group/committees">
+                            <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">
+                                {{ __('Other Committees') }}
+                                <svg aria-hidden="true" class="h-4 w-4 transition group-open/committees:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/>
+                                </svg>
+                            </summary>
+                            <div class="flex flex-col gap-1 border-l border-white/20 py-1 pl-3">
+                                <a href="{{ route('about.other-committees') }}#accounts-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Accounts Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#loan-sub-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Loan Sub-Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#education-sub-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Education Sub-Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#women-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Women Committee') }}</a>
+                                <a href="{{ route('about.other-committees') }}#service-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Service Committee') }}</a>
+                            </div>
+                        </details>
+                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Employees') }}</a>
+                    </div>
+                </details>
                 <a href="{{ route('savings') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Savings') }}</a>
                 <a href="{{ route('loans') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Loans') }}</a>
                 <a href="{{ route('notices') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Notices') }}</a>

@@ -72,22 +72,141 @@ class NoticeManagementTest extends TestCase
             ->assertDontSee('data-news-ticker', false);
     }
 
-    public function test_homepage_notice_cards_link_to_the_full_notice(): void
+    public function test_notice_listing_shows_search_and_filter_controls_and_notice_categories(): void
     {
-        $notice = $this->createNotice([
-            'title_en' => 'Annual member meeting',
-            'body_en' => 'Full details about the annual member meeting and its agenda.',
+        $this->createNotice([
+            'title_en' => 'General member update',
+            'category' => 'general',
         ]);
 
-        $this->get(route('home'))
+        $this->get(route('notices'))
             ->assertOk()
-            ->assertSee('<a lang="en" href="'.route('notices.show', $notice).'"', false)
-            ->assertSee('Annual member meeting')
+            ->assertSee('General member update')
+            ->assertSee('>General</span>', false)
+            ->assertSee('name="search"', false)
+            ->assertSee('name="category"', false)
+            ->assertSee('All categories')
+            ->assertSee('>Filter</button>', false);
+    }
+
+    public function test_notice_listing_shows_seven_notices_per_page(): void
+    {
+        $this->freezeTime();
+
+        for ($noticeNumber = 1; $noticeNumber <= 8; $noticeNumber++) {
+            $this->createNotice([
+                'title_en' => "Published notice {$noticeNumber}",
+                'published_at' => now()->subMinutes($noticeNumber),
+            ]);
+        }
+
+        $firstPage = $this->get(route('notices'))
+            ->assertOk()
+            ->assertSee('page=2', false)
+            ->assertDontSee('Published notice 8');
+
+        for ($noticeNumber = 1; $noticeNumber <= 7; $noticeNumber++) {
+            $firstPage->assertSee("Published notice {$noticeNumber}");
+        }
+
+        $this->get(route('notices', ['page' => 2]))
+            ->assertOk()
+            ->assertSee('Published notice 8')
+            ->assertDontSee('Published notice 1');
+    }
+
+    public function test_homepage_notice_cards_link_to_the_full_notice(): void
+    {
+        $notices = collect([
+            $this->createNotice([
+                'title_en' => 'Annual member meeting',
+                'body_en' => 'Full details about the annual member meeting and its agenda.',
+            ]),
+            $this->createNotice([
+                'title_en' => 'Savings scheme update',
+                'body_en' => 'Full details about the updated savings scheme.',
+                'category' => 'savings',
+            ]),
+            $this->createNotice([
+                'title_en' => 'Loan service announcement',
+                'body_en' => 'Full details about loan service availability.',
+                'category' => 'loan',
+            ]),
+        ]);
+
+        $response = $this->get(route('home'))
+            ->assertOk()
             ->assertSee('Read Full Notice');
+
+        foreach ($notices as $notice) {
+            $response
+                ->assertSee('<a lang="en" href="'.route('notices.show', $notice).'"', false)
+                ->assertSee($notice->title_en);
+
+            $this->get(route('notices.show', $notice))
+                ->assertOk()
+                ->assertSee($notice->body_en);
+        }
+    }
+
+    public function test_notice_detail_shows_related_notices_from_its_category(): void
+    {
+        $notice = $this->createNotice([
+            'title_en' => 'Current meeting notice',
+            'category' => 'general',
+        ]);
+        $relatedNotice = $this->createNotice([
+            'title_en' => 'Related meeting reminder',
+            'category' => 'general',
+        ]);
+        $this->createNotice([
+            'title_en' => 'Different savings notice',
+            'category' => 'savings',
+        ]);
+        $this->createNotice([
+            'title_en' => 'Draft meeting notice',
+            'category' => 'general',
+            'status' => 'draft',
+        ]);
 
         $this->get(route('notices.show', $notice))
             ->assertOk()
-            ->assertSee('Full details about the annual member meeting and its agenda.');
+            ->assertSee('Related notices')
+            ->assertSee('Related meeting reminder')
+            ->assertSee(route('notices.show', $relatedNotice), false)
+            ->assertDontSee('Different savings notice')
+            ->assertDontSee('Draft meeting notice');
+    }
+
+    public function test_notice_detail_shows_context_specific_guidance_for_savings_loans_and_membership(): void
+    {
+        $savingsNotice = $this->createNotice([
+            'title_en' => 'Maintain a regular savings habit',
+            'category' => 'savings',
+        ]);
+        $this->get(route('notices.show', $savingsNotice))
+            ->assertOk()
+            ->assertSee('Savings planning')
+            ->assertSee('Choose a deposit amount and schedule that fit your budget and savings goal.')
+            ->assertSee(route('contact'), false);
+
+        $loanNotice = $this->createNotice([
+            'title_en' => 'Plan carefully before borrowing',
+            'category' => 'loan',
+        ]);
+        $this->get(route('notices.show', $loanNotice))
+            ->assertOk()
+            ->assertSee('Borrowing responsibly')
+            ->assertSee('Confirm the current interest rate and total repayment before accepting an offer.');
+
+        $membershipNotice = $this->createNotice([
+            'title_en' => 'Keep your membership details up to date',
+            'category' => 'general',
+        ]);
+        $this->get(route('notices.show', $membershipNotice))
+            ->assertOk()
+            ->assertSee('Keeping your membership details current')
+            ->assertSee('Confirm the changes have been recorded so future notices reach you.');
     }
 
     public function test_public_notice_detail_is_available_only_after_publication(): void

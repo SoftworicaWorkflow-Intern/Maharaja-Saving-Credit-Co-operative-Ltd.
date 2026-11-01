@@ -76,140 +76,150 @@
                         </span>
                     @endforeach
                 </h1>
-                <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">{{ __('We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member’s future.') }}</p>
+                <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">{{ __('We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member\'s future.') }}</p>
             </div>
 
-            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-2 sm:bottom-8 sm:right-8" aria-label="{{ __('Choose an image') }}">
-                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
-                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-3 sm:bottom-8 sm:right-8">
+                <button type="button" data-hero-previous aria-label="{{ __('Previous image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">‹</button>
+                <div class="flex items-center gap-2" aria-label="{{ __('Choose an image') }}">
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                </div>
+                <button type="button" data-hero-next aria-label="{{ __('Next image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">›</button>
             </div>
         </div>
     </section>
 
-        @php
-        $isNepali = app()->getLocale() === 'ne';
-        $toNepaliDigits = function ($number) {
-            $en = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-            $np = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
-            return str_replace($en, $np, (string) $number);
-        };
-        $stats = [
-            [
-                'label' => __('Total Members'),
-                'target' => 15420,
-                'prefix' => '',
-                'suffix' => '+',
-                'separator' => true,
-            ],
-            [
-                'label' => __('Total Savings'),
-                'target' => 85,
-                'prefix' => $isNepali ? 'रु. ' : 'Rs. ',
-                'suffix' => $isNepali ? ' करोड+' : ' Cr+',
-                'separator' => false,
-            ],
-            [
-                'label' => __('Total Loans'),
-                'target' => 62,
-                'prefix' => $isNepali ? 'रु. ' : 'Rs. ',
-                'suffix' => $isNepali ? ' करोड+' : ' Cr+',
-                'separator' => false,
-            ],
-            [
-                'label' => __('Total Branches'),
-                'target' => 12,
-                'prefix' => '',
-                'suffix' => '+',
-                'separator' => false,
-            ],
-        ];
-    @endphp
-
-    <section id="stats-section" data-locale="{{ app()->getLocale() }}" class="fade-in border-y border-[#04552F] bg-[#08713D]">
-        <div class="mx-auto max-w-3xl px-4 pt-12 mb-12 text-center sm:px-6 lg:px-8">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#FFD91A]">{{ __('Our Impact') }}</p>
-            <h2 class="mt-3 text-3xl font-bold text-white sm:text-4xl">{{ __('Growing Together With Our Members') }}</h2>
-            <p class="mt-4 text-sm leading-7 text-emerald-100 sm:text-base">{{ __('A trusted cooperative building stronger financial futures through savings, credit, and community service.') }}</p>
-        </div>
+    <section class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1]">
         <div class="mx-auto grid max-w-7xl gap-6 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:px-8">
-            @foreach ($stats as $stat)
-                @php
-                    $formattedVal = $stat['separator'] ? number_format($stat['target']) : (string) $stat['target'];
-                    if ($isNepali) {
-                        $formattedVal = $toNepaliDigits($formattedVal);
-                    }
-                    $initialDisplay = $stat['prefix'] . $formattedVal . $stat['suffix'];
-                @endphp
-                <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
-                    <div class="text-sm text-[#617067]">{{ $stat['label'] }}</div>
-                    <div class="mt-3 text-3xl font-bold tabular-nums text-[#08713D]"
-                         data-counter
-                         data-target="{{ $stat['target'] }}"
-                         data-prefix="{{ $stat['prefix'] }}"
-                         data-suffix="{{ $stat['suffix'] }}"
-                         data-separator="{{ $stat['separator'] ? 'true' : 'false' }}">{{ $initialDisplay }}</div>
-                </div>
-            @endforeach
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
+                <div class="text-sm text-[#617067]">{{ __('Total Members') }}</div>
+                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+            </div>
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
+                <div class="text-sm text-[#617067]">{{ __('Total Savings') }}</div>
+                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+            </div>
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
+                <div class="text-sm text-[#617067]">{{ __('Total Loans') }}</div>
+                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+            </div>
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-[#DCE9DF]">
+                <div class="text-sm text-[#617067]">{{ __('Total Branches') }}</div>
+                <div class="mt-3 text-3xl font-bold text-[#08713D]">—</div>
+            </div>
         </div>
     </section>
 
+    {{-- ============================================================
+         Financial Services Section — 3 cards each linking to their own page
+    ============================================================ --}}
     <section id="what-we-offer" class="fade-in bg-[#08713D] py-16 text-white sm:py-20" aria-labelledby="what-we-offer-heading">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="mb-12 text-center">
-            <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
-                {{ __('What we offer') }}
-            </span>
-            <h2 id="what-we-offer-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
-                {{ __('Financial services built around members') }}
-            </h2>
-            <p class="mx-auto mt-4 max-w-2xl text-base text-emerald-100 sm:text-lg">
-                {{ __('Explore our member-first savings plans, flexible credit schemes, and official cooperative updates.') }}
-            </p>
-            <p class="mt-2 text-xs font-semibold uppercase tracking-wider text-[#FFD91A]">
-                {{ __('Click a service card below to view full details and options') }}
-            </p>
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 text-center">
+                <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
+                    {{ __('What we offer') }}
+                </span>
+                <h2 id="what-we-offer-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                    {{ __('Financial services built around members') }}
+                </h2>
+                <p class="mx-auto mt-4 max-w-2xl text-base text-emerald-100 sm:text-lg">
+                    {{ __('Explore our member-first savings plans, flexible credit schemes, and official cooperative updates.') }}
+                </p>
+                <p class="mt-2 text-xs font-semibold uppercase tracking-wider text-[#FFD91A]">
+                    {{ __('Click a service card below to view full details and options') }}
+                </p>
+            </div>
+
+            {{-- 3 Service Cards — each navigates to its own dedicated page --}}
+            <div class="grid gap-6 md:grid-cols-3">
+
+                {{-- Savings Products Card --}}
+                <a href="{{ route('savings') }}"
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white text-[#182A22] shadow-2xl hover:scale-[1.02] hover:shadow-[0_30px_60px_rgba(8,113,61,0.22)]">
+                    <div>
+                        <div class="mb-5 flex items-center justify-between">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">💰</span>
+                            <span class="rounded-full bg-[#08713D] px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl">{{ __('Savings Products') }}</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
+                            {{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}
+                        </p>
+                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Regular & Monthly Deposit Schemes') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Fixed Deposit up to 5 years') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __("Children's & Senior Citizen Plans") }}</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
+                        <span>{{ __('View All Savings Plans') }}</span>
+                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </div>
+                </a>
+
+                {{-- Loan Support Card --}}
+                <a href="{{ route('loans') }}"
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-[1.02]">
+                    <div>
+                        <div class="mb-5 flex items-center justify-between">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl text-white shadow-inner transition group-hover:scale-110">🏦</span>
+                            <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">{{ __('Loan Support') }}</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-white/80">
+                            {{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}
+                        </p>
+                        <ul class="mt-4 space-y-1.5 text-xs text-white/70">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Personal & Business Loans') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Agricultural & Education Loans') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('48-hour approval process') }}</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wider text-white">
+                        <span>{{ __('View All Loan Schemes') }}</span>
+                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </div>
+                </a>
+
+                {{-- Notices & Updates Card --}}
+                <a href="{{ route('notices') }}"
+                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 focus:outline-none focus:ring-4 focus:ring-[#FFD91A] bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/40 hover:scale-[1.02]">
+                    <div>
+                        <div class="mb-5 flex items-center justify-between">
+                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15 text-2xl text-white shadow-inner transition group-hover:scale-110">📣</span>
+                            <span class="rounded-full bg-white/20 px-3 py-1 text-xs font-bold text-white uppercase tracking-wider">{{ __('Explore') }}</span>
+                        </div>
+                        <h3 class="text-xl font-bold tracking-tight text-white sm:text-2xl">{{ __('Notices & Updates') }}</h3>
+                        <p class="mt-3 text-sm leading-relaxed text-white/80">
+                            {{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}
+                        </p>
+                        <ul class="mt-4 space-y-1.5 text-xs text-white/70">
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('AGM & Official Notices') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Dividend & Financial Reports') }}</li>
+                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#FFD91A]"></span>{{ __('Scheme & Holiday Updates') }}</li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between border-t border-white/15 pt-4 text-xs font-bold uppercase tracking-wider text-white">
+                        <span>{{ __('Browse All Notices') }}</span>
+                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                        </svg>
+                    </div>
+                </a>
+
+            </div>
         </div>
+    </section>
 
-        <div class="grid gap-6 md:grid-cols-3">
-            <a data-offer-link="savings" href="{{ route('savings') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
-                <div>
-                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">💰</span>
-                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Savings Products') }}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}</p>
-                </div>
-                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
-                    {{ __('Explore All Savings Products') }}
-                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
-                </span>
-            </a>
-
-            <a data-offer-link="loans" href="{{ route('loans') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
-                <div>
-                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">🏦</span>
-                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Loan Support') }}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}</p>
-                </div>
-                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
-                    {{ __('View Full Loan Schemes') }}
-                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
-                </span>
-            </a>
-
-            <a data-offer-link="notices" href="{{ route('notices') }}" class="group flex h-full flex-col justify-between rounded-3xl bg-white p-6 text-[#182A22] shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-[#FFD91A] sm:p-8">
-                <div>
-                    <span aria-hidden="true" class="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] transition group-hover:scale-110">📣</span>
-                    <h3 class="text-xl font-bold tracking-tight sm:text-2xl">{{ __('Notices & Updates') }}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-[#617067]">{{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}</p>
-                </div>
-                <span class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D]">
-                    {{ __('Browse All Notices') }}
-                    <span aria-hidden="true" class="text-base transition group-hover:translate-x-1">→</span>
-                </span>
-            </a>
-        </div>
-    </div>
-</section>
+    {{-- ============================================================
+         Leadership Messages
+    ============================================================ --}}
     <section id="leadership-messages" class="fade-in bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
         <div class="mx-auto max-w-7xl">
             <div class="mx-auto mb-10 max-w-2xl text-center">
@@ -225,9 +235,7 @@
                     @endphp
                     <article class="fade-in grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
                         <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
-                            @if ($leader === 'chairperson')
-                                <img src="{{ asset('images/chairperson-message.png') }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
-                            @elseif ($message['has_portrait'])
+                            @if ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
                             @else
                                 <div role="img" aria-label="{{ __('Portrait not provided for :designation', ['designation' => __($message['designation'])]) }}" class="absolute inset-0 flex items-center justify-center text-[#08713D]/35">
@@ -259,82 +267,9 @@
         </div>
     </section>
 
-        <!-- Photo Gallery Section -->
-<section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8"
-         x-data="{ open: false, src: '', alt: '', caption: '' }">
-    <div class="mx-auto max-w-7xl">
-        <div class="mb-10 text-center">
-            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Our Gallery') }}</p>
-            <h2 class="mt-3 text-3xl font-bold text-[#182A22]">{{ __('Moments from our community') }}</h2>
-            <p class="mt-4 text-[#617067] max-w-2xl mx-auto">{{ __('Glimpses of our cooperative activities, member interactions, and community programs.') }}</p>
-        </div>
-
-        @php
-            $galleryImages = [
-                ['src' => 'images/gallery/gallery-1.jpg', 'alt' => __('Members receiving support packages'), 'caption' => __('Community Support')],
-                ['src' => 'images/gallery/gallery-2.jpg', 'alt' => __('Staff interacting with a mother and child'), 'caption' => __('Member Care')],
-                ['src' => 'images/gallery/gallery-3.jpg', 'alt' => __('Annual general meeting group photo'), 'caption' => __('Annual General Meeting')],
-                ['src' => 'images/gallery/gallery-4.jpg', 'alt' => __('Staff posing with project review banner'), 'caption' => __('Project Review Workshop')],
-                ['src' => 'images/gallery/gallery-5.jpg', 'alt' => __('Community gathering in a rural area'), 'caption' => __('Rural Outreach')],
-                ['src' => 'images/gallery/gallery-6.jpg', 'alt' => __('Large group photo of members and staff'), 'caption' => __('Team & Members')],
-            ];
-        @endphp
-
-        <!-- Mobile: Horizontal Scroll | Desktop: Single Row Grid -->
-        <div class="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-4 lg:grid lg:grid-cols-6 lg:gap-4 lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-            @foreach ($galleryImages as $image)
-                <div
-                    @click="open = true; src = @js(asset($image['src'])); alt = @js($image['alt']); caption = @js($image['caption'])"
-                    class="group relative aspect-[3/4] w-64 shrink-0 snap-start overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-[#DCE9DF] sm:w-72 lg:w-auto lg:shrink cursor-pointer"
-                >
-                    <img src="{{ asset($image['src']) }}"
-                         alt="{{ $image['alt'] }}"
-                         loading="lazy"
-                         class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-
-                    <!-- Hover Overlay (Caption only) -->
-                    <div class="absolute inset-0 flex items-end bg-gradient-to-t from-[#033B22]/80 via-[#033B22]/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
-                        <div class="p-4 text-white transform translate-y-4 transition-transform duration-300 group-hover:translate-y-0">
-                            <h3 class="text-sm font-semibold leading-tight">{{ $image['caption'] }}</h3>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-
-        <p class="mt-2 text-center text-xs text-[#617067] lg:hidden">
-            {{ __('Swipe to see more →') }}
-        </p>
-    </div>
-
-    <!-- Lightbox Modal -->
-    <div
-        x-show="open"
-        x-transition.opacity
-        x-cloak
-        @keydown.escape.window="open = false"
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4"
-        @click.self="open = false"
-    >
-        <button
-            @click="open = false"
-            class="absolute top-4 right-4 z-10 rounded-full bg-white/10 p-2 text-white hover:bg-white/20 transition"
-            aria-label="{{ __('Close') }}"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
-
-        <figure class="max-h-[90vh] max-w-5xl">
-            <img :src="src" :alt="alt" class="max-h-[80vh] w-auto rounded-lg object-contain shadow-2xl">
-            <figcaption class="mt-3 text-center text-sm text-white/80" x-text="caption"></figcaption>
-        </figure>
-    </div>
-</section>
-</div>
-
-
+    {{-- ============================================================
+         Why Members Trust Us
+    ============================================================ --}}
     <section class="fade-in bg-[#04552F] py-16 text-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
@@ -365,161 +300,57 @@
         </div>
     </section>
 
+    {{-- ============================================================
+         Latest Updates — Notices & Announcements (up to 7 cards)
+         Each card links to the full notice detail page.
+    ============================================================ --}}
     <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div class="mb-8 flex items-end justify-between gap-4">
             <div>
                 <p class="text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Latest updates') }}</p>
                 <h2 class="mt-2 text-3xl font-bold text-[#182A22]">{{ __('Notices & announcements') }}</h2>
             </div>
-            <a href="{{ route('notices') }}" class="text-sm font-semibold text-[#08713D]">{{ __('View all notices') }}</a>
+            <a href="{{ route('notices') }}" class="shrink-0 text-sm font-semibold text-[#08713D] hover:underline">{{ __('View all notices') }}</a>
         </div>
-        <div class="grid gap-6 lg:grid-cols-3">
+
+        @php $locale = app()->getLocale(); @endphp
+
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             @forelse($featuredNotices as $notice)
                 @php
-                    $noticeLocale = app()->getLocale();
-                    $noticeTitle = $noticeLocale === 'ne' ? ($notice->title_np ?: $notice->title_en) : ($notice->title_en ?: $notice->title_np);
-                    $noticeBody = $noticeLocale === 'ne' ? ($notice->body_np ?: $notice->body_en) : ($notice->body_en ?: $notice->body_np);
+                    $nTitle = $locale === 'ne' ? ($notice->title_np ?: $notice->title_en) : ($notice->title_en ?: $notice->title_np);
+                    $nBody  = $locale === 'ne' ? ($notice->body_np  ?: $notice->body_en)  : ($notice->body_en  ?: $notice->body_np);
                 @endphp
-                <a lang="{{ $noticeLocale }}" href="{{ route('notices.show', $notice) }}" class="group flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#08713D]/40 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#08713D] focus:ring-offset-2">
-                    <span class="w-fit rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#08713D]">{{ __(ucfirst($notice->category)) }}</span>
-                    <h3 class="mt-4 text-xl font-semibold text-[#182A22] transition group-hover:text-[#08713D] group-hover:underline">{{ $noticeTitle }}</h3>
-                    <p class="mt-3 text-sm leading-6 text-[#617067]">{{ Str::limit(strip_tags($noticeBody), 120) }}</p>
-                    <div class="mt-auto flex items-center justify-between gap-4 pt-6">
-                        <time @if ($notice->published_at) datetime="{{ $notice->published_at->toIso8601String() }}" @endif class="text-xs font-medium uppercase tracking-[0.12em] text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</time>
-                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-[#08713D]">
-                            {{ __('Read Full Notice') }}
-                            <span aria-hidden="true" class="transition group-hover:translate-x-1">→</span>
-                        </span>
+                <article class="flex flex-col justify-between rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm transition hover:border-[#08713D]/40 hover:shadow-md">
+                    <div>
+                        <div class="flex items-center justify-between gap-2">
+                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[#08713D]">{{ $notice->category }}</span>
+                            <span class="text-xs text-[#617067]">{{ $notice->published_at?->format('M d, Y') }}</span>
+                        </div>
+                        <h3 class="mt-4 text-lg font-semibold leading-snug text-[#182A22]">
+                            <a lang="{{ $locale }}" href="{{ route('notices.show', $notice) }}" class="hover:text-[#08713D] hover:underline">
+                                {{ $nTitle }}
+                            </a>
+                        </h3>
+                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
+                            {{ Str::limit(strip_tags($nBody), 120) }}
+                        </p>
                     </div>
-                </a>
+                    <div class="mt-5 border-t border-[#DCE9DF]/70 pt-4">
+                        <a href="{{ route('notices.show', $notice) }}" class="inline-flex items-center gap-1.5 text-xs font-bold text-[#08713D] transition hover:text-[#04552F]">
+                            <span>{{ __('Read Full Notice') }}</span>
+                            <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </a>
+                    </div>
+                </article>
             @empty
-                <div class="rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-8 text-[#617067] lg:col-span-3">
+                <div class="rounded-3xl border border-dashed border-[#DCE9DF] bg-white p-8 text-[#617067] sm:col-span-2 lg:col-span-3">
                     {{ __('No published notices available yet.') }}
                 </div>
             @endforelse
         </div>
     </section>
-
-    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="member-testimonials-heading">
-    <div class="mx-auto max-w-7xl">
-        <div class="mx-auto mb-10 max-w-2xl text-center">
-            <p class="inline-flex rounded-full border border-[#08713D]/30 bg-white px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Member voices') }}</p>
-            <h2 id="member-testimonials-heading" class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">{{ __('What Our Members Say') }}</h2>
-            <p class="mt-4 text-sm leading-7 text-[#617067] sm:text-base">{{ __('Real experiences from members who are growing with our cooperative.') }}</p>
-        </div>
-
-        <div class="grid gap-6 md:grid-cols-3">
-            @foreach ([
-                ['quote' => 'The cooperative team makes saving simple, clear, and dependable for my family.', 'name' => 'Sita Gurung', 'role' => 'Member since 2018', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-                ['quote' => 'I received friendly guidance when I needed credit to expand my small business.', 'name' => 'Ramesh Thapa', 'role' => 'Small business member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-                ['quote' => 'The service feels personal because the staff understands and supports our community.', 'name' => 'Maya K.C.', 'role' => 'Member since 2020', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-            ] as $testimonial)
-                <figure class="flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-8">
-                    <div class="flex gap-1 text-[#FFD91A]" aria-label="5 stars">
-                        @for ($star = 0; $star < 5; $star++)
-                            <span aria-hidden="true">★</span>
-                        @endfor
-                    </div>
-                    <blockquote class="mt-5 flex-1 text-base leading-7 text-[#344054]">“{{ __($testimonial['quote']) }}”</blockquote>
-                    <figcaption class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
-                        <img src="{{ $testimonial['image'] }}" alt="{{ $testimonial['name'] }}" class="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-[#EFF8F1]">
-                        <div>
-                            <div class="font-semibold text-[#04552F]">{{ $testimonial['name'] }}</div>
-                            <div class="mt-1 text-sm text-[#617067]">{{ __($testimonial['role']) }}</div>
-                        </div>
-                    </figcaption>
-                </figure>
-            @endforeach
-        </div>
-    </div>
-</section>
-
-    <script type="text/javascript">
-        (function () {
-            function setupCounterAnimation() {
-                const statsSection = document.getElementById('stats-section');
-                if (!statsSection) return;
-
-                const counters = statsSection.querySelectorAll('[data-counter]');
-                if (!counters.length) return;
-
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    return;
-                }
-
-                const isNepali = (statsSection.getAttribute('data-locale') || document.documentElement.lang) === 'ne';
-                const nepaliDigits = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
-
-                function formatNumber(num, useSeparator) {
-                    const formatted = useSeparator ? num.toLocaleString() : String(num);
-                    if (!isNepali) {
-                        return formatted;
-                    }
-                    return formatted.replace(/[0-9]/g, (digit) => nepaliDigits[Number(digit)]);
-                }
-
-                let animated = false;
-
-                function animateCounters() {
-                    if (animated) return;
-                    animated = true;
-
-                    const duration = 1800;
-
-                    counters.forEach((counter) => {
-                        const target = parseInt(counter.getAttribute('data-target'), 10) || 0;
-                        const prefix = counter.getAttribute('data-prefix') || '';
-                        const suffix = counter.getAttribute('data-suffix') || '';
-                        const useSeparator = counter.getAttribute('data-separator') === 'true';
-
-                        let startTime = null;
-
-                        function step(currentTime) {
-                            if (!startTime) startTime = currentTime;
-                            const elapsed = currentTime - startTime;
-                            const progress = Math.min(elapsed / duration, 1);
-                            // Ease-out cubic for a smooth deceleration effect
-                            const easeOut = 1 - Math.pow(1 - progress, 3);
-                            const currentVal = Math.floor(easeOut * target);
-
-                            counter.textContent = prefix + formatNumber(currentVal, useSeparator) + suffix;
-
-                            if (progress < 1) {
-                                requestAnimationFrame(step);
-                            } else {
-                                counter.textContent = prefix + formatNumber(target, useSeparator) + suffix;
-                            }
-                        }
-
-                        requestAnimationFrame(step);
-                    });
-                }
-
-                if ('IntersectionObserver' in window) {
-                    const observer = new IntersectionObserver((entries, obs) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                animateCounters();
-                                obs.unobserve(entry.target);
-                            }
-                        });
-                    }, { threshold: 0.15 });
-
-                    observer.observe(statsSection);
-                } else {
-                    animateCounters();
-                }
-            }
-
-            function initAll() {
-                setupCounterAnimation();
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initAll);
-            } else {
-                initAll();
-            }
-        })();
-    </script>
+</div>
 @endsection
