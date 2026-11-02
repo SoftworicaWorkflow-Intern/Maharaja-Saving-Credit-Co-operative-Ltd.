@@ -242,9 +242,9 @@
         </div>
     </footer>
     @if (request()->routeIs('home'))
-        <section class="bg-gray-800 px-4 py-12 text-white sm:px-6 lg:px-8" aria-labelledby="find-us-heading">
+        <section class="bg-gray-800 px-4 pb-12 text-white sm:px-6 lg:px-8" aria-labelledby="find-us-heading">
             <div class="mx-auto max-w-7xl">
-                <div class="mb-6 text-center">
+                <div class="border-t border-gray-600 pt-10 text-center">
                     <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A]">{{ __('Find Us') }}</p>
                     <h2 id="find-us-heading" class="mt-2 text-3xl font-bold text-white">{{ __('Visit Our Office') }}</h2>
                     <p class="mt-2 text-sm text-gray-300">{{ __('Kawasoti -2 BP Chowk, Nawalpur') }}</p>
