@@ -23,6 +23,31 @@ if (revealElements.length > 0) {
     }
 }
 
+document.querySelectorAll('.service-card-slide-right').forEach((element) => {
+    element.classList.toggle('show', window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+});
+
+const slideRightElements = document.querySelectorAll('.service-card-slide-right:not(.show)');
+
+if (slideRightElements.length > 0) {
+    if (!('IntersectionObserver' in window)) {
+        slideRightElements.forEach((element) => element.classList.add('show'));
+    } else {
+        const slideRightObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) {
+                    return;
+                }
+
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
+            });
+        }, { threshold: 0.15 });
+
+        slideRightElements.forEach((element) => slideRightObserver.observe(element));
+    }
+}
+
 document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
     if (carousel.dataset.heroAutoplayInitialized) return;
     carousel.dataset.heroAutoplayInitialized = 'true';

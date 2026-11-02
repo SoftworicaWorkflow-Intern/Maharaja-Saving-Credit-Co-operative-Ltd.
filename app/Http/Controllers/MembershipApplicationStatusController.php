@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\MembershipApplication;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class MembershipApplicationStatusController extends Controller
 {
-    public function __invoke(Request $request): View
+    public function __invoke(Request $request): View|RedirectResponse
     {
         $user = $request->user();
 

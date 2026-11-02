@@ -79,14 +79,10 @@
                 <p class="mt-5 max-w-2xl text-lg leading-8 text-white/90">{{ __('We support responsible savings, accessible credit, and community-focused financial services designed to strengthen every member\'s future.') }}</p>
             </div>
 
-            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-3 sm:bottom-8 sm:right-8">
-                <button type="button" data-hero-previous aria-label="{{ __('Previous image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">‹</button>
-                <div class="flex items-center gap-2" aria-label="{{ __('Choose an image') }}">
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                    <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
-                </div>
-                <button type="button" data-hero-next aria-label="{{ __('Next image') }}" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/50 bg-[#033B22]/60 text-2xl text-white backdrop-blur-sm transition hover:bg-[#033B22] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">›</button>
+            <div class="absolute bottom-6 right-6 z-10 flex items-center gap-2 sm:bottom-8 sm:right-8" aria-label="{{ __('Choose an image') }}">
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 1]) }}" aria-current="true" class="h-2.5 w-7 rounded-full bg-[#FFD91A] transition-all"></button>
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 2]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
+                <button type="button" data-hero-indicator aria-label="{{ __('Show image :number', ['number' => 3]) }}" aria-current="false" class="h-2.5 w-2.5 rounded-full bg-white/70 transition-all"></button>
             </div>
         </div>
     </section>
@@ -137,9 +133,9 @@
     {{-- ============================================================
          Financial Services Section — What We Offer (Light Gray Background)
     ============================================================ --}}
-    <section id="what-we-offer" class="fade-in border-y border-[#DCE9DF] bg-[#EFF8F1] py-16 sm:py-20" aria-labelledby="what-we-offer-heading">
+    <section id="what-we-offer" class="overflow-hidden border-y border-[#DCE9DF] bg-[#EFF8F1] py-16 sm:py-20" aria-labelledby="what-we-offer-heading">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mb-12 text-center">
+            <div class="mb-12 text-center fade-in">
                 <span class="inline-flex items-center gap-2 rounded-full border border-[#DCE9DF] bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#08713D] shadow-sm">
                     {{ __('What we offer') }}
                 </span>
@@ -158,82 +154,88 @@
             <div class="grid gap-6 md:grid-cols-3">
 
                 {{-- Savings Products Card --}}
-                <a href="{{ route('services') }}#savings"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
-                    <div>
-                        <div class="mb-5 flex items-center justify-between">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">💰</span>
-                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                <div class="service-card-slide-right flex flex-col" style="--stagger-delay: 0ms;">
+                    <a href="{{ route('services') }}#savings"
+                        class="group relative flex flex-1 flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
+                        <div>
+                            <div class="mb-5 flex items-center justify-between">
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">💰</span>
+                                <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                            </div>
+                            <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Savings Products') }}</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-[#617067]">
+                                {{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}
+                            </p>
+                            <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Regular & Monthly Deposit Schemes') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Fixed Deposit up to 5 years') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __("Children's & Senior Citizen Plans") }}</li>
+                            </ul>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Savings Products') }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
-                            {{ __('Flexible savings schemes designed to help members build security and long-term financial confidence.') }}
-                        </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Regular & Monthly Deposit Schemes') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Fixed Deposit up to 5 years') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __("Children's & Senior Citizen Plans") }}</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
-                        <span>{{ __('View All Savings Plans') }}</span>
-                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                        </svg>
-                    </div>
-                </a>
+                        <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
+                            <span>{{ __('View All Savings Plans') }}</span>
+                            <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
 
                 {{-- Loan Support Card --}}
-                <a href="{{ route('services') }}#loans"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
-                    <div>
-                        <div class="mb-5 flex items-center justify-between">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">🏦</span>
-                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                <div class="service-card-slide-right flex flex-col" style="--stagger-delay: 150ms;">
+                    <a href="{{ route('services') }}#loans"
+                        class="group relative flex flex-1 flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
+                        <div>
+                            <div class="mb-5 flex items-center justify-between">
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">🏦</span>
+                                <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                            </div>
+                            <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Loan Support') }}</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-[#617067]">
+                                {{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}
+                            </p>
+                            <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Personal & Business Loans') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Agricultural & Education Loans') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('48-hour approval process') }}</li>
+                            </ul>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Loan Support') }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
-                            {{ __('Need-based credit options for personal, business, agricultural, and emergency requirements.') }}
-                        </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Personal & Business Loans') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Agricultural & Education Loans') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('48-hour approval process') }}</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
-                        <span>{{ __('View All Loan Schemes') }}</span>
-                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                        </svg>
-                    </div>
-                </a>
+                        <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
+                            <span>{{ __('View All Loan Schemes') }}</span>
+                            <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
 
                 {{-- Notices & Updates Card --}}
-                <a href="{{ route('notices') }}"
-                    class="group relative flex flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
-                    <div>
-                        <div class="mb-5 flex items-center justify-between">
-                            <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">📣</span>
-                            <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                <div class="service-card-slide-right flex flex-col" style="--stagger-delay: 300ms;">
+                    <a href="{{ route('notices') }}"
+                        class="group relative flex flex-1 flex-col justify-between rounded-3xl p-6 text-left transition-all duration-300 sm:p-8 bg-white border border-[#DCE9DF] text-[#182A22] shadow-sm hover:shadow-xl hover:border-[#08713D]/40 hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-[#FFD91A]">
+                        <div>
+                            <div class="mb-5 flex items-center justify-between">
+                                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-[#EFF8F1] text-2xl text-[#08713D] shadow-inner transition group-hover:scale-110">📣</span>
+                                <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-bold text-[#08713D] uppercase tracking-wider group-hover:bg-[#08713D] group-hover:text-white transition">{{ __('Explore') }}</span>
+                            </div>
+                            <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Notices & Updates') }}</h3>
+                            <p class="mt-3 text-sm leading-relaxed text-[#617067]">
+                                {{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}
+                            </p>
+                            <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('AGM & Official Notices') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Dividend & Financial Reports') }}</li>
+                                <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Scheme & Holiday Updates') }}</li>
+                            </ul>
                         </div>
-                        <h3 class="text-xl font-bold tracking-tight text-[#182A22] sm:text-2xl group-hover:text-[#08713D] transition">{{ __('Notices & Updates') }}</h3>
-                        <p class="mt-3 text-sm leading-relaxed text-[#617067]">
-                            {{ __('Clear information on schemes, announcements, and member notices in one accessible place.') }}
-                        </p>
-                        <ul class="mt-4 space-y-1.5 text-xs text-[#617067]">
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('AGM & Official Notices') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Dividend & Financial Reports') }}</li>
-                            <li class="flex items-center gap-2"><span class="h-1.5 w-1.5 shrink-0 rounded-full bg-[#08713D]"></span>{{ __('Scheme & Holiday Updates') }}</li>
-                        </ul>
-                    </div>
-                    <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
-                        <span>{{ __('Browse All Notices') }}</span>
-                        <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
-                        </svg>
-                    </div>
-                </a>
+                        <div class="mt-6 flex items-center justify-between border-t border-[#DCE9DF] pt-4 text-xs font-bold uppercase tracking-wider text-[#08713D] group-hover:text-[#04552F]">
+                            <span>{{ __('Browse All Notices') }}</span>
+                            <svg class="h-4 w-4 transition group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
 
             </div>
         </div>
@@ -579,12 +581,124 @@
     </section>
 </div>
 
+<style>
+    .service-card-slide-right {
+        opacity: 0;
+        transform: translateX(80px);
+        transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: var(--stagger-delay, 0ms);
+        will-change: opacity, transform;
+    }
+
+    .service-card-slide-right.show {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .service-card-slide-right {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
 <script>
     (function () {
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Hero Carousel auto-scroll
+        document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
+            if (carousel.dataset.heroAutoplayInitialized === 'true') return;
+            carousel.dataset.heroAutoplayInitialized = 'true';
+
+            const slides = [...carousel.querySelectorAll('[data-hero-slide]')];
+            const indicators = [...carousel.querySelectorAll('[data-hero-indicator]')];
+            if (slides.length < 2) return;
+
+            const autoInterval = 4500;
+            let activeIndex = 0;
+            let timer = null;
+
+            const showSlide = (index) => {
+                activeIndex = (index + slides.length) % slides.length;
+
+                slides.forEach((slide, slideIndex) => {
+                    const isActive = slideIndex === activeIndex;
+                    slide.classList.toggle('opacity-0', !isActive);
+                    slide.hidden = !isActive;
+                    slide.setAttribute('aria-hidden', String(!isActive));
+                });
+
+                indicators.forEach((indicator, indicatorIndex) => {
+                    const isActive = indicatorIndex === activeIndex;
+                    indicator.setAttribute('aria-current', String(isActive));
+                    indicator.classList.toggle('w-7', isActive);
+                    indicator.classList.toggle('bg-[#FFD91A]', isActive);
+                    indicator.classList.toggle('w-2.5', !isActive);
+                    indicator.classList.toggle('bg-white/70', !isActive);
+                });
+            };
+
+            const nextSlide = () => {
+                showSlide(activeIndex + 1);
+            };
+
+            const startAutoPlay = () => {
+                if (!reducedMotion && timer === null) {
+                    timer = window.setInterval(nextSlide, autoInterval);
+                }
+            };
+
+            const stopAutoPlay = () => {
+                if (timer !== null) {
+                    window.clearInterval(timer);
+                    timer = null;
+                }
+            };
+
+            const resetAutoPlay = () => {
+                stopAutoPlay();
+                startAutoPlay();
+            };
+
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                    resetAutoPlay();
+                });
+            });
+
+            carousel.addEventListener('mouseenter', stopAutoPlay);
+            carousel.addEventListener('mouseleave', startAutoPlay);
+            carousel.addEventListener('focusin', stopAutoPlay);
+            carousel.addEventListener('focusout', startAutoPlay);
+
+            startAutoPlay();
+        });
+
+        // Service cards slide-in from right on scroll
+        const slideRightCards = document.querySelectorAll('.service-card-slide-right');
+        if (slideRightCards.length) {
+            if (reducedMotion || !('IntersectionObserver' in window)) {
+                slideRightCards.forEach((card) => card.classList.add('show'));
+            } else {
+                const cardObserver = new IntersectionObserver((entries, obs) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('show');
+                            obs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                slideRightCards.forEach((card) => cardObserver.observe(card));
+            }
+        }
+
         const counterElements = document.querySelectorAll('[data-counter]');
         if (!counterElements.length) return;
-
-        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const runCounter = (el) => {
             if (el.dataset.counterStarted === 'true') return;
