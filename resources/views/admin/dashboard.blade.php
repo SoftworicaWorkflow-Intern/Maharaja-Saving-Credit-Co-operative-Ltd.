@@ -46,6 +46,20 @@
                 <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Create, publish, and update website announcements.') }}</p>
             </a>
         @endif
+        @if ($administrator->hasPermissionTo('reports.manage'))
+            <a href="{{ route('admin.reports.index') }}" class="rounded-xl border border-[#DCE9DF] bg-white p-5 transition hover:border-[#08713D] hover:shadow-sm">
+                <h4 class="font-bold text-[#182A22]">{{ __('Reports Management') }}</h4>
+                <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Publish institutional reports, manage categories, and review download statistics.') }}</p>
+            </a>
+            <a href="{{ route('admin.annual-reports.index') }}" class="rounded-xl border border-[#DCE9DF] bg-white p-5 transition hover:border-[#08713D] hover:shadow-sm">
+                <h4 class="font-bold text-[#182A22]">{{ __('Annual Reports Management') }}</h4>
+                <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Manage annual report chapters, approved financial figures, and fiscal-year archives.') }}</p>
+            </a>
+            <a href="{{ route('admin.report-statistics.index') }}" class="rounded-xl border border-[#DCE9DF] bg-white p-5 transition hover:border-[#08713D] hover:shadow-sm">
+                <h4 class="font-bold text-[#182A22]">{{ __('Verified Statistics') }}</h4>
+                <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Publish institutionally verified indicators with their reporting fiscal years.') }}</p>
+            </a>
+        @endif
         @if ($administrator->hasPermissionTo('contact_inquiries.manage'))
             <a href="{{ route('admin.contact-inquiries.index') }}" class="rounded-xl border border-[#DCE9DF] bg-white p-5 transition hover:border-[#08713D] hover:shadow-sm">
                 <h4 class="font-bold text-[#182A22]">{{ __('Contact inquiries') }}</h4>

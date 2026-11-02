@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AnnualReportController as AdminAnnualReportController;
 use App\Http\Controllers\Admin\ContactInquiryController as AdminContactInquiryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\FaqController as AdminFaqController;
@@ -7,13 +8,18 @@ use App\Http\Controllers\Admin\LeadershipProfileController as AdminLeadershipPro
 use App\Http\Controllers\Admin\MemberController as AdminMemberController;
 use App\Http\Controllers\Admin\MembershipApplicationController as AdminMembershipApplicationController;
 use App\Http\Controllers\Admin\NoticeController as AdminNoticeController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
+use App\Http\Controllers\Admin\ReportStatisticController as AdminReportStatisticController;
+use App\Http\Controllers\Admin\ReportTaxonomyController as AdminReportTaxonomyController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\StaffController as AdminStaffController;
+use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactInquiryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\MembershipApplicationStatusController;
+use App\Http\Controllers\ReportController as PublicReportController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +41,39 @@ Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
 Route::get('/notices', [FrontendController::class, 'notices'])->name('notices');
 Route::get('/notices/{notice}', [FrontendController::class, 'showNotice'])->name('notices.show');
+Route::get('/reports', [PublicReportController::class, 'index'])->name('reports.index');
+Route::get('/annual-reports', [AnnualReportController::class, 'index'])->name('annual-reports.index');
+Route::get('/financial-reports', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'financial-reports')
+    ->name('reports.financial');
+Route::get('/audit-reports', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'audit-reports')
+    ->name('reports.audit');
+Route::get('/agm-reports', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'agm-reports')
+    ->name('reports.agm');
+Route::get('/progress-reports', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'progress-reports')
+    ->name('reports.progress');
+Route::get('/policies-guidelines', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'policies-guidelines')
+    ->name('reports.policies');
+Route::get('/meeting-decisions', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'meeting-decisions')
+    ->name('reports.decisions');
+Route::get('/other-publications', [PublicReportController::class, 'category'])
+    ->defaults('slug', 'other-publications')
+    ->name('reports.other');
+Route::get('/reports/category/{slug}', [PublicReportController::class, 'category'])
+    ->name('reports.category.custom');
+Route::get('/annual-reports/{report:slug}/chapters/{chapter}/image', [AnnualReportController::class, 'chapterImage'])
+    ->name('annual-reports.chapters.image');
+Route::get('/annual-reports/{report:slug}', [AnnualReportController::class, 'show'])->name('annual-reports.show');
+Route::get('/reports/{report:slug}/document', [PublicReportController::class, 'document'])->name('reports.document');
+Route::get('/reports/{report:slug}/download', [PublicReportController::class, 'download'])->name('reports.download');
+Route::get('/reports/{report:slug}/image', [PublicReportController::class, 'image'])->name('reports.image');
+Route::get('/reports/{report:slug}/attachments/{attachment}', [PublicReportController::class, 'attachment'])->name('reports.attachments.download');
+Route::get('/reports/{report:slug}', [PublicReportController::class, 'show'])->name('reports.show');
 Route::get('/contact', [FrontendController::class, 'contact'])->name('contact');
 Route::post('/contact', [ContactInquiryController::class, 'store'])->middleware('throttle:5,1')->name('contact.submit');
 
@@ -54,10 +93,34 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
+    Route::get('/annual-reports', [AdminAnnualReportController::class, 'index'])
+        ->middleware('permission:reports.manage')
+        ->name('annual-reports.index');
+    Route::get('/annual-reports/create', [AdminAnnualReportController::class, 'create'])
+        ->middleware('permission:reports.manage')
+        ->name('annual-reports.create');
 
     Route::resource('notices', AdminNoticeController::class)
         ->except('show')
         ->middleware('permission:notices.manage');
+
+    Route::resource('reports', AdminReportController::class)
+        ->except('show')
+        ->middleware('permission:reports.manage');
+
+    Route::middleware('permission:reports.manage')->group(function () {
+        Route::get('/report-statistics', [AdminReportStatisticController::class, 'index'])->name('report-statistics.index');
+        Route::post('/report-statistics', [AdminReportStatisticController::class, 'store'])->name('report-statistics.store');
+        Route::put('/report-statistics/{reportStatistic}', [AdminReportStatisticController::class, 'update'])->name('report-statistics.update');
+        Route::delete('/report-statistics/{reportStatistic}', [AdminReportStatisticController::class, 'destroy'])->name('report-statistics.destroy');
+        Route::get('/report-taxonomy', [AdminReportTaxonomyController::class, 'index'])->name('report-taxonomy.index');
+        Route::post('/report-categories', [AdminReportTaxonomyController::class, 'storeCategory'])->name('report-categories.store');
+        Route::put('/report-categories/{reportCategory}', [AdminReportTaxonomyController::class, 'updateCategory'])->name('report-categories.update');
+        Route::delete('/report-categories/{reportCategory}', [AdminReportTaxonomyController::class, 'destroyCategory'])->name('report-categories.destroy');
+        Route::post('/fiscal-years', [AdminReportTaxonomyController::class, 'storeFiscalYear'])->name('fiscal-years.store');
+        Route::put('/fiscal-years/{fiscalYear}', [AdminReportTaxonomyController::class, 'updateFiscalYear'])->name('fiscal-years.update');
+        Route::delete('/fiscal-years/{fiscalYear}', [AdminReportTaxonomyController::class, 'destroyFiscalYear'])->name('fiscal-years.destroy');
+    });
 
     Route::resource('services', AdminServiceController::class)
         ->except('show')

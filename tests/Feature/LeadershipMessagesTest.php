@@ -22,19 +22,31 @@ class LeadershipMessagesTest extends TestCase
             ->assertSeeInOrder([
                 'LEADERSHIP MESSAGES',
                 'Words from Our Leadership',
-                'images/chairperson-message.png',
+                'Portrait not provided for Chairperson',
                 'CHAIRPERSON&#039;S MESSAGE',
                 'Building a Prosperous Future Together',
-                'Portrait not provided for Secretary',
+                'images/secretary-portrait.png',
                 'SECRETARY&#039;S MESSAGE',
                 'Growing Together Through Trust and Cooperation',
                 'Why members trust us',
             ], false);
 
         $this->assertSame(2, substr_count($response->getContent(), 'Read Full Message'));
-        $response->assertSee('order-1 lg:order-1', false)
+        $response->assertSee('Portrait of the Secretary')
+            ->assertSee('order-1 lg:order-1', false)
             ->assertSee('order-1 lg:order-2', false)
             ->assertSee('order-2 lg:order-1', false);
+    }
+
+    public function test_homepage_shows_the_provided_portrait_in_the_secretary_right_hand_panel(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('src="'.asset('images/secretary-portrait.png').'"', false)
+            ->assertSee('alt="Portrait of the Secretary"', false)
+            ->assertSee('absolute inset-0 h-full w-full object-cover', false)
+            ->assertSee('order-1 lg:order-2 relative', false)
+            ->assertSee('SECRETARY&#039;S MESSAGE', false);
     }
 
     public function test_full_messages_keep_the_supplied_report_text_and_can_be_printed(): void

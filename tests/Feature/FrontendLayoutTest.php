@@ -23,6 +23,28 @@ class FrontendLayoutTest extends TestCase
         $this->assertSame(3, substr_count($response->getContent(), 'data-hero-slide'));
     }
 
+    public function test_homepage_shows_fixed_icon_only_contact_actions_and_preserves_destinations(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('aria-label="Contact us"', false)
+            ->assertSee('href="https://wa.me/97778540905"', false)
+            ->assertSee('aria-label="WhatsApp"', false)
+            ->assertSee('href="https://www.facebook.com/search/top?q=Maharaja%20Bachat%20tatha%20Rin%20Sahakari%20Sanstha%20Ltd."', false)
+            ->assertSee('aria-label="Messenger"', false)
+            ->assertSee('href="tel:078540905"', false)
+            ->assertSee('aria-label="Call us"', false)
+            ->assertSee('href="mailto:saccosmaharaja@gmail.com"', false)
+            ->assertSee('aria-label="Email us"', false)
+            ->assertSee('h-11 w-11', false)
+            ->assertSee('bg-sky-400 text-sky-950', false)
+            ->assertSee('bg-[#FACC15] text-[#14532D]', false)
+            ->assertDontSee('<span>WhatsApp</span>', false)
+            ->assertDontSee('<span>Call us</span>', false)
+            ->assertDontSee('<span>Email us</span>', false)
+            ->assertSee('fixed right-3 z-50', false);
+    }
+
     public function test_homepage_shows_english_rotating_headlines_by_default(): void
     {
         $response = $this->get(route('home'));
@@ -64,6 +86,11 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('विश्वास र सहकार्यबाट सँगै अघि बढ्दै')
             ->assertSee('अध्यक्षको सन्देश')
             ->assertSee('पूरा सन्देश पढ्नुहोस्')
+            ->assertSee('aria-label="हामीलाई सम्पर्क गर्नुहोस्"', false)
+            ->assertSee('aria-label="ह्वाट्सएप"', false)
+            ->assertSee('aria-label="मेसेन्जर"', false)
+            ->assertSee('aria-label="फोन गर्नुहोस्"', false)
+            ->assertSee('aria-label="इमेल गर्नुहोस्"', false)
             ->assertSee('सुरक्षित बचत,')
             ->assertSee('तपाईंको विश्वास,')
             ->assertSee('सँगै अघि बढौँ,')
@@ -108,7 +135,8 @@ class FrontendLayoutTest extends TestCase
             ->assertOk()
             ->assertSee('data-password-toggle', false)
             ->assertSee('aria-controls="register-password"', false)
-            ->assertSee('aria-controls="register-password-confirmation"', false);
+            ->assertSee('aria-controls="register-password-confirmation"', false)
+            ->assertSee('textarea id="address" name="address" rows="2"', false);
     }
 
     public function test_mobile_navigation_has_a_toggle_and_contains_site_links(): void

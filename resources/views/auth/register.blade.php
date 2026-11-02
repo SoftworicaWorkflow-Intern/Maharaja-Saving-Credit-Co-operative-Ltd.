@@ -50,7 +50,7 @@
 
                 <div>
                     <label for="address" class="mb-2 block text-sm font-medium text-[#182A22]">Address</label>
-                    <textarea id="address" name="address" rows="3" required autocomplete="street-address" class="w-full rounded-2xl border border-[#DCE9DF] bg-[#F9FBFA] px-4 py-3 text-[#182A22] focus:outline-none focus:ring-2 focus:ring-[#08713D]/20">{{ old('address') }}</textarea>
+                    <textarea id="address" name="address" rows="2" required autocomplete="street-address" class="w-full rounded-2xl border border-[#DCE9DF] bg-[#F9FBFA] px-4 py-2.5 text-[#182A22] focus:outline-none focus:ring-2 focus:ring-[#08713D]/20">{{ old('address') }}</textarea>
                     @error('address') <p class="mt-2 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
 

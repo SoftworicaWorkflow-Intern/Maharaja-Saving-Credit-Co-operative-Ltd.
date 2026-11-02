@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Faq;
 use App\Models\Notice;
+use App\Models\Report;
+use App\Models\ReportStatistic;
 use App\Models\Service;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -36,8 +38,50 @@ class FrontendController extends Controller
             : collect();
 
         $featuredNotices = $tickerNotices->take(7);
+        $latestReports = Schema::hasTable('reports')
+            ? Report::query()
+                ->published()
+                ->where('document_visibility', 'public')
+                ->whereHas('category', fn ($query) => $query->where('is_active', true))
+                ->whereHas('fiscalYear', fn ($query) => $query->where('is_active', true))
+                ->with(['category', 'fiscalYear'])
+                ->orderByDesc('publication_date')
+                ->orderByDesc('id')
+                ->limit(4)
+                ->get()
+            : collect();
+        $latestAnnualReport = Schema::hasTable('annual_reports')
+            ? Report::query()
+                ->published()
+                ->whereHas('category', fn ($query) => $query
+                    ->where('slug', 'annual-reports')
+                    ->where('is_active', true))
+                ->whereHas('fiscalYear', fn ($query) => $query->where('is_active', true))
+                ->whereHas('annualReport')
+                ->with(['category', 'fiscalYear'])
+                ->orderByDesc('publication_date')
+                ->orderByDesc('id')
+                ->first()
+            : null;
+        $verifiedStatistics = Schema::hasTable('report_statistics')
+            ? ReportStatistic::query()
+                ->published()
+                ->with('fiscalYear')
+                ->orderBy('display_order')
+                ->orderByDesc('id')
+                ->limit(4)
+                ->get()
+            : collect();
 
-        return view('frontend.home', compact('settings', 'featuredNotices', 'tickerNotices', 'leadershipMessages'));
+        return view('frontend.home', compact(
+            'settings',
+            'featuredNotices',
+            'tickerNotices',
+            'leadershipMessages',
+            'latestReports',
+            'latestAnnualReport',
+            'verifiedStatistics',
+        ));
     }
 
     public function showLeadershipMessage(string $leader): View

@@ -213,6 +213,129 @@ document.querySelectorAll('[data-password-toggle]').forEach((button) => {
     });
 });
 
+document.querySelectorAll('[data-report-fullscreen]').forEach((button) => {
+    const viewerId = button.getAttribute('data-report-fullscreen');
+    const viewer = viewerId ? document.getElementById(viewerId) : null;
+
+    if (!(viewer instanceof HTMLElement)) {
+        return;
+    }
+
+    const status = document.querySelector(`[data-report-fullscreen-status="${viewerId}"]`);
+    const updateButtonLabel = () => {
+        const isFullscreen = document.fullscreenElement === viewer;
+
+        button.textContent = isFullscreen
+            ? button.getAttribute('data-exit-label')
+            : button.getAttribute('data-enter-label');
+    };
+
+    button.addEventListener('click', async () => {
+        if (status instanceof HTMLElement) {
+            status.textContent = '';
+        }
+
+        try {
+            if (document.fullscreenElement === viewer) {
+                await document.exitFullscreen();
+            } else if (typeof viewer.requestFullscreen === 'function') {
+                await viewer.requestFullscreen();
+            } else if (status instanceof HTMLElement) {
+                status.textContent = button.getAttribute('data-fullscreen-error') || '';
+            }
+        } catch {
+            if (status instanceof HTMLElement) {
+                status.textContent = button.getAttribute('data-fullscreen-error') || '';
+            }
+        }
+    });
+
+    document.addEventListener('fullscreenchange', updateButtonLabel);
+});
+
+document.querySelectorAll('[data-report-category-selector]').forEach((selector) => {
+    const form = selector.closest('form');
+    const annualFields = form?.querySelector('[data-annual-report-fields]');
+    const addChapterButton = form?.querySelector('[data-add-annual-chapter]');
+    const chapterList = form?.querySelector('[data-annual-chapter-list]');
+    const chapterTemplate = form?.querySelector('[data-annual-chapter-template]');
+    const categoryFields = [...(form?.querySelectorAll('[data-report-category-fields]') ?? [])];
+
+    if (!(annualFields instanceof HTMLFieldSetElement)) {
+        return;
+    }
+
+    const updateAnnualFields = () => {
+        const isAnnualReport = selector.value === selector.dataset.annualCategoryId;
+
+        annualFields.disabled = !isAnnualReport;
+        annualFields.classList.toggle('hidden', !isAnnualReport);
+
+        const selectedCategorySlug = selector.selectedOptions[0]?.dataset.categorySlug;
+        categoryFields.forEach((fieldset) => {
+            const isSelectedCategory = fieldset.dataset.categorySlug === selectedCategorySlug;
+
+            fieldset.disabled = !isSelectedCategory;
+            fieldset.classList.toggle('hidden', !isSelectedCategory);
+        });
+    };
+
+    selector.addEventListener('change', updateAnnualFields);
+    updateAnnualFields();
+
+    chapterList?.addEventListener('click', (event) => {
+        if (!(event.target instanceof Element)) {
+            return;
+        }
+
+        const removeButton = event.target.closest('[data-remove-annual-chapter]');
+        if (removeButton) {
+            removeButton.closest('[data-annual-chapter-row]')?.remove();
+        }
+    });
+
+    addChapterButton?.addEventListener('click', () => {
+        if (!(chapterList instanceof HTMLElement) || !(chapterTemplate instanceof HTMLTemplateElement)) {
+            return;
+        }
+
+        const currentCount = chapterList.querySelectorAll('[data-annual-chapter-row]').length;
+        if (currentCount >= 20) {
+            return;
+        }
+
+        const index = chapterList.dataset.nextChapterIndex || String(currentCount);
+        chapterList.dataset.nextChapterIndex = String(Number(index) + 1);
+        const row = chapterTemplate.content.firstElementChild?.cloneNode(true);
+        if (!(row instanceof HTMLElement)) {
+            return;
+        }
+
+        const chapterKey = row.querySelector('[data-chapter-key]');
+        if (chapterKey instanceof HTMLInputElement) {
+            chapterKey.name = `annual_chapters[${index}][chapter_key]`;
+            chapterKey.value = `custom-${Date.now()}-${index}`;
+        }
+
+        row.querySelectorAll('[data-chapter-field]').forEach((field) => {
+            if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) {
+                return;
+            }
+
+            const fieldName = field.dataset.chapterField;
+            if (fieldName) {
+                field.name = `annual_chapters[${index}][${fieldName}]`;
+            }
+
+            if (fieldName === 'display_order') {
+                field.value = String(currentCount + 1);
+            }
+        });
+
+        chapterList.append(row);
+    });
+});
+
 document.querySelectorAll('[data-mobile-nav-toggle]').forEach((button) => {
     const navigationId = button.getAttribute('aria-controls');
     const navigation = navigationId ? document.getElementById(navigationId) : null;

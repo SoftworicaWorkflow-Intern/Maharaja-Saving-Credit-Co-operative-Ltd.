@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description" content="@yield('meta-description', __('Maharaj Bachat institutional information and cooperative services.'))">
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <title>@yield('title', config('app.name'))</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,6 +78,25 @@
                 </details>
                 <a href="{{ route('services') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('services*') ? 'text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>
                 <a href="{{ route('notices') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('notices') ? 'text-[#FFD91A]' : '' }}">{{ __('Notices') }}</a>
+                <details data-reports-dropdown class="group relative">
+                    <summary class="flex cursor-pointer list-none items-center gap-1 whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('reports.*', 'annual-reports.*') ? 'text-[#FFD91A]' : '' }}">
+                        {{ __('Reports') }}
+                        <svg aria-hidden="true" class="h-4 w-4 transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </summary>
+                    <div class="reports-dropdown-menu absolute left-0 top-full z-50 mt-2 flex min-w-56 flex-col gap-1 rounded-xl border border-[#DCE9DF] bg-white p-2 text-[#04552F] shadow-xl">
+                        <a href="{{ route('reports.index') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('All Reports') }}</a>
+                        @foreach ($reportNavigationCategories as $reportCategory)
+                            @php
+                                $reportCategoryRoute = config('report_pages.routes.'.$reportCategory->slug);
+                                $reportCategoryRouteName = $reportCategoryRoute ?: 'reports.category.custom';
+                                $reportCategoryRouteParameters = $reportCategoryRoute === null ? ['slug' => $reportCategory->slug] : [];
+                            @endphp
+                            <a href="{{ route($reportCategoryRouteName, $reportCategoryRouteParameters) }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ $reportCategory->localizedName() }}</a>
+                        @endforeach
+                    </div>
+                </details>
                 <a href="{{ route('contact') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('contact') ? 'text-[#FFD91A]' : '' }}">{{ __('Contact') }}</a>
             </nav>
             <div class="hidden shrink-0 items-center gap-2 xl:flex">
@@ -136,6 +156,25 @@
                 </details>
                 <a href="{{ route('services') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10 {{ request()->routeIs('services*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>
                 <a href="{{ route('notices') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Notices') }}</a>
+                <details data-reports-dropdown class="group">
+                    <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10 {{ request()->routeIs('reports.*', 'annual-reports.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
+                        {{ __('Reports') }}
+                        <svg aria-hidden="true" class="h-4 w-4 transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/>
+                        </svg>
+                    </summary>
+                    <div class="reports-dropdown-menu flex flex-col gap-1 border-l border-white/20 py-1 pl-3">
+                        <a href="{{ route('reports.index') }}" class="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">{{ __('All Reports') }}</a>
+                        @foreach ($reportNavigationCategories as $reportCategory)
+                            @php
+                                $reportCategoryRoute = config('report_pages.routes.'.$reportCategory->slug);
+                                $reportCategoryRouteName = $reportCategoryRoute ?: 'reports.category.custom';
+                                $reportCategoryRouteParameters = $reportCategoryRoute === null ? ['slug' => $reportCategory->slug] : [];
+                            @endphp
+                            <a href="{{ route($reportCategoryRouteName, $reportCategoryRouteParameters) }}" class="rounded-lg px-3 py-2 text-sm text-white/90 hover:bg-white/10">{{ $reportCategory->localizedName() }}</a>
+                        @endforeach
+                    </div>
+                </details>
                 <a href="{{ route('contact') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10">{{ __('Contact') }}</a>
                 <div class="mt-2 flex items-center justify-between border-t border-white/15 py-3">
                     <span class="text-sm font-medium">{{ __('Language') }}</span>
@@ -180,6 +219,7 @@
                     <li><a href="{{ route('about') }}">{{ __('About Us') }}</a></li>
                     <li><a href="{{ route('services') }}">{{ __('Services') }}</a></li>
                     <li><a href="{{ route('notices') }}">{{ __('Notices') }}</a></li>
+                    <li><a href="{{ route('reports.index') }}">{{ __('Reports') }}</a></li>
                     <li><a href="{{ route('contact') }}">{{ __('Contact') }}</a></li>
                 </ul>
             </div>

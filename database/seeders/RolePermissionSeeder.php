@@ -42,6 +42,7 @@ class RolePermissionSeeder extends Seeder
             'loans.disburse' => 'Disburse loans',
             'repayments.post' => 'Record loan repayments',
             'notices.manage' => 'Manage and publish notices',
+            'reports.manage' => 'Manage and publish institutional reports',
             'website.manage' => 'Manage website content',
             'reports.view' => 'View reports',
             'reports.export' => 'Export reports',

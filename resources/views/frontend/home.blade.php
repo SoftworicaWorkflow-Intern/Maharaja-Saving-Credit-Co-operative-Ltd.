@@ -259,6 +259,8 @@
                         <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
                             @if ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
+                            @elseif ($leader === 'secretary')
+                                <img src="{{ asset('images/secretary-portrait.png') }}" alt="{{ __('Portrait of the Secretary') }}" class="absolute inset-0 h-full w-full object-cover">
                             @else
                                 <div role="img" aria-label="{{ __('Portrait not provided for :designation', ['designation' => __($message['designation'])]) }}" class="absolute inset-0 flex items-center justify-center text-[#08713D]/35">
                                     <svg aria-hidden="true" class="h-32 w-32 sm:h-40 sm:w-40" viewBox="0 0 120 120" fill="none">
@@ -489,6 +491,55 @@
             @endforelse
         </div>
     </section>
+    @if ($latestReports->isNotEmpty() || $latestAnnualReport || $verifiedStatistics->isNotEmpty())
+        <section class="bg-[#F5F8F5] py-16">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                @if ($verifiedStatistics->isNotEmpty())
+                    <div class="mb-10">
+                        <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#27804A]">{{ __('Verified institutional information') }}</p>
+                        <h2 class="mt-2 text-2xl font-extrabold text-[#182A22]">{{ __('Institutional highlights') }}</h2>
+                        <div class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                            @foreach ($verifiedStatistics as $statistic)
+                                <article class="rounded-2xl border border-[#DCE9DF] bg-white p-5 shadow-sm">
+                                    <h3 class="text-sm font-semibold text-[#617067]">{{ $statistic->localizedLabel() }}</h3>
+                                    <p class="mt-2 text-2xl font-extrabold text-[#14532D]">{{ number_format((float) $statistic->value, 2) }} <span class="text-base font-semibold">{{ $statistic->localizedUnit() }}</span></p>
+                                    <p class="mt-2 text-xs text-[#617067]">{{ __('Fiscal year') }}: {{ $statistic->fiscalYear->localizedLabel() }}</p>
+                                </article>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+                @if ($latestAnnualReport)
+                    <div class="mb-10">
+                        <div class="mb-5 flex flex-wrap items-end justify-between gap-4">
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#27804A]">{{ __('Institutional archive') }}</p>
+                                <h2 class="mt-2 text-3xl font-extrabold text-[#182A22]">{{ __('Latest Annual Report') }}</h2>
+                            </div>
+                            <a href="{{ route('annual-reports.index') }}" class="font-semibold text-[#14532D] underline underline-offset-4">{{ __('Previous annual reports') }}</a>
+                        </div>
+                        <div class="max-w-sm">
+                            <x-annual-report-card :report="$latestAnnualReport" />
+                        </div>
+                    </div>
+                @endif
+                @if ($latestReports->isNotEmpty())
+                    <div class="flex flex-wrap items-end justify-between gap-4">
+                        <div>
+                            <p class="text-sm font-bold uppercase tracking-[0.16em] text-[#27804A]">{{ __('Transparency and progress') }}</p>
+                            <h2 class="mt-2 text-3xl font-extrabold text-[#182A22]">{{ __('Latest reports and publications') }}</h2>
+                        </div>
+                        <a href="{{ route('reports.index') }}" class="rounded-xl bg-[#14532D] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#27804A]">{{ __('View all reports') }}</a>
+                    </div>
+                    <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+                        @foreach ($latestReports as $report)
+                            <x-report-card :report="$report" />
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+        </section>
+    @endif
 
     <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="member-testimonials-heading">
     <div class="mx-auto max-w-7xl">
@@ -594,4 +645,5 @@
         counterElements.forEach((el) => observer.observe(el));
     })();
 </script>
+<x-floating-contact-actions />
 @endsection
