@@ -31,6 +31,14 @@
     display: none;
 }
 
+[data-testimonial-track] {
+    scrollbar-width: none;
+}
+
+[data-testimonial-track]::-webkit-scrollbar {
+    display: none;
+}
+
 .reports-dropdown-menu {
     animation: reports-menu-enter 160ms ease-out;
 }
@@ -79,7 +87,7 @@
 .leadership-portrait-slide-left,
 .leadership-portrait-slide-right {
     opacity: 0;
-    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 1300ms ease, transform 1300ms cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
 }
 

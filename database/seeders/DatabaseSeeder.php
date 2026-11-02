@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
         $this->call(ServiceSeeder::class);
         $this->call(FaqSeeder::class);
 
+        if (app()->environment('local')) {
+            $this->call(DemoMemberSeeder::class);
+        }
+
         if (blank(config('services.admin.password'))) {
             $this->command?->warn('ADMIN_PASSWORD is not configured; administrator account creation was skipped.');
 

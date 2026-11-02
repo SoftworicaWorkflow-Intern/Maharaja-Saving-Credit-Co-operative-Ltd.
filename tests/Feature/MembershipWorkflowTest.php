@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\Member;
 use App\Models\MembershipApplication;
 use App\Models\MembershipApplicationDocument;
 use App\Models\User;
+use Database\Seeders\DemoMemberSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -35,6 +37,99 @@ class MembershipWorkflowTest extends TestCase
 
         $this->get(route('dashboard'))
             ->assertRedirect(route('membership.application'));
+    }
+
+    public function test_public_member_directory_lists_only_active_names_and_paginates(): void
+    {
+        for ($number = 1; $number <= 21; $number++) {
+            $this->createDirectoryMember(
+                sprintf('Directory Member %02d', $number),
+                sprintf('PRIVATE-MBR-%03d', $number),
+                'active',
+                $number,
+            );
+        }
+
+        $this->createDirectoryMember('Suspended Directory Member', 'PRIVATE-MBR-999', 'suspended', 22);
+
+        $firstPage = $this->get(route('members.index'));
+
+        $firstPage->assertOk()
+            ->assertSee('Member Directory')
+            ->assertSee('Showing 20 of 21 members')
+            ->assertSee('Directory Member 21')
+            ->assertSee('Directory Member 02')
+            ->assertDontSee('Directory Member 01')
+            ->assertDontSee('Suspended Directory Member')
+            ->assertDontSee('PRIVATE-MBR-021')
+            ->assertSee(route('members.index', ['page' => 2]), false);
+
+        $secondPage = $this->get(route('members.index', ['page' => 2]));
+
+        $secondPage->assertOk()
+            ->assertSee('Showing 1 of 21 members')
+            ->assertSee('Directory Member 01')
+            ->assertDontSee('Directory Member 21')
+            ->assertDontSee('Suspended Directory Member');
+    }
+
+    public function test_public_member_directory_escapes_member_names(): void
+    {
+        $this->createDirectoryMember('<script>alert("name")</script>', 'PRIVATE-MBR-XSS', 'active', 1);
+
+        $this->get(route('members.index'))
+            ->assertOk()
+            ->assertSee('&lt;script&gt;', false)
+            ->assertDontSee('<script>alert("name")</script>', false)
+            ->assertDontSee('PRIVATE-MBR-XSS');
+    }
+
+    public function test_active_member_number_is_revealed_only_after_requesting_it(): void
+    {
+        $this->createDirectoryMember('Number Reveal Member', 'PRIVATE-MBR-321', 'active', 1);
+        $member = Member::query()->where('member_number', 'PRIVATE-MBR-321')->firstOrFail();
+
+        $this->get(route('members.index'))
+            ->assertOk()
+            ->assertDontSee('PRIVATE-MBR-321')
+            ->assertSee(route('members.number', $member->id), false)
+            ->assertSee('aria-label="Show member number"', false);
+
+        $this->getJson(route('members.number', $member))
+            ->assertOk()
+            ->assertHeader('Cache-Control', 'no-store, private')
+            ->assertExactJson(['member_number' => 'PRIVATE-MBR-321']);
+    }
+
+    public function test_suspended_member_number_cannot_be_revealed(): void
+    {
+        $this->createDirectoryMember('Suspended Number Member', 'PRIVATE-MBR-654', 'suspended', 1);
+        $member = Member::query()->where('member_number', 'PRIVATE-MBR-654')->firstOrFail();
+
+        $this->getJson(route('members.number', $member))->assertNotFound();
+    }
+
+    public function test_homepage_displays_ten_member_names_after_seeding(): void
+    {
+        $this->createDirectoryMember('Registered Directory Member', 'PRIVATE-MBR-001', 'active', 1);
+
+        $this->seed(DemoMemberSeeder::class);
+        $this->seed(DemoMemberSeeder::class);
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('Showing 10 of 10 members')
+            ->assertSee('Registered Directory Member')
+            ->assertSee('Suman Adhikari')
+            ->assertSee('Nabin Khadka')
+            ->assertDontSee('Demo Member')
+            ->assertDontSee('(Sample)')
+            ->assertDontSee('PRIVATE-MBR-001')
+            ->assertDontSee('SAMPLE-MBR-002');
+
+        $this->assertSame(10, substr_count($response->getContent(), 'data-member-preview-row'));
+        $this->assertDatabaseCount('members', 10);
     }
 
     public function test_admin_approval_creates_a_member_and_records_the_reviewer(): void
@@ -300,5 +395,24 @@ class MembershipWorkflowTest extends TestCase
         $admin->forceFill(['is_admin' => true])->save();
 
         return $admin;
+    }
+
+    private function createDirectoryMember(string $name, string $memberNumber, string $status, int $joinedAtOffset): void
+    {
+        $user = User::factory()->create(['name' => $name]);
+        $application = $user->membershipApplications()->create([
+            'phone' => '078-540530',
+            'address' => 'Private address',
+            'status' => MembershipApplication::APPROVED,
+            'submitted_at' => now(),
+        ]);
+        $user->member()->create([
+            'membership_application_id' => $application->id,
+            'member_number' => $memberNumber,
+            'phone' => '078-540530',
+            'address' => 'Private address',
+            'status' => $status,
+            'joined_at' => now()->addSeconds($joinedAtOffset),
+        ]);
     }
 }

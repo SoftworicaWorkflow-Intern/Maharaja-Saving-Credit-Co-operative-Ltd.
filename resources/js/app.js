@@ -52,6 +52,67 @@ if (slideRightElements.length > 0) {
     }
 }
 
+document.querySelectorAll('[data-member-number-toggle]').forEach((toggle) => {
+    const row = toggle.closest('tr');
+    const memberNumberValue = row?.querySelector('[data-member-number-value]');
+    const errorMessage = row?.querySelector('[data-member-number-error]');
+    const closedEye = toggle.querySelector('[data-member-eye-closed]');
+    const openEye = toggle.querySelector('[data-member-eye-open]');
+    let memberNumber = null;
+    let isLoaded = false;
+
+    if (!(memberNumberValue instanceof HTMLElement) || !(errorMessage instanceof HTMLElement)) {
+        return;
+    }
+
+    toggle.addEventListener('click', async () => {
+        const isVisible = toggle.getAttribute('aria-pressed') === 'true';
+
+        errorMessage.classList.add('hidden');
+
+        if (isVisible) {
+            memberNumberValue.textContent = '••••••••';
+            memberNumberValue.setAttribute('aria-label', toggle.dataset.hiddenLabel);
+            toggle.setAttribute('aria-pressed', 'false');
+            toggle.setAttribute('aria-label', toggle.dataset.showLabel);
+            closedEye?.classList.remove('hidden');
+            openEye?.classList.add('hidden');
+
+            return;
+        }
+
+        toggle.disabled = true;
+
+        try {
+            if (!isLoaded) {
+                const response = await fetch(toggle.dataset.memberNumberUrl, {
+                    headers: { Accept: 'application/json' },
+                    credentials: 'same-origin',
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Member number request failed with status ${response.status}.`);
+                }
+
+                const data = await response.json();
+                memberNumber = typeof data.member_number === 'string' ? data.member_number : toggle.dataset.unavailableLabel;
+                isLoaded = true;
+            }
+
+            memberNumberValue.textContent = memberNumber;
+            memberNumberValue.removeAttribute('aria-label');
+            toggle.setAttribute('aria-pressed', 'true');
+            toggle.setAttribute('aria-label', toggle.dataset.hideLabel);
+            closedEye?.classList.add('hidden');
+            openEye?.classList.remove('hidden');
+        } catch {
+            errorMessage.classList.remove('hidden');
+        } finally {
+            toggle.disabled = false;
+        }
+    });
+});
+
 const leadershipPortraits = document.querySelectorAll(
     '.leadership-portrait-slide-left:not(.show), .leadership-portrait-slide-right:not(.show)'
 );
@@ -69,7 +130,7 @@ if (leadershipPortraits.length > 0) {
                 entry.target.classList.add('show');
                 observer.unobserve(entry.target);
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.25, rootMargin: '0px 0px -8% 0px' });
 
         leadershipPortraits.forEach((portrait) => leadershipPortraitObserver.observe(portrait));
     }
@@ -82,19 +143,43 @@ document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
     const slides = [...carousel.querySelectorAll('[data-hero-slide]')];
     const indicators = [...carousel.querySelectorAll('[data-hero-indicator]')];
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const autoInterval = 4500;
+    const autoInterval = 3000;
+    const transitionDuration = 1300;
     let activeIndex = 0;
     let timer = null;
+    let transitionVersion = 0;
 
     const showSlide = (index) => {
         activeIndex = (index + slides.length) % slides.length;
+        const currentTransition = ++transitionVersion;
 
         slides.forEach((slide, slideIndex) => {
             const isActive = slideIndex === activeIndex;
+            const wasVisible = !slide.hidden;
 
-            slide.classList.toggle('opacity-0', !isActive);
-            slide.hidden = !isActive;
-            slide.setAttribute('aria-hidden', String(!isActive));
+            slide.classList.add('opacity-0', 'scale-105');
+            slide.classList.remove('opacity-100', 'scale-100');
+
+            if (isActive) {
+                slide.hidden = false;
+                slide.setAttribute('aria-hidden', 'false');
+                window.requestAnimationFrame(() => {
+                    window.requestAnimationFrame(() => {
+                        slide.classList.remove('opacity-0', 'scale-105');
+                        slide.classList.add('opacity-100', 'scale-100');
+                    });
+                });
+            } else {
+                slide.setAttribute('aria-hidden', 'true');
+
+                if (wasVisible) {
+                    window.setTimeout(() => {
+                        if (transitionVersion === currentTransition && slideIndex !== activeIndex) {
+                            slide.hidden = true;
+                        }
+                    }, reducedMotion.matches ? 0 : transitionDuration);
+                }
+            }
         });
 
         indicators.forEach((indicator, indicatorIndex) => {
@@ -107,6 +192,8 @@ document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
             indicator.classList.toggle('bg-white/70', !isActive);
         });
     };
+
+    showSlide(activeIndex);
 
     const nextSlide = () => {
         showSlide(activeIndex + 1);
@@ -153,6 +240,76 @@ document.querySelectorAll('[data-hero-carousel]').forEach((carousel) => {
     carousel.addEventListener('focusout', startAutoPlay);
 
     startAutoPlay();
+});
+
+document.querySelectorAll('[data-testimonial-carousel]').forEach((carousel) => {
+    const track = carousel.querySelector('[data-testimonial-track]');
+    const slides = [...carousel.querySelectorAll('[data-testimonial-slide]')];
+    const pages = [...carousel.querySelectorAll('[data-testimonial-page]')];
+    let activeIndex = 0;
+    let updateScheduled = false;
+
+    if (!(track instanceof HTMLElement) || slides.length < 2 || pages.length !== slides.length) {
+        return;
+    }
+
+    const updateActivePage = () => {
+        updateScheduled = false;
+        const trackLeft = track.getBoundingClientRect().left;
+
+        activeIndex = slides.reduce((closestIndex, slide, index) => {
+            const closestDistance = Math.abs(slides[closestIndex].getBoundingClientRect().left - trackLeft);
+            const distance = Math.abs(slide.getBoundingClientRect().left - trackLeft);
+
+            return distance < closestDistance ? index : closestIndex;
+        }, 0);
+
+        pages.forEach((page, pageIndex) => {
+            page.setAttribute('aria-current', String(pageIndex === activeIndex));
+        });
+    };
+
+    const scheduleActivePageUpdate = () => {
+        if (!updateScheduled) {
+            updateScheduled = true;
+            window.requestAnimationFrame(updateActivePage);
+        }
+    };
+
+    const showSlide = (index) => {
+        const nextIndex = (index + slides.length) % slides.length;
+        const slide = slides[nextIndex];
+        const left = track.scrollLeft + slide.getBoundingClientRect().left - track.getBoundingClientRect().left;
+
+        track.scrollTo({
+            left,
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+        });
+
+        activeIndex = nextIndex;
+        pages.forEach((page, pageIndex) => {
+            page.setAttribute('aria-current', String(pageIndex === activeIndex));
+        });
+    };
+
+    track.addEventListener('scroll', scheduleActivePageUpdate, { passive: true });
+    window.addEventListener('resize', scheduleActivePageUpdate, { passive: true });
+
+    carousel.querySelector('[data-testimonial-previous]')?.addEventListener('click', () => {
+        showSlide(activeIndex - 1);
+    });
+
+    carousel.querySelector('[data-testimonial-next]')?.addEventListener('click', () => {
+        showSlide(activeIndex + 1);
+    });
+
+    pages.forEach((page, index) => {
+        page.addEventListener('click', () => {
+            showSlide(index);
+        });
+    });
+
+    updateActivePage();
 });
 
 document.querySelectorAll('[data-rotating-headline]').forEach((headline) => {

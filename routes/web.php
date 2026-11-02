@@ -18,6 +18,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactInquiryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\MemberDirectoryController;
 use App\Http\Controllers\MembershipApplicationStatusController;
 use App\Http\Controllers\ReportController as PublicReportController;
 use Illuminate\Http\Request;
@@ -41,6 +42,8 @@ Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
 Route::get('/notices', [FrontendController::class, 'notices'])->name('notices');
 Route::get('/notices/{notice}', [FrontendController::class, 'showNotice'])->name('notices.show');
+Route::get('/members', MemberDirectoryController::class)->name('members.index');
+Route::get('/members/{member}/number', [MemberDirectoryController::class, 'showNumber'])->name('members.number');
 Route::get('/reports', [PublicReportController::class, 'index'])->name('reports.index');
 Route::get('/annual-reports', [AnnualReportController::class, 'index'])->name('annual-reports.index');
 Route::get('/financial-reports', [PublicReportController::class, 'category'])

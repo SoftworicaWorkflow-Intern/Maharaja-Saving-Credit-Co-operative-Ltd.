@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\MembershipApplication;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -17,10 +19,13 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('images/cooperative-service.png')
             ->assertSee('images/savings-growth.png')
             ->assertSee('images/nepali-cooperative-community.svg')
-            ->assertSee('Search notices')
+            ->assertSee('transition-[opacity,transform] duration-[1300ms]', false)
+            ->assertSee('motion-reduce:transition-none', false)
+            ->assertDontSee('data-hero-previous', false)
+            ->assertDontSee('data-hero-next', false)
             ->assertDontSee('images.unsplash.com');
 
-        $this->assertSame(3, substr_count($response->getContent(), 'data-hero-slide'));
+        $this->assertSame(3, substr_count($response->getContent(), '<img data-hero-slide'));
     }
 
     public function test_homepage_shows_fixed_icon_only_contact_actions_and_preserves_destinations(): void
@@ -67,6 +72,42 @@ class FrontendLayoutTest extends TestCase
         $this->assertSame(4, substr_count($response->getContent(), 'data-headline-slide'));
     }
 
+    public function test_homepage_member_testimonials_have_paging_controls(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('What Our Members Say')
+            ->assertSee('data-testimonial-carousel', false)
+            ->assertSee('data-testimonial-track', false)
+            ->assertSee('bg-[#F8FAFC]', false)
+            ->assertSee('min-h-[18rem]', false)
+            ->assertSee('Illustrative testimonials; replace with verified member feedback before publishing.')
+            ->assertSee('Sita Gurung')
+            ->assertSee('Rajesh Shrestha')
+            ->assertDontSee('Sample Member')
+            ->assertDontSee('Sample testimonial')
+            ->assertSee('Member perspectives on their cooperative experience.')
+            ->assertSee('aria-label="Previous testimonial"', false)
+            ->assertSee('aria-label="Next testimonial"', false)
+            ->assertSee('aria-label="Testimonial pages"', false);
+
+        $this->assertSame(10, substr_count($response->getContent(), 'data-testimonial-slide '));
+        $this->assertSame(10, substr_count($response->getContent(), 'data-testimonial-page='));
+    }
+
+    public function test_homepage_leadership_portraits_reveal_from_opposite_sides(): void
+    {
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('data-leadership-portrait="left"', false)
+            ->assertSee('data-leadership-portrait="right"', false);
+
+        $this->assertSame(1, substr_count($response->getContent(), 'data-leadership-portrait="left"'));
+        $this->assertSame(1, substr_count($response->getContent(), 'data-leadership-portrait="right"'));
+    }
+
     public function test_homepage_rotating_headlines_follow_the_selected_nepali_language(): void
     {
         $this->post(route('language.switch', ['locale' => 'ne']))
@@ -79,6 +120,9 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('बचत')
             ->assertSee('सूचनाहरू')
             ->assertSee('सदस्य बन्नुहोस्')
+            ->assertSee('सदस्य निर्देशिका')
+            ->assertSee('सबै सदस्यहरू हेर्नुहोस्')
+            ->assertSee('पूर्ण निर्देशिकाका लागि सबै सदस्यहरू हेर्नुहोस्।')
             ->assertSee('सदस्य केन्द्रित वित्तीय सेवाहरू')
             ->assertSee('लचिलो बचत योजनाहरू')
             ->assertSee('ऋण सहायता')
@@ -98,6 +142,74 @@ class FrontendLayoutTest extends TestCase
             ->assertDontSee('Brighter Futures.');
     }
 
+    public function test_homepage_previews_ten_approved_member_names_without_exposing_account_numbers(): void
+    {
+        for ($number = 1; $number <= 12; $number++) {
+            $memberUser = User::factory()->create([
+                'name' => sprintf('Approved Directory Member %02d', $number),
+            ]);
+            $application = $memberUser->membershipApplications()->create([
+                'phone' => sprintf('070-111%03d', $number),
+                'address' => 'Private address',
+                'status' => MembershipApplication::APPROVED,
+                'submitted_at' => now(),
+            ]);
+            $memberUser->member()->create([
+                'membership_application_id' => $application->id,
+                'member_number' => sprintf('PRIVATE-MBR-%03d', $number),
+                'phone' => sprintf('070-111%03d', $number),
+                'address' => 'Private address',
+                'status' => 'active',
+                'joined_at' => now()->addSeconds($number),
+            ]);
+        }
+
+        $suspendedUser = User::factory()->create(['name' => 'Suspended Directory Member']);
+        $suspendedApplication = $suspendedUser->membershipApplications()->create([
+            'phone' => '070-119999',
+            'address' => 'Another private address',
+            'status' => MembershipApplication::APPROVED,
+            'submitted_at' => now(),
+        ]);
+        $suspendedUser->member()->create([
+            'membership_application_id' => $suspendedApplication->id,
+            'member_number' => 'PRIVATE-MBR-999',
+            'phone' => '070-119999',
+            'address' => 'Another private address',
+            'status' => 'suspended',
+            'joined_at' => now(),
+        ]);
+
+        $response = $this->get(route('home'));
+
+        $response->assertOk()
+            ->assertSee('id="our-impact"', false)
+            ->assertSee('id="member-directory"', false)
+            ->assertSee('data-active-member-count="12"', false)
+            ->assertSee('Showing 10 of 12 members')
+            ->assertSee('Previewing 10 registered members.')
+            ->assertSee('Use View All Members for the complete directory.')
+            ->assertSee('Member Directory')
+            ->assertSee('Name')
+            ->assertSee('Code')
+            ->assertSee('Share Number')
+            ->assertSee('Approved Directory Member 12')
+            ->assertSee('Approved Directory Member 03')
+            ->assertSee('aria-label="Hidden for privacy"', false)
+            ->assertSee('data-member-preview-row', false)
+            ->assertSee(route('members.index'), false)
+            ->assertSee(route('login'), false)
+            ->assertDontSee('Approved Directory Member 02')
+            ->assertDontSee('Suspended Directory Member')
+            ->assertDontSee('PRIVATE-MBR-012')
+            ->assertDontSee('PRIVATE-MBR-999')
+            ->assertDontSee('070-111012')
+            ->assertDontSee('070-119999')
+            ->assertDontSee('Private address');
+
+        $this->assertSame(10, substr_count($response->getContent(), 'data-member-preview-row'));
+    }
+
     public function test_public_information_pages_render_in_nepali_after_language_selection(): void
     {
         $pages = [
@@ -105,7 +217,7 @@ class FrontendLayoutTest extends TestCase
             'about.vision-mission' => ['हाम्रो दिशा', 'दृष्टि र ध्येय', 'ध्येय', 'दृष्टि'],
             'about.board-of-directors' => ['सहकारी नेतृत्व', 'सञ्चालक समिति'],
             'about.other-committees' => ['सहकारी नेतृत्व', 'अन्य समितिहरू', 'लेखा समिति', 'ऋण उपसमिति', 'शिक्षा उपसमिति', 'महिला समिति', 'सेवा समिति'],
-            'about.employees' => ['हाम्रो टोली', 'कर्मचारीहरू', 'कर्मचारी परिचय छिट्टै आउँदैछ'],
+            'about.employees' => ['हाम्रो टोली', 'कर्मचारीहरू', 'कार्यपालिका'],
             'savings' => ['सदस्य बचत योजनाहरू', 'नियमित बचत', 'अहिले आवेदन दिनुहोस्'],
             'loans' => ['सदस्यका आवश्यकताका लागि वित्तीय सहयोग', 'व्यक्तिगत ऋण', 'जानकारी माग्नुहोस्'],
             'notices' => ['नवीनतम घोषणाहरू', 'सबै वर्ग', 'छान्नुहोस्', 'कुनै सूचना फेला परेन।'],
@@ -235,8 +347,9 @@ class FrontendLayoutTest extends TestCase
         $this->get(route('about.employees'))
             ->assertOk()
             ->assertSee('id="employees"', false)
-            ->assertSee('Employee profiles coming soon')
-            ->assertSee('Employee details will be added here.');
+            ->assertSee('images/executive-committee.png')
+            ->assertSee('alt="Executive Committee of Maharaj Bachat tatha Rin Sahakari Sanstha Ltd."', false)
+            ->assertSee('Executive Committee');
     }
 
     public function test_what_we_offer_cards_link_to_their_dedicated_pages(): void
@@ -248,9 +361,9 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('bg-[#08713D]', false)
             ->assertSee('What we offer')
             ->assertSee('Financial services built around members')
-            ->assertSee('data-offer-link="savings" href="'.route('savings').'"', false)
-            ->assertSee('data-offer-link="loans" href="'.route('loans').'"', false)
-            ->assertSee('data-offer-link="notices" href="'.route('notices').'"', false)
+            ->assertSee('href="'.route('services').'#savings"', false)
+            ->assertSee('href="'.route('services').'#loans"', false)
+            ->assertSee('href="'.route('notices').'"', false)
             ->assertSee('Savings Products')
             ->assertSee('Loan Support')
             ->assertSee('Notices & Updates')
@@ -265,9 +378,9 @@ class FrontendLayoutTest extends TestCase
             ->assertOk()
             ->assertSee('id="what-we-offer"', false)
             ->assertSee('bg-[#08713D]', false)
-            ->assertSee('data-offer-link="savings" href="'.route('savings').'"', false)
-            ->assertSee('data-offer-link="loans" href="'.route('loans').'"', false)
-            ->assertSee('data-offer-link="notices" href="'.route('notices').'"', false)
+            ->assertSee('href="'.route('services').'#savings"', false)
+            ->assertSee('href="'.route('services').'#loans"', false)
+            ->assertSee('href="'.route('notices').'"', false)
             ->assertSee('हामी के प्रदान गर्छौँ')
             ->assertSee('सदस्य केन्द्रित वित्तीय सेवाहरू')
             ->assertSee('बचत योजनाहरू')

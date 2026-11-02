@@ -60,9 +60,9 @@
     <section class="fade-in px-4 sm:px-6 lg:px-8 {{ $tickerNotices->isNotEmpty() ? 'pb-10 pt-0 lg:pb-14' : 'py-10 lg:py-14' }}">
         <div data-hero-carousel class="relative mx-auto flex min-h-[540px] max-w-7xl items-center overflow-hidden rounded-xl bg-[#04552F] shadow-[0_25px_50px_rgba(8,113,61,0.16)] sm:min-h-[600px]" aria-roledescription="carousel" aria-label="{{ __('Maharaj Bachat cooperative') }}">
             <div class="absolute inset-0">
-                <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="{{ __('A cooperative staff member serving an elderly Nepali member') }}" class="absolute inset-0 h-full w-full object-cover transition-opacity duration-500" aria-hidden="false">
-                <img data-hero-slide src="{{ asset('images/savings-growth.png') }}" alt="{{ __('Growing plants and coins representing savings and financial growth') }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
-                <img data-hero-slide src="{{ asset('images/nepali-cooperative-community.svg') }}" alt="{{ __('Illustration of Nepali cooperative members meeting together') }}" class="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500" aria-hidden="true" hidden>
+                <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="{{ __('A cooperative staff member serving an elderly Nepali member') }}" class="absolute inset-0 h-full w-full scale-100 object-cover opacity-100 transition-[opacity,transform] duration-[1300ms] ease-out motion-reduce:transition-none" aria-hidden="false">
+                <img data-hero-slide src="{{ asset('images/savings-growth.png') }}" alt="{{ __('Growing plants and coins representing savings and financial growth') }}" class="absolute inset-0 h-full w-full scale-105 object-cover opacity-0 transition-[opacity,transform] duration-[1300ms] ease-out motion-reduce:transition-none" aria-hidden="true" hidden>
+                <img data-hero-slide src="{{ asset('images/nepali-cooperative-community.svg') }}" alt="{{ __('Illustration of Nepali cooperative members meeting together') }}" class="absolute inset-0 h-full w-full scale-105 object-cover opacity-0 transition-[opacity,transform] duration-[1300ms] ease-out motion-reduce:transition-none" aria-hidden="true" hidden>
                 <div class="absolute inset-0 bg-gradient-to-r from-[#033B22]/90 via-[#04552F]/65 to-[#04552F]/20"></div>
             </div>
 
@@ -88,7 +88,7 @@
     </section>
 
     {{-- OUR IMPACT section --}}
-    <section class="fade-in bg-[#08713D] py-16 text-white">
+    <section id="our-impact" class="fade-in bg-[#08713D] py-16 text-white">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-12 text-center">
                 <span class="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A] backdrop-blur-sm">
@@ -105,7 +105,11 @@
                 <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
                     <div class="text-sm font-medium text-[#617067]">{{ __('Total Members') }}</div>
                     <div class="mt-3 text-3xl font-extrabold text-[#08713D] sm:text-4xl">
-                        <span data-counter data-target="15420" data-prefix="" data-suffix="+" data-format="comma">15,420+</span>
+                        @if ($activeMemberCount !== null)
+                            <span data-active-member-count="{{ $activeMemberCount }}" data-counter data-target="{{ $activeMemberCount }}" data-prefix="" data-suffix="" data-format="comma">{{ number_format($activeMemberCount) }}</span>
+                        @else
+                            <span>{{ __('Not available') }}</span>
+                        @endif
                     </div>
                 </div>
                 <div class="rounded-2xl bg-white p-6 shadow-sm transition hover:shadow-md">
@@ -126,6 +130,120 @@
                         <span data-counter data-target="12" data-prefix="" data-suffix="+" data-format="int">12+</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="member-directory" class="fade-in bg-[#F5F8F5] px-4 py-10 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="member-directory-heading">
+        <div class="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#DCE9DF] bg-white shadow-lg shadow-[#14532D]/10">
+            <div class="flex items-center gap-3 bg-gradient-to-r from-[#14532D] to-[#27804A] px-4 py-4 text-white sm:px-6">
+                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 text-[#FACC15]" aria-hidden="true">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <rect x="3" y="4" width="18" height="16" rx="2"/>
+                        <circle cx="9" cy="10" r="2"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 16c.6-1.3 1.6-2 3-2s2.4.7 3 2m3-6h3m-3 4h3"/>
+                    </svg>
+                </span>
+                <div>
+                    <h2 id="member-directory-heading" class="text-base font-extrabold">{{ __('Member Directory') }}</h2>
+                    <p class="mt-0.5 text-xs text-white/80">{{ __('Showing registered members of Maharaj Bachat tatha Rin Sahakari Sanstha Ltd.') }}</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#E4E9EF] bg-[#F8FAFC] px-4 py-3 text-xs text-[#617067] sm:px-6">
+                <p>
+                    {{ __('Showing :shown of :total members', [
+                        'shown' => $directoryMembers->count(),
+                        'total' => $activeMemberCount !== null ? number_format($activeMemberCount) : '—',
+                    ]) }}
+                </p>
+                <a href="{{ route('members.index') }}" class="inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-[#27804A] px-3 py-2 font-bold text-white transition hover:bg-[#14532D] focus:outline-none focus:ring-2 focus:ring-[#FACC15] focus:ring-offset-2">
+                    <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m16-13v6m3-3h-6"/>
+                        <circle cx="9" cy="7" r="4"/>
+                    </svg>
+                    {{ __('View All Members') }}
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[38rem] border-collapse text-left text-xs">
+                    <thead class="bg-white text-[10px] font-bold uppercase tracking-wide text-[#344054]">
+                        <tr class="border-b border-[#E4E9EF]">
+                            <th scope="col" class="w-14 px-3 py-3 sm:px-4">{{ __('S.N') }}</th>
+                            <th scope="col" class="px-3 py-3 sm:px-4">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 1 1 14 0H5Z"/></svg>
+                                    {{ __('Name') }}
+                                </span>
+                            </th>
+                            <th scope="col" class="px-3 py-3 sm:px-4">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4zM7 8v2h2V8zm4 0v2h6V8zm-4 4v2h2v-2zm4 0v2h6v-2z"/></svg>
+                                    {{ __('Code') }}
+                                </span>
+                            </th>
+                            <th scope="col" class="px-3 py-3 sm:px-4">
+                                <span class="inline-flex items-center gap-1.5">
+                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v10H3zM6 10h4v4H6z"/></svg>
+                                    {{ __('Share Number') }}
+                                </span>
+                            </th>
+                            <th scope="col" class="w-16 px-3 py-3 text-center sm:px-4">{{ __('Action') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#E4E9EF]">
+                        @forelse ($directoryMembers as $index => $directoryMember)
+                            <tr data-member-preview-row class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]' }} transition-colors hover:bg-[#F0FBF3]">
+                                <td class="px-3 py-2.5 sm:px-4">
+                                    <span class="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-[#F1F5F9] px-1.5 font-bold text-[#617067]">{{ $index + 1 }}</span>
+                                </td>
+                                <td class="px-3 py-2.5 sm:px-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#B9DCC4] bg-[#EFF8F1] text-[10px] font-bold text-[#14532D]" aria-hidden="true">MB</span>
+                                        <span class="font-bold text-[#182A22]">{{ $directoryMember->user->name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-3 py-2.5 sm:px-4">
+                                    <span data-member-number-value class="inline-flex rounded-full border border-[#B9DCC4] bg-[#F0FBF3] px-2 py-1 font-mono text-[10px] text-[#27804A]" aria-label="{{ __('Hidden for privacy') }}">••••••••</span>
+                                </td>
+                                <td class="px-3 py-2.5 sm:px-4">
+                                    <span class="inline-flex rounded-full border border-[#F3E28C] bg-[#FFF9D7] px-2 py-1 font-mono text-[10px] text-[#9A7600]" aria-label="{{ __('Hidden for privacy') }}">••••</span>
+                                </td>
+                                <td class="px-3 py-2.5 text-center sm:px-4">
+                                    <button type="button" data-member-number-toggle data-member-number-url="{{ route('members.number', $directoryMember->id) }}" data-hidden-label="{{ __('Hidden for privacy') }}" data-show-label="{{ __('Show member number') }}" data-hide-label="{{ __('Hide member number') }}" data-unavailable-label="{{ __('Not available') }}" aria-label="{{ __('Show member number') }}" aria-pressed="false" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#B9DCC4] bg-[#F0FBF3] text-[#14532D] transition hover:bg-[#DDF3E4] focus:outline-none focus:ring-2 focus:ring-[#27804A] focus:ring-offset-1">
+                                        <svg data-member-eye-closed aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.7 10.7 0 0 1 12 5c6.5 0 10 7 10 7a15.7 15.7 0 0 1-3.1 3.8M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7a10.7 10.7 0 0 0 3-.4"/>
+                                        </svg>
+                                        <svg data-member-eye-open aria-hidden="true" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/>
+                                            <circle cx="12" cy="12" r="2.5"/>
+                                        </svg>
+                                    </button>
+                                    <span data-member-number-error role="alert" class="hidden text-[10px] text-red-700">{{ __('Unable to load member number. Please try again.') }}</span>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-10 text-center text-sm text-[#617067]">{{ __('No registered members to preview.') }}</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="flex flex-col gap-2 border-t border-[#E4E9EF] bg-[#F8FAFC] px-4 py-3 text-[11px] text-[#617067] sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <p class="inline-flex items-center gap-2">
+                    <svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M11 10h2v7h-2zm0-4h2v2h-2z" fill="white"/></svg>
+                    {{ __('Previewing :count registered members.', ['count' => $directoryMembers->count()]) }}
+                    <span>{{ __('Use View All Members for the complete directory.') }}</span>
+                </p>
+                <a href="{{ route('login') }}" class="inline-flex items-center gap-1 font-bold text-[#14532D] hover:underline">
+                    <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5m5 5H3"/>
+                    </svg>
+                    {{ __('Member Login for Full Access') }}
+                </a>
             </div>
         </div>
     </section>
@@ -244,7 +362,7 @@
     {{-- ============================================================
          Leadership Messages
     ============================================================ --}}
-    <section id="leadership-messages" class="fade-in bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
+    <section id="leadership-messages" class="bg-white px-4 py-16 font-['Inter'] sm:px-6 lg:px-8">
         <div class="mx-auto max-w-7xl">
             <div class="mx-auto mb-10 max-w-2xl text-center">
                 <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#08713D]">{{ __('LEADERSHIP MESSAGES') }}</p>
@@ -258,7 +376,7 @@
                         $portraitFirst = $leader === 'chairperson';
                     @endphp
                     <article class="fade-in grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
-                        <div class="{{ $portraitFirst ? 'order-1 lg:order-1 leadership-portrait-slide-left' : 'order-1 lg:order-2 leadership-portrait-slide-right' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
+                        <div data-leadership-portrait="{{ $portraitFirst ? 'left' : 'right' }}" class="{{ $portraitFirst ? 'order-1 lg:order-1 leadership-portrait-slide-left' : 'order-1 lg:order-2 leadership-portrait-slide-right' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
                             @if ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
                             @elseif ($leader === 'chairperson')
@@ -545,41 +663,80 @@
         </section>
     @endif
 
-    <section class="fade-in border-t border-[#DCE9DF] bg-[#EFF8F1] px-4 py-16 sm:px-6 lg:px-8" aria-labelledby="member-testimonials-heading">
-    <div class="mx-auto max-w-7xl">
-        <div class="mx-auto mb-10 max-w-2xl text-center">
-            <p class="inline-flex rounded-full border border-[#08713D]/30 bg-white px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#08713D]">{{ __('Member voices') }}</p>
-            <h2 id="member-testimonials-heading" class="mt-3 text-3xl font-bold text-[#04552F] sm:text-4xl">{{ __('What Our Members Say') }}</h2>
-            <p class="mt-4 text-sm leading-7 text-[#617067] sm:text-base">{{ __('Real experiences from members who are growing with our cooperative.') }}</p>
-        </div>
+    <section class="fade-in border-t border-[#E8EDF0] bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-8" aria-labelledby="member-testimonials-heading">
+        <div class="mx-auto max-w-7xl">
+            <div class="mx-auto mb-12 max-w-2xl text-center">
+                <p class="inline-flex items-center gap-2 rounded-full border border-[#CFE8D5] bg-[#F2FBF4] px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#27804A]">
+                    <svg aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>
+                    </svg>
+                    {{ __('Testimonials') }}
+                </p>
+                <h2 id="member-testimonials-heading" class="mt-4 text-3xl font-extrabold tracking-tight text-[#111827] sm:text-4xl lg:text-5xl">{{ __('What Our Members Say') }}</h2>
+                <p class="mt-4 text-base leading-7 text-[#7A8494] sm:text-lg">{{ __('Member perspectives on their cooperative experience.') }}</p>
+                <p class="mt-2 text-xs leading-5 text-[#7A8494]">{{ __('Illustrative testimonials; replace with verified member feedback before publishing.') }}</p>
+                <div class="mx-auto mt-5 flex w-16 items-center justify-center gap-1.5" aria-hidden="true">
+                    <span class="h-1 w-10 rounded-full bg-[#27804A]"></span>
+                    <span class="h-1 w-3 rounded-full bg-[#FACC15]"></span>
+                    <span class="h-1 w-1.5 rounded-full bg-[#27804A]"></span>
+                </div>
+            </div>
 
-        <div class="grid gap-6 md:grid-cols-3">
-            @foreach ([
-                ['quote' => 'The cooperative team makes saving simple, clear, and dependable for my family.', 'name' => 'Sita Gurung', 'role' => 'Member since 2018', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-                ['quote' => 'I received friendly guidance when I needed credit to expand my small business.', 'name' => 'Ramesh Thapa', 'role' => 'Small business member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-                ['quote' => 'The service feels personal because the staff understands and supports our community.', 'name' => 'Maya K.C.', 'role' => 'Member since 2020', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
-            ] as $testimonial)
-                <figure class="flex h-full flex-col rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-8">
-                    <div class="flex gap-1 text-[#FFD91A]" aria-label="5 stars">
-                        @for ($star = 0; $star < 5; $star++)
-                            <span aria-hidden="true">★</span>
-                        @endfor
+            @php
+                $testimonials = [
+                    ['quote' => 'The cooperative team makes saving simple, clear, and dependable for my family.', 'name' => 'Sita Gurung', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'I received friendly guidance when I needed credit to expand my small business.', 'name' => 'Ramesh Thapa', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'The service feels personal because the staff understands and supports our community.', 'name' => 'Maya K.C.', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'Staff take time to explain the options in a way that feels easy to understand.', 'name' => 'Suman Adhikari', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'I appreciate being welcomed with patience whenever I visit the cooperative.', 'name' => 'Binita Gurung', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'The team listens carefully and helps me find the information I need.', 'name' => 'Prakash Thapa', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'It is reassuring to have a local place where members can ask for guidance.', 'name' => 'Anisha Karki', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'The service is approachable, and the staff make each visit feel comfortable.', 'name' => 'Deepak Bhandari', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'I value the clear communication and respectful support from the team.', 'name' => 'Sabina Tamang', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/3769021/pexels-photo-3769021.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                    ['quote' => 'Being part of a member-focused cooperative helps me feel connected to my community.', 'name' => 'Rajesh Shrestha', 'role' => 'Cooperative member', 'image' => 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'],
+                ];
+            @endphp
+
+            <div data-testimonial-carousel role="region" aria-roledescription="{{ __('carousel') }}" aria-label="{{ __('What Our Members Say') }}" class="mx-auto max-w-7xl">
+                <div data-testimonial-track class="flex snap-x snap-mandatory gap-0 overflow-x-auto scroll-smooth pb-2 sm:gap-5 md:gap-6" aria-live="polite" aria-atomic="false">
+                    @foreach ($testimonials as $index => $testimonial)
+                        <figure data-testimonial-slide role="group" aria-roledescription="{{ __('slide') }}" aria-label="{{ __(':current of :total', ['current' => $index + 1, 'total' => count($testimonials)]) }}" aria-hidden="false" class="relative flex min-h-[18rem] w-full shrink-0 snap-start flex-col rounded-[1.5rem] border border-[#E5EAF0] bg-[#F8FAFC] p-5 sm:w-[calc(50%-0.75rem)] sm:p-6 lg:w-[calc(33.333%-1rem)]">
+                            <span aria-hidden="true" class="absolute left-5 top-3 font-serif text-6xl font-bold leading-none text-[#EAF4EC] sm:left-7 sm:top-4">“</span>
+                            <div class="relative flex gap-1 text-[#F4B400]" aria-label="{{ __('5 stars') }}">
+                                @for ($star = 0; $star < 5; $star++)
+                                    <span aria-hidden="true">★</span>
+                                @endfor
+                            </div>
+                            <blockquote class="mt-4 flex-1 text-sm leading-6 text-[#737D8D] sm:text-base">“{{ __($testimonial['quote']) }}”</blockquote>
+                            <figcaption class="mt-5 flex items-center gap-3">
+                                <img src="{{ $testimonial['image'] }}" alt="{{ $testimonial['name'] }}" class="h-10 w-10 shrink-0 rounded-full border-2 border-[#EAF4EC] bg-white object-cover">
+                                <div>
+                                    <div class="font-bold text-[#18202D]">{{ $testimonial['name'] }}</div>
+                                    <div class="mt-1 text-sm text-[#7A8494]">{{ __($testimonial['role']) }}</div>
+                                </div>
+                            </figcaption>
+                        </figure>
+                    @endforeach
+                    <span aria-hidden="true" class="w-0 shrink-0 sm:w-[calc(50%-0.75rem)] lg:w-[calc(66.667%-0.5rem)]"></span>
+                </div>
+
+                <div class="mt-5 flex justify-center">
+                    <div role="group" aria-label="{{ __('Testimonial pages') }}" class="flex items-center gap-2">
+                        @foreach ($testimonials as $index => $testimonial)
+                            <button type="button" data-testimonial-page="{{ $index }}" aria-label="{{ __('Go to testimonial :number', ['number' => $index + 1]) }}" aria-current="{{ $index === 0 ? 'true' : 'false' }}" class="h-2.5 w-2.5 rounded-full bg-[#DDE2E8] transition-all hover:bg-[#27804A] aria-[current=true]:w-7 aria-[current=true]:bg-[#27804A] focus:outline-none focus:ring-2 focus:ring-[#27804A] focus:ring-offset-2"></button>
+                        @endforeach
                     </div>
-                    <blockquote class="mt-5 flex-1 text-base leading-7 text-[#344054]">“{{ __($testimonial['quote']) }}”</blockquote>
-                    <figcaption class="mt-6 flex items-center gap-3 border-t border-[#DCE9DF] pt-5">
-                        <img src="{{ $testimonial['image'] }}" alt="{{ $testimonial['name'] }}" class="h-12 w-12 shrink-0 rounded-full object-cover ring-2 ring-[#EFF8F1]">
-                        <div>
-                            <div class="font-semibold text-[#04552F]">{{ $testimonial['name'] }}</div>
-                            <div class="mt-1 text-sm text-[#617067]">{{ __($testimonial['role']) }}</div>
-                        </div>
-                    </figcaption>
-                </figure>
-            @endforeach
+                </div>
+                <div class="mt-8 flex justify-center gap-3">
+                    <button type="button" data-testimonial-previous aria-label="{{ __('Previous testimonial') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#CFE8D5] bg-[#F2FBF4] text-[#27804A] transition hover:border-[#27804A] hover:bg-[#E6F6EA] focus:outline-none focus:ring-2 focus:ring-[#27804A] focus:ring-offset-2">
+                        <svg aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button type="button" data-testimonial-next aria-label="{{ __('Next testimonial') }}" class="inline-flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#CFE8D5] bg-[#F2FBF4] text-[#27804A] transition hover:border-[#27804A] hover:bg-[#E6F6EA] focus:outline-none focus:ring-2 focus:ring-[#27804A] focus:ring-offset-2">
+                        <svg aria-hidden="true" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
-
-    
     </section>
 </div>
 

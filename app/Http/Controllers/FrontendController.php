@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Faq;
+use App\Models\Member;
 use App\Models\Notice;
 use App\Models\Report;
 use App\Models\ReportStatistic;
@@ -72,6 +73,19 @@ class FrontendController extends Controller
                 ->limit(4)
                 ->get()
             : collect();
+        $activeMemberCount = Schema::hasTable('members')
+            ? Member::query()->where('status', 'active')->count()
+            : null;
+        $directoryMembers = Schema::hasTable('members')
+            ? Member::query()
+                ->where('status', 'active')
+                ->select('id', 'user_id', 'member_number', 'joined_at')
+                ->with('user:id,name')
+                ->orderByDesc('joined_at')
+                ->orderByDesc('id')
+                ->limit(10)
+                ->get()
+            : collect();
 
         return view('frontend.home', compact(
             'settings',
@@ -81,6 +95,8 @@ class FrontendController extends Controller
             'latestReports',
             'latestAnnualReport',
             'verifiedStatistics',
+            'activeMemberCount',
+            'directoryMembers',
         ));
     }
 
