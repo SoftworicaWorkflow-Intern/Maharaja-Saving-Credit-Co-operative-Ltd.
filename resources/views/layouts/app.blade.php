@@ -241,6 +241,29 @@
             </div>
         </div>
     </footer>
+    @if (request()->routeIs('home'))
+        <section class="bg-gray-800 px-4 py-12 text-white sm:px-6 lg:px-8" aria-labelledby="find-us-heading">
+            <div class="mx-auto max-w-7xl">
+                <div class="mb-6 text-center">
+                    <p class="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD91A]">{{ __('Find Us') }}</p>
+                    <h2 id="find-us-heading" class="mt-2 text-3xl font-bold text-white">{{ __('Visit Our Office') }}</h2>
+                    <p class="mt-2 text-sm text-gray-300">{{ __('Kawasoti -2 BP Chowk, Nawalpur') }}</p>
+                </div>
+                <div class="overflow-hidden rounded-3xl border border-gray-700 bg-white shadow-sm">
+                    <iframe
+                        src="https://www.google.com/maps?q=Kawasoti%20-%202%20BP%20Chowk%2C%20Nawalpur&z=15&output=embed"
+                        width="100%"
+                        height="360"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="{{ __('Maharaja Bachat Cooperative location') }}">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+    @endif
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>

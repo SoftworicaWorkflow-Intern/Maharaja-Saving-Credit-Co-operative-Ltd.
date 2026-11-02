@@ -51,18 +51,18 @@
 
             <p class="sidebar-section-title mt-10 px-3 text-xs font-semibold uppercase tracking-[0.18em] text-green-100">{{ __('Cooperative administration') }}</p>
             <nav class="mt-3 flex flex-col gap-1" aria-label="{{ __('Admin Panel') }}">
-                <a href="{{ route('admin.dashboard') }}" aria-current="page" class="sidebar-link flex items-center gap-3 rounded-xl bg-[#FFD91A] px-4 py-3 text-sm font-bold text-[#04552F] shadow-sm">
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.dashboard') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                     <span aria-hidden="true" class="shrink-0 text-lg">▦</span>
                     <span class="sidebar-text">{{ __('Dashboard') }}</span>
                 </a>
                 @if (auth()->user()->hasPermissionTo('applications.view'))
-                    <a href="{{ route('admin.applications.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.applications.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.applications.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">▤</span>
                         <span class="sidebar-text">{{ __('Membership applications') }}</span>
                     </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('members.view'))
-                    <a href="{{ route('admin.members.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.members.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.members.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">♙</span>
                         <span class="sidebar-text">{{ __('Members') }}</span>
                     </a>
@@ -98,17 +98,17 @@
                     </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('staff.manage'))
-                    <a href="{{ route('admin.staff.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.staff.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.staff.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">⚙</span>
                         <span class="sidebar-text">{{ __('Staff & permissions') }}</span>
                     </a>
-                    <a href="{{ route('admin.leadership.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.leadership.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.leadership.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">♙</span>
                         <span class="sidebar-text">Leadership profiles</span>
                     </a>
                 @endif
                 @if (auth()->user()->hasPermissionTo('contact_inquiries.manage'))
-                    <a href="{{ route('admin.contact-inquiries.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
+                    <a href="{{ route('admin.contact-inquiries.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.contact-inquiries.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
                         <span aria-hidden="true" class="shrink-0 text-lg">✉</span>
                         <span class="sidebar-text">{{ __('Contact inquiries') }}</span>
                     </a>
@@ -148,12 +148,12 @@
                         <details class="relative lg:hidden">
                             <summary class="cursor-pointer list-none rounded-xl border border-[#DCE9DF] px-3 py-2 text-sm font-semibold text-[#08713D]">☰ <span class="sr-only">{{ __('Dashboard') }}</span></summary>
                             <nav class="absolute left-0 top-12 z-20 w-64 rounded-2xl border border-[#DCE9DF] bg-white p-3 shadow-xl" aria-label="{{ __('Admin Panel') }}">
-                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 rounded-xl bg-[#E7F4EB] px-4 py-3 text-sm font-bold text-[#04552F]">{{ __('Dashboard') }}</a>
+                                <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB] {{ request()->routeIs('admin.dashboard') ? 'bg-[#E7F4EB] font-bold text-[#04552F]' : '' }}">{{ __('Dashboard') }}</a>
                                 @if (auth()->user()->hasPermissionTo('applications.view'))
-                                    <a href="{{ route('admin.applications.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Membership applications') }}</a>
+                                    <a href="{{ route('admin.applications.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB] {{ request()->routeIs('admin.applications.*') ? 'bg-[#E7F4EB] font-bold text-[#04552F]' : '' }}">{{ __('Membership applications') }}</a>
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('members.view'))
-                                    <a href="{{ route('admin.members.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Members') }}</a>
+                                    <a href="{{ route('admin.members.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB] {{ request()->routeIs('admin.members.*') ? 'bg-[#E7F4EB] font-bold text-[#04552F]' : '' }}">{{ __('Members') }}</a>
                                 @endif
                                 @if (auth()->user()->hasPermissionTo('notices.manage'))
                                     <a href="{{ route('admin.notices.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Notices') }}</a>

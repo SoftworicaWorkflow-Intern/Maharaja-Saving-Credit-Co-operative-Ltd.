@@ -26,6 +26,10 @@
 
         @if ($message['has_portrait'])
             <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $message['name'] ?: __($message['designation'])]) }}" class="mt-8 max-h-[28rem] w-full rounded-2xl object-cover shadow-md print:hidden">
+        @elseif ($leader === 'chairperson')
+            <img src="{{ asset('images/chairperson-message.png') }}" alt="{{ __('Portrait of the Chairperson') }}" class="mt-8 max-h-[28rem] w-full rounded-2xl object-cover shadow-md print:hidden">
+        @elseif ($leader === 'secretary')
+            <img src="{{ asset('images/secretary-portrait.png') }}" alt="{{ __('Portrait of the Secretary') }}" class="mt-8 max-h-[28rem] w-full rounded-2xl object-cover shadow-md print:hidden">
         @endif
 
         <div class="mt-8 space-y-6 border-t border-[#DCE9DF] pt-8 text-base leading-8 text-[#344054] sm:text-lg sm:leading-9">

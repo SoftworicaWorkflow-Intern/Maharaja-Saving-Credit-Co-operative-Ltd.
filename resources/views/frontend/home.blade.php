@@ -258,9 +258,11 @@
                         $portraitFirst = $leader === 'chairperson';
                     @endphp
                     <article class="fade-in grid min-w-0 overflow-hidden rounded-3xl border border-[#DCE9DF] bg-[#EFF8F1] shadow-sm lg:grid-cols-2">
-                        <div class="{{ $portraitFirst ? 'order-1 lg:order-1' : 'order-1 lg:order-2' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
+                        <div class="{{ $portraitFirst ? 'order-1 lg:order-1 leadership-portrait-slide-left' : 'order-1 lg:order-2 leadership-portrait-slide-right' }} relative min-h-72 overflow-hidden bg-[#E3F1E7] sm:min-h-96 lg:min-h-full">
                             @if ($message['has_portrait'])
                                 <img src="{{ route('leadership.portrait', $leader) }}" alt="{{ __('Portrait of :name', ['name' => $leaderName ?: __($message['designation'])]) }}" class="absolute inset-0 h-full w-full object-cover">
+                            @elseif ($leader === 'chairperson')
+                                <img src="{{ asset('images/chairperson-message.png') }}" alt="{{ __('Portrait of the Chairperson') }}" class="absolute inset-0 h-full w-full object-cover">
                             @elseif ($leader === 'secretary')
                                 <img src="{{ asset('images/secretary-portrait.png') }}" alt="{{ __('Portrait of the Secretary') }}" class="absolute inset-0 h-full w-full object-cover">
                             @else
