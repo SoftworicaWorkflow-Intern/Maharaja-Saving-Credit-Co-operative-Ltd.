@@ -73,7 +73,7 @@
                                 <a href="{{ route('about.other-committees') }}#service-committee" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Service Committee') }}</a>
                             </div>
                         </details>
-                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Employees') }}</a>
+                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Staff') }}</a>
                     </div>
                 </details>
                 <a href="{{ route('services') }}" class="whitespace-nowrap hover:text-[#FFD91A] {{ request()->routeIs('services*') ? 'text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>
@@ -151,7 +151,7 @@
                                 <a href="{{ route('about.other-committees') }}#service-committee" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Service Committee') }}</a>
                             </div>
                         </details>
-                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Employees') }}</a>
+                        <a href="{{ route('about.employees') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Staff') }}</a>
                     </div>
                 </details>
                 <a href="{{ route('services') }}" class="rounded-lg px-4 py-3 text-sm font-medium text-white hover:bg-white/10 {{ request()->routeIs('services*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">{{ __('Services') }}</a>

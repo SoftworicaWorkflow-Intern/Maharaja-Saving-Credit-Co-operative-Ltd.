@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ReportStatisticController as AdminReportStatisticController;
 use App\Http\Controllers\Admin\ReportTaxonomyController as AdminReportTaxonomyController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
+use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
 use App\Http\Controllers\Admin\StaffController as AdminStaffController;
 use App\Http\Controllers\AnnualReportController;
 use App\Http\Controllers\AuthController;
@@ -96,6 +97,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', AdminDashboardController::class)->name('dashboard');
+    Route::get('/settings', [AdminSettingsController::class, 'index'])
+        ->name('settings.index');
+    Route::put('/settings/password', [AdminSettingsController::class, 'updatePassword'])
+        ->name('settings.password.update');
+    Route::put('/settings/user-password', [AdminSettingsController::class, 'updateUserPassword'])
+        ->middleware('permission:staff.manage')
+        ->name('settings.user-password.update');
     Route::get('/annual-reports', [AdminAnnualReportController::class, 'index'])
         ->middleware('permission:reports.manage')
         ->name('annual-reports.index');

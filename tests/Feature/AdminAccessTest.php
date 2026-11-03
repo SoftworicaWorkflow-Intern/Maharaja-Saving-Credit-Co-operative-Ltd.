@@ -6,6 +6,7 @@ use App\Models\ContactInquiry;
 use App\Models\MembershipApplication;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AdminAccessTest extends TestCase
@@ -47,9 +48,46 @@ class AdminAccessTest extends TestCase
         $response = $this->actingAs($admin)->get(route('admin.dashboard'));
 
         $response->assertOk()
-            ->assertSee('onsubmit="return window.confirm(this.dataset.confirm)"', false)
-            ->assertSee('data-confirm="Are you sure you want to log out?"', false);
-        $this->assertSame(2, substr_count($response->getContent(), 'data-confirm="Are you sure you want to log out?"'));
+            ->assertSee('id="logout-confirmation"', false)
+            ->assertSee('data-logout-cancel', false)
+            ->assertSee('data-logout-confirm', false)
+            ->assertSee('Are you sure you want to log out?');
+        $this->assertGreaterThanOrEqual(2, substr_count($response->getContent(), 'data-logout-form'));
+    }
+
+    public function test_admin_can_change_own_password_from_settings(): void
+    {
+        $admin = User::factory()->create(['password' => 'current-password']);
+        $admin->forceFill(['is_admin' => true])->save();
+
+        $this->actingAs($admin)
+            ->put(route('admin.settings.password.update'), [
+                'current_password' => 'current-password',
+                'password' => 'new-secure-password',
+                'password_confirmation' => 'new-secure-password',
+            ])
+            ->assertRedirect(route('admin.settings.index'))
+            ->assertSessionHas('status');
+
+        $this->assertTrue(Hash::check('new-secure-password', $admin->refresh()->password));
+    }
+
+    public function test_staff_manager_can_change_another_user_password_from_settings(): void
+    {
+        $admin = User::factory()->create();
+        $admin->forceFill(['is_admin' => true])->save();
+        $user = User::factory()->create(['password' => 'old-password']);
+
+        $this->actingAs($admin)
+            ->put(route('admin.settings.user-password.update'), [
+                'user_id' => $user->id,
+                'password' => 'new-secure-password',
+                'password_confirmation' => 'new-secure-password',
+            ])
+            ->assertRedirect(route('admin.settings.index'))
+            ->assertSessionHas('status');
+
+        $this->assertTrue(Hash::check('new-secure-password', $user->refresh()->password));
     }
 
     public function test_admin_dashboard_shows_permission_aware_operational_counts(): void

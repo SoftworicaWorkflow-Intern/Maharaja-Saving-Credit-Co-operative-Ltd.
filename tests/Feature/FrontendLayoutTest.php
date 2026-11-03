@@ -217,7 +217,7 @@ class FrontendLayoutTest extends TestCase
             'about.vision-mission' => ['हाम्रो दिशा', 'दृष्टि र ध्येय', 'ध्येय', 'दृष्टि'],
             'about.board-of-directors' => ['सहकारी नेतृत्व', 'सञ्चालक समिति'],
             'about.other-committees' => ['सहकारी नेतृत्व', 'अन्य समितिहरू', 'लेखा समिति', 'ऋण उपसमिति', 'शिक्षा उपसमिति', 'महिला समिति', 'सेवा समिति'],
-            'about.employees' => ['हाम्रो टोली', 'कर्मचारीहरू', 'कार्यपालिका'],
+            'about.employees' => ['हाम्रो टोली', 'Staff', 'कार्यपालिका'],
             'savings' => ['सदस्य बचत योजनाहरू', 'नियमित बचत', 'अहिले आवेदन दिनुहोस्'],
             'loans' => ['सदस्यका आवश्यकताका लागि वित्तीय सहयोग', 'व्यक्तिगत ऋण', 'जानकारी माग्नुहोस्'],
             'notices' => ['नवीनतम घोषणाहरू', 'सबै वर्ग', 'छान्नुहोस्', 'कुनै सूचना फेला परेन।'],
@@ -278,7 +278,7 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('Education Sub-Committee')
             ->assertSee('Women Committee')
             ->assertSee('Service Committee')
-            ->assertSee('Employees');
+            ->assertSee('Staff');
 
         $this->assertSame(2, substr_count($response->getContent(), 'data-about-dropdown'));
         $this->assertSame(2, substr_count($response->getContent(), 'data-committees-dropdown'));
@@ -323,8 +323,9 @@ class FrontendLayoutTest extends TestCase
         $this->get(route('about.board-of-directors'))
             ->assertOk()
             ->assertSee('id="board-of-directors"', false)
-            ->assertSee('images/board-of-directors.png')
-            ->assertSee('alt="Board of Directors of Maharaj Bachat"', false)
+            ->assertSee('images/board-directors/devi-maya-pulami-katu-magar.png')
+            ->assertSee('देविमाया पुलामी कातु मगर')
+            ->assertSee('बालकृष्ण पाण्डे')
             ->assertDontSee('id="accounts-committee"', false);
 
         $this->get(route('about.other-committees'))
@@ -347,9 +348,9 @@ class FrontendLayoutTest extends TestCase
         $this->get(route('about.employees'))
             ->assertOk()
             ->assertSee('id="employees"', false)
-            ->assertSee('images/executive-committee.png')
-            ->assertSee('alt="Executive Committee of Maharaj Bachat tatha Rin Sahakari Sanstha Ltd."', false)
-            ->assertSee('Executive Committee');
+            ->assertSee('images/staff/bhupal-bibari.png')
+            ->assertSee('भुपाल बिबारी')
+            ->assertSee('स्वस्तिक बहादुर मगर');
     }
 
     public function test_what_we_offer_cards_link_to_their_dedicated_pages(): void

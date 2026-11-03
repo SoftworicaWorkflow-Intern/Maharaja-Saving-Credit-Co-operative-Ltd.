@@ -113,9 +113,13 @@
                         <span class="sidebar-text">{{ __('Contact inquiries') }}</span>
                     </a>
                 @endif
+                <a href="{{ route('admin.settings.index') }}" class="sidebar-link flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-white transition hover:bg-white/10 {{ request()->routeIs('admin.settings.*') ? 'bg-white/15 text-[#FFD91A]' : '' }}">
+                    <span aria-hidden="true" class="shrink-0 text-lg">⚙</span>
+                    <span class="sidebar-text">{{ __('Settings') }}</span>
+                </a>
             </nav>
 
-            <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-8" data-confirm="{{ __('Are you sure you want to log out?') }}" onsubmit="return window.confirm(this.dataset.confirm)">
+            <form method="POST" action="{{ route('logout') }}" class="mt-auto pt-8" data-logout-form>
                 @csrf
                 <button type="submit" class="sidebar-link flex w-full items-center gap-3 rounded-xl border border-white/25 px-4 py-3 text-left text-sm font-semibold text-white transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">
                     <svg aria-hidden="true" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -128,7 +132,7 @@
 
         <!-- MAIN CONTENT WRAPPER -->
         <div class="min-w-0 flex-1">
-            <header class="border-b border-[#DCE9DF] bg-white">
+            <header class="sticky top-0 z-40 border-b border-[#DCE9DF] bg-white shadow-sm">
                 <div class="mx-auto flex min-h-20 max-w-[1600px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
                     
                     <!-- LEFT SIDE: Hamburger + Title -->
@@ -174,7 +178,8 @@
                                 @if (auth()->user()->hasPermissionTo('contact_inquiries.manage'))
                                     <a href="{{ route('admin.contact-inquiries.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB]">{{ __('Contact inquiries') }}</a>
                                 @endif
-                                <form method="POST" action="{{ route('logout') }}" class="border-t border-[#DCE9DF] pt-3" data-confirm="{{ __('Are you sure you want to log out?') }}" onsubmit="return window.confirm(this.dataset.confirm)">
+                                <a href="{{ route('admin.settings.index') }}" class="mt-1 flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-[#08713D] hover:bg-[#E7F4EB] {{ request()->routeIs('admin.settings.*') ? 'bg-[#E7F4EB] font-bold text-[#04552F]' : '' }}">{{ __('Settings') }}</a>
+                                <form method="POST" action="{{ route('logout') }}" class="border-t border-[#DCE9DF] pt-3" data-logout-form>
                                     @csrf
                                     <button type="submit" class="flex w-full items-center gap-2 rounded-xl px-4 py-2 text-left text-sm font-semibold text-[#08713D] transition hover:bg-[#E7F4EB] focus:outline-none focus:ring-2 focus:ring-[#08713D]">
                                         <svg aria-hidden="true" class="h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -226,6 +231,21 @@
             </main>
         </div>
     </div>
+
+    <dialog id="logout-confirmation" class="fixed left-1/2 top-4 m-0 w-[min(90vw,24rem)] -translate-x-1/2 rounded-xl border border-[#DCE9DF] bg-white p-0 text-[#182A22] shadow-2xl backdrop:bg-black/50">
+        <div class="p-4">
+            <h2 class="text-base font-bold">{{ __('Confirm logout') }}</h2>
+            <p class="mt-2 text-sm leading-6 text-[#617067]">{{ __('Are you sure you want to log out?') }}</p>
+            <div class="mt-4 flex justify-end gap-2">
+                <button type="button" data-logout-cancel class="rounded-lg border border-[#DCE9DF] px-3 py-2 text-sm font-semibold text-[#617067] transition hover:bg-[#EFF8F1] focus:outline-none focus:ring-2 focus:ring-[#08713D]">
+                    {{ __('Cancel') }}
+                </button>
+                <button type="button" data-logout-confirm class="rounded-lg bg-[#08713D] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#04552F] focus:outline-none focus:ring-2 focus:ring-[#FFD91A]">
+                    {{ __('Logout') }}
+                </button>
+            </div>
+        </div>
+    </dialog>
 
     <!-- JAVASCRIPT FOR NEW FEATURES -->
     <script>
@@ -291,6 +311,44 @@
             // Run immediately, then update every 1000ms (1 second)
             updateClock();
             setInterval(updateClock, 1000);
+
+            const logoutDialog = document.getElementById('logout-confirmation');
+            let pendingLogoutForm = null;
+
+            document.querySelectorAll('[data-logout-form]').forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    if (!logoutDialog || pendingLogoutForm) {
+                        return;
+                    }
+
+                    event.preventDefault();
+                    pendingLogoutForm = form;
+                    logoutDialog.showModal();
+                });
+            });
+
+            document.querySelector('[data-logout-cancel]')?.addEventListener('click', () => {
+                pendingLogoutForm = null;
+                logoutDialog?.close();
+            });
+
+            document.querySelector('[data-logout-confirm]')?.addEventListener('click', () => {
+                if (!pendingLogoutForm) {
+                    return;
+                }
+
+                const form = pendingLogoutForm;
+                pendingLogoutForm = null;
+                logoutDialog?.close();
+                form.submit();
+            });
+
+            logoutDialog?.addEventListener('click', (event) => {
+                if (event.target === logoutDialog) {
+                    pendingLogoutForm = null;
+                    logoutDialog.close();
+                }
+            });
         });
     </script>
 </body>

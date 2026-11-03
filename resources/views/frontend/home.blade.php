@@ -497,19 +497,18 @@
         </div>
     </div>
 
-    <!-- Lightbox Modal (Hidden by default) -->
-    <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onclick="closeLightbox(event)">
-        <!-- Close Button -->
-        <button class="absolute right-6 top-6 text-white hover:text-gray-300 focus:outline-none" onclick="closeLightbox(event)">
-            <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-        </button>
-        
-        <!-- Full Image -->
-        <img id="lightbox-img" src="" alt="Full size image" class="max-h-[90vh] max-w-full rounded-lg object-contain shadow-2xl">
-    </div>
 </section>
+
+<!-- Lightbox Modal (Hidden by default) -->
+<div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4 backdrop-blur-sm" onclick="closeLightbox(event)" role="dialog" aria-modal="true" aria-label="{{ __('Gallery image viewer') }}">
+    <button type="button" class="fixed right-4 top-4 z-10 inline-flex h-12 w-12 items-center justify-center rounded-full bg-black/60 text-white transition hover:bg-black/80 hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-white sm:right-6 sm:top-6" aria-label="{{ __('Close image viewer') }}" onclick="closeLightbox(event)">
+        <svg class="h-8 w-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </button>
+
+    <img id="lightbox-img" src="" alt="Full size image" class="max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] rounded-lg object-contain shadow-2xl sm:max-h-[90vh] sm:max-w-[90vw]">
+</div>
 
 <!-- Custom CSS to hide the scrollbar but keep functionality -->
 <style>
