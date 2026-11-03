@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notice extends Model
 {
-    public const CATEGORIES = ['general', 'savings', 'loan'];
+    public const CATEGORIES = ['general', 'important', 'financial', 'member', 'savings', 'loan'];
 
     public const STATUSES = ['draft', 'published'];
 
@@ -20,6 +20,8 @@ class Notice extends Model
         'status',
         'published_at',
         'featured',
+        'document_path',
+        'document_mime_type',
     ];
 
     protected $casts = [

@@ -12,8 +12,10 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FrontendController extends Controller
 {
@@ -76,16 +78,6 @@ class FrontendController extends Controller
         $activeMemberCount = Schema::hasTable('members')
             ? Member::query()->where('status', 'active')->count()
             : null;
-        $directoryMembers = Schema::hasTable('members')
-            ? Member::query()
-                ->where('status', 'active')
-                ->select('id', 'user_id', 'member_number', 'joined_at')
-                ->with('user:id,name')
-                ->orderByDesc('joined_at')
-                ->orderByDesc('id')
-                ->limit(10)
-                ->get()
-            : collect();
 
         return view('frontend.home', compact(
             'settings',
@@ -96,7 +88,6 @@ class FrontendController extends Controller
             'latestAnnualReport',
             'verifiedStatistics',
             'activeMemberCount',
-            'directoryMembers',
         ));
     }
 
@@ -130,11 +121,6 @@ class FrontendController extends Controller
     public function about(): View
     {
         return view('frontend.about');
-    }
-
-    public function visionMission(): View
-    {
-        return view('frontend.about-vision-mission');
     }
 
     public function boardOfDirectors(): View
@@ -198,13 +184,22 @@ class FrontendController extends Controller
     public function notices(Request $request): View
     {
         if (! Schema::hasTable('notices')) {
-            return view('frontend.notices', ['notices' => collect()]);
+            return view('frontend.notices', [
+                'notices' => collect(),
+                'filters' => [],
+            ]);
         }
+
+        $filters = $request->validate([
+            'search' => ['nullable', 'string', 'max:100'],
+            'category' => ['nullable', Rule::in(Notice::CATEGORIES)],
+            'published_on' => ['nullable', 'date'],
+        ]);
 
         $query = Notice::query()->activePublished();
 
-        if ($request->filled('search')) {
-            $search = $request->input('search');
+        if (! empty($filters['search'])) {
+            $search = $filters['search'];
             $query->where(function ($q) use ($search) {
                 $q->where('title_np', 'like', "%{$search}%")
                     ->orWhere('title_en', 'like', "%{$search}%")
@@ -213,13 +208,22 @@ class FrontendController extends Controller
             });
         }
 
-        if ($request->filled('category')) {
-            $query->where('category', $request->input('category'));
+        if (! empty($filters['category'])) {
+            $query->where('category', $filters['category']);
         }
 
-        $notices = $query->orderByDesc('published_at')->paginate(7);
+        if (! empty($filters['published_on'])) {
+            $query->whereDate('published_at', $filters['published_on']);
+        }
 
-        return view('frontend.notices', compact('notices'));
+        $notices = $query
+            ->orderByDesc('featured')
+            ->orderByDesc('published_at')
+            ->orderByDesc('id')
+            ->paginate(9)
+            ->withQueryString();
+
+        return view('frontend.notices', compact('notices', 'filters'));
     }
 
     public function showNotice(Notice $notice): View
@@ -238,6 +242,60 @@ class FrontendController extends Controller
             ->get();
 
         return view('frontend.notice', compact('notice', 'relatedNotices'));
+    }
+
+    public function noticeDocument(Notice $notice): StreamedResponse
+    {
+        $notice = $this->publishedNoticeWithDocument($notice);
+
+        return Storage::disk('local')->response(
+            $notice->document_path,
+            null,
+            [
+                'Content-Type' => $notice->document_mime_type,
+                'X-Content-Type-Options' => 'nosniff',
+            ],
+            'inline',
+        );
+    }
+
+    public function downloadNoticeDocument(Notice $notice): StreamedResponse
+    {
+        $notice = $this->publishedNoticeWithDocument($notice);
+        $extension = match ($notice->document_mime_type) {
+            'application/pdf' => 'pdf',
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp',
+            default => abort(404),
+        };
+
+        return Storage::disk('local')->download(
+            $notice->document_path,
+            'notice-'.$notice->id.'.'.$extension,
+            [
+                'Content-Type' => $notice->document_mime_type,
+                'X-Content-Type-Options' => 'nosniff',
+            ],
+        );
+    }
+
+    private function publishedNoticeWithDocument(Notice $notice): Notice
+    {
+        $notice = Notice::query()
+            ->activePublished()
+            ->whereKey($notice->getKey())
+            ->firstOrFail();
+
+        abort_unless(
+            is_string($notice->document_path)
+                && is_string($notice->document_mime_type)
+                && in_array($notice->document_mime_type, ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'], true)
+                && Storage::disk('local')->exists($notice->document_path),
+            404,
+        );
+
+        return $notice;
     }
 
     public function contact(): View

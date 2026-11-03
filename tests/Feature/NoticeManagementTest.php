@@ -6,7 +6,10 @@ use App\Models\Notice;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class NoticeManagementTest extends TestCase
@@ -55,11 +58,34 @@ class NoticeManagementTest extends TestCase
             ->get(route('home'))
             ->assertOk()
             ->assertSee('&lt;script&gt;', false)
-            ->assertDontSee('<script>', false)
+            ->assertDontSee('<script>alert("unsafe")</script>', false)
             ->assertSee('Member services update');
     }
 
-    public function test_homepage_hides_ticker_when_no_notice_is_publicly_active(): void
+    public function test_homepage_labels_the_published_notice_ticker_as_latest_news(): void
+    {
+        $this->createNotice([
+            'title_en' => 'Community update',
+            'title_np' => 'समुदाय अद्यावधिक',
+            'status' => 'published',
+            'published_at' => now()->subMinute(),
+        ]);
+
+        $response = $this->get(route('home'));
+
+        $response
+            ->assertOk()
+            ->assertSee('data-news-ticker', false)
+            ->assertSee('LATEST NEWS')
+            ->assertSee('Community update');
+
+        $this->assertLessThan(
+            strpos($response->getContent(), 'data-hero-carousel'),
+            strpos($response->getContent(), 'data-news-ticker'),
+        );
+    }
+
+    public function test_homepage_shows_latest_news_bar_without_published_notices(): void
     {
         $this->createNotice([
             'title_en' => 'Draft only',
@@ -69,7 +95,8 @@ class NoticeManagementTest extends TestCase
 
         $this->get(route('home'))
             ->assertOk()
-            ->assertDontSee('data-news-ticker', false);
+            ->assertSee('data-news-ticker', false)
+            ->assertSee('No latest news is available right now.');
     }
 
     public function test_notice_listing_shows_search_and_filter_controls_and_notice_categories(): void
@@ -83,17 +110,49 @@ class NoticeManagementTest extends TestCase
             ->assertOk()
             ->assertSee('General member update')
             ->assertSee('>General</span>', false)
+            ->assertSee('समाचार तथा सूचनाहरू')
+            ->assertSee('Notices')
+            ->assertSee('lg:grid-cols-3', false)
+            ->assertSee('data-notice-preview', false)
+            ->assertSee('Read full notice')
             ->assertSee('name="search"', false)
             ->assertSee('name="category"', false)
+            ->assertSee('name="published_on"', false)
             ->assertSee('All categories')
-            ->assertSee('>Filter</button>', false);
+            ->assertSee('>Search</button>', false);
     }
 
-    public function test_notice_listing_shows_seven_notices_per_page(): void
+    public function test_notice_listing_filters_by_search_category_and_publication_date(): void
+    {
+        $this->freezeTime();
+        $matchedNotice = $this->createNotice([
+            'title_en' => 'Member dividend statement',
+            'body_en' => 'Annual allocation information for members.',
+            'category' => 'financial',
+            'published_at' => now()->subDay(),
+        ]);
+        $otherNotice = $this->createNotice([
+            'title_en' => 'General office update',
+            'body_en' => 'Office service schedule information.',
+            'category' => 'general',
+            'published_at' => now()->subDays(2),
+        ]);
+
+        $this->get(route('notices', [
+            'search' => 'allocation',
+            'category' => 'financial',
+            'published_on' => now()->subDay()->toDateString(),
+        ]))
+            ->assertOk()
+            ->assertSee($matchedNotice->title_en)
+            ->assertDontSee($otherNotice->title_en);
+    }
+
+    public function test_notice_listing_shows_nine_notices_per_page(): void
     {
         $this->freezeTime();
 
-        for ($noticeNumber = 1; $noticeNumber <= 8; $noticeNumber++) {
+        for ($noticeNumber = 1; $noticeNumber <= 10; $noticeNumber++) {
             $this->createNotice([
                 'title_en' => "Published notice {$noticeNumber}",
                 'published_at' => now()->subMinutes($noticeNumber),
@@ -103,16 +162,66 @@ class NoticeManagementTest extends TestCase
         $firstPage = $this->get(route('notices'))
             ->assertOk()
             ->assertSee('page=2', false)
-            ->assertDontSee('Published notice 8');
+            ->assertDontSee('>Published notice 10</a>', false);
 
-        for ($noticeNumber = 1; $noticeNumber <= 7; $noticeNumber++) {
+        for ($noticeNumber = 1; $noticeNumber <= 9; $noticeNumber++) {
             $firstPage->assertSee("Published notice {$noticeNumber}");
         }
 
         $this->get(route('notices', ['page' => 2]))
             ->assertOk()
-            ->assertSee('Published notice 8')
-            ->assertDontSee('Published notice 1');
+            ->assertSee('Published notice 10')
+            ->assertDontSee('>Published notice 1</a>', false);
+    }
+
+    public function test_public_notice_documents_support_inline_preview_download_and_publication_checks(): void
+    {
+        Storage::fake('local');
+        $imagePath = 'notices/member-update.png';
+        $pdfPath = 'notices/annual-update.pdf';
+        Storage::disk('local')->put($imagePath, file_get_contents(public_path('images/logo.png')));
+        Storage::disk('local')->put($pdfPath, '%PDF-1.4 test document');
+
+        $imageNotice = $this->createNotice([
+            'title_en' => 'Published image notice',
+            'document_path' => $imagePath,
+            'document_mime_type' => 'image/png',
+        ]);
+        $pdfNotice = $this->createNotice([
+            'title_en' => 'Published PDF notice',
+            'document_path' => $pdfPath,
+            'document_mime_type' => 'application/pdf',
+        ]);
+        $draftNotice = $this->createNotice([
+            'title_en' => 'Draft with a document',
+            'status' => 'draft',
+            'document_path' => $imagePath,
+            'document_mime_type' => 'image/png',
+        ]);
+
+        $this->get(route('notices.document', $imageNotice))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'image/png')
+            ->assertHeader('X-Content-Type-Options', 'nosniff');
+
+        $this->get(route('notices.download', $pdfNotice))
+            ->assertOk()
+            ->assertHeader('Content-Type', 'application/pdf')
+            ->assertHeader('X-Content-Type-Options', 'nosniff');
+
+        $this->get(route('notices.show', $imageNotice))
+            ->assertOk()
+            ->assertSee(route('notices.document', $imageNotice), false)
+            ->assertSee(route('notices.download', $imageNotice), false)
+            ->assertSee('Back to Notices')
+            ->assertSee('Print notice');
+
+        $this->get(route('notices.show', $pdfNotice))
+            ->assertOk()
+            ->assertSee('<iframe src="'.route('notices.document', $pdfNotice).'"', false);
+
+        $this->get(route('notices.document', $draftNotice))->assertNotFound();
+        $this->get(route('notices.download', $draftNotice))->assertNotFound();
     }
 
     public function test_homepage_notice_cards_link_to_the_full_notice(): void
@@ -259,6 +368,7 @@ class NoticeManagementTest extends TestCase
     public function test_admin_can_create_publish_unpublish_and_delete_notices(): void
     {
         $this->freezeTime();
+        $this->withoutMiddleware(PreventRequestForgery::class);
 
         $administrator = $this->administrator();
         $noticeData = [
@@ -271,7 +381,8 @@ class NoticeManagementTest extends TestCase
             'featured' => '1',
         ];
 
-        $this->actingAs($administrator)
+        $this->withoutMiddleware(PreventRequestForgery::class)
+            ->actingAs($administrator)
             ->get(route('admin.notices.index'))
             ->assertOk()
             ->assertSee('Notices & announcements', false);
@@ -321,6 +432,77 @@ class NoticeManagementTest extends TestCase
         $this->assertDatabaseMissing('notices', ['id' => $notice->id]);
     }
 
+    public function test_admin_can_upload_and_remove_a_notice_document(): void
+    {
+        Storage::fake('local');
+        $administrator = $this->administrator();
+        $document = new UploadedFile(public_path('images/logo.png'), 'member-notice.png', 'image/png', UPLOAD_ERR_OK, true);
+        $noticeData = [
+            'title_en' => 'Member notice',
+            'title_np' => 'सदस्य सूचना',
+            'body_en' => 'Notice details.',
+            'body_np' => 'सूचना विवरण।',
+            'category' => 'member',
+            'status' => 'draft',
+            'document' => $document,
+        ];
+        $csrfToken = csrf_token();
+
+        $this->withoutMiddleware(PreventRequestForgery::class)
+            ->actingAs($administrator)
+            ->withSession(['_token' => $csrfToken])
+            ->post(route('admin.notices.store'), ['_token' => $csrfToken, ...$noticeData])
+            ->assertRedirect();
+
+        $notice = Notice::query()->where('title_en', 'Member notice')->firstOrFail();
+        $documentPath = $notice->document_path;
+        $this->assertSame('image/png', $notice->document_mime_type);
+        Storage::disk('local')->assertExists($documentPath);
+
+        $this->actingAs($administrator)
+            ->get(route('admin.notices.edit', $notice))
+            ->assertOk()
+            ->assertSee('Current file: PNG')
+            ->assertSee('name="remove_document"', false);
+
+        $this->actingAs($administrator)
+            ->withSession(['_token' => $csrfToken])
+            ->put(route('admin.notices.update', $notice), [
+                '_token' => $csrfToken,
+                ...$noticeData,
+                'document' => null,
+                'remove_document' => '1',
+            ])
+            ->assertRedirect(route('admin.notices.edit', $notice));
+
+        $notice->refresh();
+        $this->assertNull($notice->document_path);
+        $this->assertNull($notice->document_mime_type);
+        Storage::disk('local')->assertMissing($documentPath);
+    }
+
+    public function test_admin_cannot_upload_an_unsupported_notice_document(): void
+    {
+        Storage::fake('local');
+        $csrfToken = csrf_token();
+
+        $this->withoutMiddleware(PreventRequestForgery::class)
+            ->actingAs($this->administrator())
+            ->withSession(['_token' => $csrfToken])
+            ->post(route('admin.notices.store'), [
+                '_token' => $csrfToken,
+                'title_en' => 'Unsupported attachment',
+                'title_np' => 'असमर्थित फाइल',
+                'category' => 'general',
+                'status' => 'draft',
+                'document' => UploadedFile::fake()->createWithContent('notice.txt', 'Not an image or PDF.'),
+            ])
+            ->assertSessionHasErrors('document');
+
+        $this->assertDatabaseCount('notices', 0);
+        $this->assertSame([], Storage::disk('local')->allFiles('notices'));
+    }
+
     public function test_notice_management_requires_the_notices_permission(): void
     {
         $this->seed();
@@ -341,6 +523,8 @@ class NoticeManagementTest extends TestCase
 
     public function test_invalid_notice_data_is_rejected_without_creating_a_record(): void
     {
+        $this->withoutMiddleware(PreventRequestForgery::class);
+
         $this->actingAs($this->administrator())
             ->post(route('admin.notices.store'), [
                 'title_en' => '',

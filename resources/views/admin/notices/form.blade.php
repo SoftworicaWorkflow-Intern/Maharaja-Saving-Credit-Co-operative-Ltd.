@@ -1,4 +1,4 @@
-<form method="POST" action="{{ $action }}" class="max-w-4xl space-y-6 rounded-xl border border-[#DCE9DF] bg-white p-5 shadow-sm sm:p-8">
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="max-w-4xl space-y-6 rounded-xl border border-[#DCE9DF] bg-white p-5 shadow-sm sm:p-8">
     @csrf
     @if ($method !== 'POST')
         @method($method)
@@ -49,9 +49,22 @@
             <p class="mt-2 text-xs text-[#617067]">A future date schedules the notice; it becomes visible at that time.</p>
             @error('published_at') <p class="mt-2 text-sm text-red-700">{{ $message }}</p> @enderror
         </div>
+        <div class="sm:col-span-2">
+            <label for="document" class="mb-2 block text-sm font-semibold text-[#182A22]">Notice image or PDF</label>
+            <input id="document" type="file" name="document" accept=".pdf,.jpg,.jpeg,.png,.webp" class="w-full rounded-xl border border-[#DCE9DF] bg-[#F9FBFA] px-4 py-3 text-sm text-[#182A22] file:mr-4 file:rounded-full file:border-0 file:bg-[#EFF8F1] file:px-4 file:py-2 file:text-sm file:font-semibold file:text-[#08713D]">
+            <p class="mt-2 text-xs text-[#617067]">PDF, JPG, PNG, or WebP; maximum size 10 MB.</p>
+            @error('document') <p class="mt-2 text-sm text-red-700">{{ $message }}</p> @enderror
+            @if ($notice->document_path)
+                <p class="mt-3 text-sm font-medium text-[#08713D]">Current file: {{ strtoupper(str($notice->document_mime_type)->after('/')->value()) }}</p>
+                <label class="mt-3 inline-flex items-center gap-2 text-sm text-[#344054]">
+                    <input type="checkbox" name="remove_document" value="1" class="rounded border-[#B6C9BC] text-[#08713D] focus:ring-[#08713D]">
+                    Remove current file
+                </label>
+            @endif
+        </div>
         <label class="flex items-start gap-3 rounded-xl border border-[#DCE9DF] bg-[#F9FBFA] p-4 text-sm text-[#344054]">
             <input type="checkbox" name="featured" value="1" @checked(old('featured', $notice->featured)) class="mt-0.5 rounded border-[#B6C9BC] text-[#08713D] focus:ring-[#08713D]">
-            <span><span class="block font-semibold text-[#182A22]">Featured notice</span><span class="mt-1 block text-xs text-[#617067]">Mark this notice as featured in the existing notice system.</span></span>
+            <span><span class="block font-semibold text-[#182A22]">Pin important notice to the top</span><span class="mt-1 block text-xs text-[#617067]">Pinned notices appear before other published notices.</span></span>
         </label>
     </div>
 

@@ -32,6 +32,8 @@ class SaveNoticeRequest extends FormRequest
             'status' => ['required', Rule::in(Notice::STATUSES)],
             'published_at' => ['nullable', 'date'],
             'featured' => ['sometimes', 'boolean'],
+            'document' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png,webp', 'extensions:pdf,jpg,jpeg,png,webp', 'max:10240'],
+            'remove_document' => ['sometimes', 'boolean'],
         ];
     }
 }

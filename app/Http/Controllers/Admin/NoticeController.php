@@ -7,8 +7,10 @@ use App\Http\Requests\SaveNoticeRequest;
 use App\Models\Notice;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use RuntimeException;
 
 class NoticeController extends Controller
 {
@@ -66,7 +68,9 @@ class NoticeController extends Controller
 
     public function update(SaveNoticeRequest $request, Notice $notice): RedirectResponse
     {
+        $previousDocumentPath = $notice->document_path;
         $notice->update($this->noticeAttributes($request));
+        $this->deleteReplacedDocument($previousDocumentPath, $notice->document_path);
 
         return redirect()
             ->route('admin.notices.edit', $notice)
@@ -75,7 +79,9 @@ class NoticeController extends Controller
 
     public function destroy(Notice $notice): RedirectResponse
     {
+        $documentPath = $notice->document_path;
         $notice->delete();
+        $this->deleteReplacedDocument($documentPath, null);
 
         return redirect()
             ->route('admin.notices.index')
@@ -84,13 +90,34 @@ class NoticeController extends Controller
 
     private function noticeAttributes(SaveNoticeRequest $request): array
     {
-        $attributes = $request->validated();
+        $attributes = $request->safe()->except(['document', 'remove_document']);
         $attributes['featured'] = $request->boolean('featured');
 
         if ($attributes['status'] === 'published' && empty($attributes['published_at'])) {
             $attributes['published_at'] = now();
         }
 
+        if ($request->hasFile('document')) {
+            $documentPath = $request->file('document')->store('notices', 'local');
+
+            if (! is_string($documentPath)) {
+                throw new RuntimeException('The notice document could not be stored.');
+            }
+
+            $attributes['document_path'] = $documentPath;
+            $attributes['document_mime_type'] = $request->file('document')->getMimeType();
+        } elseif ($request->boolean('remove_document')) {
+            $attributes['document_path'] = null;
+            $attributes['document_mime_type'] = null;
+        }
+
         return $attributes;
+    }
+
+    private function deleteReplacedDocument(?string $previousPath, ?string $currentPath): void
+    {
+        if ($previousPath !== null && $previousPath !== $currentPath) {
+            Storage::disk('local')->delete($previousPath);
+        }
     }
 }

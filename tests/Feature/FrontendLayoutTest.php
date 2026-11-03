@@ -50,6 +50,15 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('fixed right-3 z-50', false);
     }
 
+    public function test_homepage_uses_a_light_green_footer_and_does_not_show_a_map_below_it(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertSee('bg-[#EFF8F1] text-[#14532D] print:hidden', false)
+            ->assertDontSee('google.com/maps')
+            ->assertDontSee('find-us-heading');
+    }
+
     public function test_homepage_shows_english_rotating_headlines_by_default(): void
     {
         $response = $this->get(route('home'));
@@ -79,6 +88,7 @@ class FrontendLayoutTest extends TestCase
         $response->assertOk()
             ->assertSee('What Our Members Say')
             ->assertSee('data-testimonial-carousel', false)
+            ->assertSee('data-autoplay-interval="2000"', false)
             ->assertSee('data-testimonial-track', false)
             ->assertSee('bg-[#F8FAFC]', false)
             ->assertSee('min-h-[18rem]', false)
@@ -120,9 +130,9 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('बचत')
             ->assertSee('सूचनाहरू')
             ->assertSee('सदस्य बन्नुहोस्')
-            ->assertSee('सदस्य निर्देशिका')
-            ->assertSee('सबै सदस्यहरू हेर्नुहोस्')
-            ->assertSee('पूर्ण निर्देशिकाका लागि सबै सदस्यहरू हेर्नुहोस्।')
+            ->assertDontSee('सदस्य निर्देशिका')
+            ->assertDontSee('सबै सदस्यहरू हेर्नुहोस्')
+            ->assertDontSee('पूर्ण निर्देशिकाका लागि सबै सदस्यहरू हेर्नुहोस्।')
             ->assertSee('सदस्य केन्द्रित वित्तीय सेवाहरू')
             ->assertSee('लचिलो बचत योजनाहरू')
             ->assertSee('ऋण सहायता')
@@ -142,7 +152,7 @@ class FrontendLayoutTest extends TestCase
             ->assertDontSee('Brighter Futures.');
     }
 
-    public function test_homepage_previews_ten_approved_member_names_without_exposing_account_numbers(): void
+    public function test_homepage_does_not_expose_approved_member_names(): void
     {
         for ($number = 1; $number <= 12; $number++) {
             $memberUser = User::factory()->create([
@@ -184,22 +194,11 @@ class FrontendLayoutTest extends TestCase
 
         $response->assertOk()
             ->assertSee('id="our-impact"', false)
-            ->assertSee('id="member-directory"', false)
             ->assertSee('data-active-member-count="12"', false)
-            ->assertSee('Showing 10 of 12 members')
-            ->assertSee('Previewing 10 registered members.')
-            ->assertSee('Use View All Members for the complete directory.')
-            ->assertSee('Member Directory')
-            ->assertSee('Name')
-            ->assertSee('Code')
-            ->assertSee('Share Number')
-            ->assertSee('Approved Directory Member 12')
-            ->assertSee('Approved Directory Member 03')
-            ->assertSee('aria-label="Hidden for privacy"', false)
-            ->assertSee('data-member-preview-row', false)
-            ->assertSee(route('members.index'), false)
-            ->assertSee(route('login'), false)
-            ->assertDontSee('Approved Directory Member 02')
+            ->assertDontSee('id="member-directory"', false)
+            ->assertDontSee('Member Directory')
+            ->assertDontSee('Approved Directory Member 12')
+            ->assertDontSee('Approved Directory Member 03')
             ->assertDontSee('Suspended Directory Member')
             ->assertDontSee('PRIVATE-MBR-012')
             ->assertDontSee('PRIVATE-MBR-999')
@@ -207,7 +206,6 @@ class FrontendLayoutTest extends TestCase
             ->assertDontSee('070-119999')
             ->assertDontSee('Private address');
 
-        $this->assertSame(10, substr_count($response->getContent(), 'data-member-preview-row'));
     }
 
     public function test_public_information_pages_render_in_nepali_after_language_selection(): void
@@ -248,7 +246,11 @@ class FrontendLayoutTest extends TestCase
             ->assertSee('data-password-toggle', false)
             ->assertSee('aria-controls="register-password"', false)
             ->assertSee('aria-controls="register-password-confirmation"', false)
-            ->assertSee('textarea id="address" name="address" rows="2"', false);
+            ->assertSee('textarea id="address" name="address" rows="2"', false)
+            ->assertSee('Your membership journey')
+            ->assertSee('Await application review')
+            ->assertSee('Member-focused services')
+            ->assertSee('Explore member services');
     }
 
     public function test_mobile_navigation_has_a_toggle_and_contains_site_links(): void
@@ -262,14 +264,14 @@ class FrontendLayoutTest extends TestCase
             ->assertSee(route('register'), false);
     }
 
-    public function test_about_us_dropdown_links_to_all_about_page_sections_on_desktop_and_mobile(): void
+    public function test_about_us_dropdown_links_to_about_pages_on_desktop_and_mobile(): void
     {
         $response = $this->get(route('home'));
 
         $response->assertOk()
             ->assertSee('data-about-dropdown', false)
             ->assertSee('About Maharaj Bachat')
-            ->assertSee('Vision & Mission')
+            ->assertDontSee('Vision & Mission')
             ->assertSee('Board of Directors')
             ->assertSee('Other Committees')
             ->assertSee('Accounts Committee')
@@ -283,12 +285,13 @@ class FrontendLayoutTest extends TestCase
         $this->assertSame(2, substr_count($response->getContent(), 'data-about-dropdown'));
         $this->assertSame(2, substr_count($response->getContent(), 'data-committees-dropdown'));
 
-        foreach (['about.vision-mission', 'about.board-of-directors', 'about.employees'] as $routeName) {
+        foreach (['about.board-of-directors', 'about.employees'] as $routeName) {
             $this->assertSame(
                 2,
                 substr_count($response->getContent(), 'href="'.route($routeName).'"'),
             );
         }
+        $this->assertStringNotContainsString('href="'.route('about.vision-mission').'"', $response->getContent());
 
         foreach ([
             '#accounts-committee',
@@ -306,19 +309,26 @@ class FrontendLayoutTest extends TestCase
         $this->assertGreaterThanOrEqual(2, substr_count($response->getContent(), route('about')));
     }
 
-    public function test_about_pages_have_separate_content_and_board_poster(): void
+    public function test_about_content_and_subpages_render_expected_sections(): void
     {
         $this->get(route('about'))
             ->assertOk()
             ->assertSee('About Maharaj Bachat')
             ->assertSee('Maharaj Bachat tatha Rin Sahakari Sanstha Ltd.')
-            ->assertDontSee('id="vision-mission"', false);
+            ->assertSee('Our history')
+            ->assertSee('Our branches')
+            ->assertSee('Kawasoti-3')
+            ->assertSee('Kawasoti-16')
+            ->assertSee('Danda')
+            ->assertSee('Rajar')
+            ->assertSee('Chormara')
+            ->assertSee('Pragatinagar')
+            ->assertSee('Vision & Mission')
+            ->assertSee('To provide economic, social and cultural development')
+            ->assertSee('id="vision-mission"', false);
 
         $this->get(route('about.vision-mission'))
-            ->assertOk()
-            ->assertSee('id="vision-mission"', false)
-            ->assertSee('To provide economic, social and cultural development')
-            ->assertSee('A financially sound business organization');
+            ->assertRedirect(route('about').'#vision-mission');
 
         $this->get(route('about.board-of-directors'))
             ->assertOk()

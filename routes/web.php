@@ -19,7 +19,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactInquiryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\MemberDirectoryController;
 use App\Http\Controllers\MembershipApplicationStatusController;
 use App\Http\Controllers\ReportController as PublicReportController;
 use Illuminate\Http\Request;
@@ -33,7 +32,7 @@ Route::get('/leadership/{leader}', [FrontendController::class, 'showLeadershipMe
     ->whereIn('leader', ['chairperson', 'secretary'])
     ->name('leadership.show');
 Route::get('/about', [FrontendController::class, 'about'])->name('about');
-Route::get('/about/vision-mission', [FrontendController::class, 'visionMission'])->name('about.vision-mission');
+Route::redirect('/about/vision-mission', '/about#vision-mission', 301)->name('about.vision-mission');
 Route::get('/about/board-of-directors', [FrontendController::class, 'boardOfDirectors'])->name('about.board-of-directors');
 Route::get('/about/other-committees', [FrontendController::class, 'otherCommittees'])->name('about.other-committees');
 Route::get('/about/employees', [FrontendController::class, 'employees'])->name('about.employees');
@@ -42,9 +41,9 @@ Route::get('/services/{service:slug}', [FrontendController::class, 'showService'
 Route::get('/savings', [FrontendController::class, 'savings'])->name('savings');
 Route::get('/loans', [FrontendController::class, 'loans'])->name('loans');
 Route::get('/notices', [FrontendController::class, 'notices'])->name('notices');
+Route::get('/notices/{notice}/document', [FrontendController::class, 'noticeDocument'])->name('notices.document');
+Route::get('/notices/{notice}/download', [FrontendController::class, 'downloadNoticeDocument'])->name('notices.download');
 Route::get('/notices/{notice}', [FrontendController::class, 'showNotice'])->name('notices.show');
-Route::get('/members', MemberDirectoryController::class)->name('members.index');
-Route::get('/members/{member}/number', [MemberDirectoryController::class, 'showNumber'])->name('members.number');
 Route::get('/reports', [PublicReportController::class, 'index'])->name('reports.index');
 Route::get('/annual-reports', [AnnualReportController::class, 'index'])->name('annual-reports.index');
 Route::get('/financial-reports', [PublicReportController::class, 'category'])

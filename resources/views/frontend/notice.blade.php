@@ -43,12 +43,12 @@
 
 @section('content')
 <article class="fade-in mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <a href="{{ route('notices') }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#08713D] hover:underline">
-        <span aria-hidden="true">←</span>
-        {{ $isNepali ? 'सबै सूचना' : 'All notices' }}
+    <a href="{{ route('notices') }}" class="print:hidden inline-flex items-center gap-2 text-sm font-semibold text-[#08713D] hover:underline">
+        <span aria-hidden="true">&larr;</span>
+        {{ $isNepali ? 'सबै सूचना' : 'Back to Notices' }}
     </a>
 
-    <div class="fade-in mt-6 rounded-3xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-10">
+    <div class="fade-in mt-6 rounded-xl border border-[#DCE9DF] bg-white p-6 shadow-sm sm:p-10">
         <div class="flex flex-wrap items-center gap-3">
             <span class="rounded-full bg-[#EFF8F1] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[#08713D]">{{ __(ucfirst($notice->category)) }}</span>
             @if ($notice->published_at)
@@ -56,8 +56,29 @@
             @endif
         </div>
         <h1 lang="{{ $isNepali ? 'ne' : 'en' }}" class="mt-5 text-3xl font-extrabold leading-tight text-[#182A22] sm:text-4xl {{ $isNepali ? 'font-[Noto_Sans_Devanagari]' : '' }}">{{ $noticeTitle }}</h1>
+
+        <div class="print:hidden mt-6 flex flex-wrap gap-3">
+            @if ($notice->document_path)
+                <a href="{{ route('notices.download', $notice) }}" class="inline-flex items-center gap-2 rounded-lg bg-[#08713D] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#04552F]">
+                    {{ __('Download notice') }}
+                </a>
+            @endif
+            <button type="button" onclick="window.print()" class="inline-flex items-center gap-2 rounded-lg border border-[#B6D8C0] bg-white px-4 py-2.5 text-sm font-semibold text-[#04552F] hover:bg-[#EFF8F1]">
+                {{ __('Print notice') }}
+            </button>
+        </div>
+
+        @if ($notice->document_path && str_starts_with($notice->document_mime_type ?? '', 'image/'))
+            <figure class="mt-8 rounded-xl border border-[#DCE9DF] bg-[#F7FAF7] p-3 sm:p-5">
+                <img src="{{ route('notices.document', $notice) }}" alt="{{ __('Notice document') }}: {{ $noticeTitle }}" class="mx-auto max-h-[78vh] w-full object-contain" fetchpriority="high">
+            </figure>
+        @elseif ($notice->document_path && $notice->document_mime_type === 'application/pdf')
+            <iframe src="{{ route('notices.document', $notice) }}" title="{{ __('PDF notice') }}: {{ $noticeTitle }}" class="print:hidden mt-8 h-[70vh] min-h-[420px] w-full rounded-xl border border-[#DCE9DF] bg-[#F7FAF7]"></iframe>
+            <p class="mt-3 text-sm text-[#617067]">{{ __('If the PDF preview is unavailable, use Download notice to view the document.') }}</p>
+        @endif
+
         @if ($noticeBody)
-            <p lang="{{ $isNepali ? 'ne' : 'en' }}" class="mt-6 whitespace-pre-wrap text-base leading-8 text-[#344054] {{ $isNepali ? 'font-[Noto_Sans_Devanagari]' : '' }}">{{ $noticeBody }}</p>
+            <p lang="{{ $isNepali ? 'ne' : 'en' }}" class="mt-8 whitespace-pre-wrap border-t border-[#DCE9DF] pt-6 text-base leading-8 text-[#344054] {{ $isNepali ? 'font-[Noto_Sans_Devanagari]' : '' }}">{{ $noticeBody }}</p>
         @endif
     </div>
 

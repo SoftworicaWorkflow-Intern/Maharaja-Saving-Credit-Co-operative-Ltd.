@@ -12,15 +12,60 @@
                 Join Maharaja Bachat tatha Rin Sahakari Sanstha Ltd. and be part of a community-centered, member-first financial institution focused on savings, opportunity, and shared growth.
             </p>
 
-            <div class="mt-10 grid gap-4 sm:grid-cols-2">
-                <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-[#DCE9DF]">
-                    <p class="text-sm font-semibold text-[#08713D]">Savings Support</p>
-                    <p class="mt-2 text-sm leading-6 text-[#617067]">Build disciplined savings habits through accessible community-based financial services.</p>
-                </div>
-                <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-[#DCE9DF]">
-                    <p class="text-sm font-semibold text-[#08713D]">Loan Access</p>
-                    <p class="mt-2 text-sm leading-6 text-[#617067]">Access support designed around the needs of members and the wider community.</p>
-                </div>
+            <div class="mt-8 border-t border-[#DCE9DF] pt-6">
+                <h2 class="text-lg font-bold text-[#182A22]">{{ __('Your membership journey') }}</h2>
+                <ol class="mt-5 space-y-4">
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">1</span>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#182A22]">{{ __('Visit or apply online') }}</h3>
+                            <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Visit our head office at Kawasoti-2 BP Chowk, Nawalpur, or begin your application online.') }}</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">2</span>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#182A22]">{{ __('Complete your application') }}</h3>
+                            <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Provide your personal details and nominee information for the membership record.') }}</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">3</span>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#182A22]">{{ __('Submit identity documents') }}</h3>
+                            <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Provide the documents needed for identity and nominee verification.') }}</p>
+                        </div>
+                    </li>
+                    <li class="flex gap-4">
+                        <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#08713D] text-sm font-bold text-white">4</span>
+                        <div>
+                            <h3 class="text-sm font-semibold text-[#182A22]">{{ __('Await application review') }}</h3>
+                            <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('After approval, receive your member details and access member services.') }}</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="mt-8 border-t border-[#DCE9DF] pt-6">
+                <h2 class="text-lg font-bold text-[#182A22]">{{ __('Member-focused services') }}</h2>
+                <ul class="mt-4 space-y-4">
+                    <li>
+                        <h3 class="text-sm font-semibold text-[#08713D]">{{ __('Savings') }}</h3>
+                        <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Explore savings options that support steady financial habits and future goals.') }}</p>
+                    </li>
+                    <li>
+                        <h3 class="text-sm font-semibold text-[#08713D]">{{ __('Credit services') }}</h3>
+                        <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Learn about cooperative loan services designed around member needs.') }}</p>
+                    </li>
+                    <li>
+                        <h3 class="text-sm font-semibold text-[#08713D]">{{ __('Community development') }}</h3>
+                        <p class="mt-1 text-sm leading-6 text-[#617067]">{{ __('Join a member-first cooperative committed to local economic and social development.') }}</p>
+                    </li>
+                </ul>
+                <a href="{{ route('services') }}" class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-[#08713D] hover:underline">
+                    {{ __('Explore member services') }}
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
             </div>
         </div>
 

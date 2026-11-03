@@ -52,67 +52,6 @@ if (slideRightElements.length > 0) {
     }
 }
 
-document.querySelectorAll('[data-member-number-toggle]').forEach((toggle) => {
-    const row = toggle.closest('tr');
-    const memberNumberValue = row?.querySelector('[data-member-number-value]');
-    const errorMessage = row?.querySelector('[data-member-number-error]');
-    const closedEye = toggle.querySelector('[data-member-eye-closed]');
-    const openEye = toggle.querySelector('[data-member-eye-open]');
-    let memberNumber = null;
-    let isLoaded = false;
-
-    if (!(memberNumberValue instanceof HTMLElement) || !(errorMessage instanceof HTMLElement)) {
-        return;
-    }
-
-    toggle.addEventListener('click', async () => {
-        const isVisible = toggle.getAttribute('aria-pressed') === 'true';
-
-        errorMessage.classList.add('hidden');
-
-        if (isVisible) {
-            memberNumberValue.textContent = '••••••••';
-            memberNumberValue.setAttribute('aria-label', toggle.dataset.hiddenLabel);
-            toggle.setAttribute('aria-pressed', 'false');
-            toggle.setAttribute('aria-label', toggle.dataset.showLabel);
-            closedEye?.classList.remove('hidden');
-            openEye?.classList.add('hidden');
-
-            return;
-        }
-
-        toggle.disabled = true;
-
-        try {
-            if (!isLoaded) {
-                const response = await fetch(toggle.dataset.memberNumberUrl, {
-                    headers: { Accept: 'application/json' },
-                    credentials: 'same-origin',
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Member number request failed with status ${response.status}.`);
-                }
-
-                const data = await response.json();
-                memberNumber = typeof data.member_number === 'string' ? data.member_number : toggle.dataset.unavailableLabel;
-                isLoaded = true;
-            }
-
-            memberNumberValue.textContent = memberNumber;
-            memberNumberValue.removeAttribute('aria-label');
-            toggle.setAttribute('aria-pressed', 'true');
-            toggle.setAttribute('aria-label', toggle.dataset.hideLabel);
-            closedEye?.classList.add('hidden');
-            openEye?.classList.remove('hidden');
-        } catch {
-            errorMessage.classList.remove('hidden');
-        } finally {
-            toggle.disabled = false;
-        }
-    });
-});
-
 const leadershipPortraits = document.querySelectorAll(
     '.leadership-portrait-slide-left:not(.show), .leadership-portrait-slide-right:not(.show)'
 );
@@ -246,12 +185,42 @@ document.querySelectorAll('[data-testimonial-carousel]').forEach((carousel) => {
     const track = carousel.querySelector('[data-testimonial-track]');
     const slides = [...carousel.querySelectorAll('[data-testimonial-slide]')];
     const pages = [...carousel.querySelectorAll('[data-testimonial-page]')];
+    const autoPlayInterval = Number(carousel.dataset.autoplayInterval);
     let activeIndex = 0;
     let updateScheduled = false;
+    let autoPlayTimer = null;
 
-    if (!(track instanceof HTMLElement) || slides.length < 2 || pages.length !== slides.length) {
+    if (!(track instanceof HTMLElement) || slides.length < 2 || pages.length !== slides.length || !Number.isFinite(autoPlayInterval) || autoPlayInterval <= 0) {
         return;
     }
+
+    const stopAutoPlay = () => {
+        if (autoPlayTimer !== null) {
+            window.clearInterval(autoPlayTimer);
+            autoPlayTimer = null;
+        }
+    };
+
+    const startAutoPlay = () => {
+        if (
+            autoPlayTimer !== null
+            || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+            || document.hidden
+            || carousel.matches(':hover')
+            || carousel.contains(document.activeElement)
+        ) {
+            return;
+        }
+
+        autoPlayTimer = window.setInterval(() => {
+            showSlide(activeIndex + 1);
+        }, autoPlayInterval);
+    };
+
+    const resetAutoPlay = () => {
+        stopAutoPlay();
+        startAutoPlay();
+    };
 
     const updateActivePage = () => {
         updateScheduled = false;
@@ -294,22 +263,47 @@ document.querySelectorAll('[data-testimonial-carousel]').forEach((carousel) => {
 
     track.addEventListener('scroll', scheduleActivePageUpdate, { passive: true });
     window.addEventListener('resize', scheduleActivePageUpdate, { passive: true });
+    carousel.addEventListener('mouseenter', stopAutoPlay);
+    carousel.addEventListener('mouseleave', startAutoPlay);
+    carousel.addEventListener('focusin', stopAutoPlay);
+    carousel.addEventListener('focusout', startAutoPlay);
+    track.addEventListener('pointerdown', stopAutoPlay);
+    track.addEventListener('pointerup', startAutoPlay);
+    track.addEventListener('pointercancel', startAutoPlay);
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
+    window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (event) => {
+        if (event.matches) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    });
 
     carousel.querySelector('[data-testimonial-previous]')?.addEventListener('click', () => {
         showSlide(activeIndex - 1);
+        resetAutoPlay();
     });
 
     carousel.querySelector('[data-testimonial-next]')?.addEventListener('click', () => {
         showSlide(activeIndex + 1);
+        resetAutoPlay();
     });
 
     pages.forEach((page, index) => {
         page.addEventListener('click', () => {
             showSlide(index);
+            resetAutoPlay();
         });
     });
 
     updateActivePage();
+    startAutoPlay();
 });
 
 document.querySelectorAll('[data-rotating-headline]').forEach((headline) => {

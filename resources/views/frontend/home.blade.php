@@ -19,22 +19,22 @@
         ];
 @endphp
 <div class="bg-white">
-    @if ($tickerNotices->isNotEmpty())
-        @php
-            $locale = app()->getLocale();
-            $tickerTitle = fn ($notice) => $locale === 'ne'
-                ? ($notice->title_np ?: $notice->title_en)
-                : ($notice->title_en ?: $notice->title_np);
-        @endphp
-        <section class="fade-in px-4 pt-6 sm:px-6 lg:px-8" aria-label="{{ $locale === 'ne' ? 'ताजा समाचार' : 'Latest news' }}">
-            <div data-news-ticker lang="{{ $locale }}" class="news-ticker mx-auto flex max-w-7xl overflow-hidden rounded-xl border border-[#08713D]/20 bg-[#EFF8F1] shadow-sm">
-                <div class="z-10 flex shrink-0 items-center gap-2 bg-[#08713D] px-3 py-3 text-xs font-bold tracking-wide text-white sm:px-4 sm:text-sm">
-                    <svg aria-hidden="true" class="h-4 w-4 shrink-0 text-[#FFD91A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10v4h4l5 4V6l-5 4H3Zm13-1a4 4 0 0 1 0 6m2-9a8 8 0 0 1 0 12"/>
-                    </svg>
-                    <span lang="{{ $locale }}">{{ $locale === 'ne' ? 'ताजा समाचार' : 'LATEST NEWS' }}</span>
-                </div>
-                <div class="min-w-0 flex-1 overflow-hidden">
+    @php
+        $locale = app()->getLocale();
+        $tickerTitle = fn ($notice) => $locale === 'ne'
+            ? ($notice->title_np ?: $notice->title_en)
+            : ($notice->title_en ?: $notice->title_np);
+    @endphp
+    <section class="fade-in px-4 pt-6 sm:px-6 lg:px-8" aria-label="{{ $locale === 'ne' ? 'ताजा समाचार' : 'Latest news' }}">
+        <div data-news-ticker lang="{{ $locale }}" class="news-ticker mx-auto flex max-w-7xl overflow-hidden rounded-xl border border-[#08713D]/20 bg-[#EFF8F1] shadow-sm">
+            <div class="z-10 flex shrink-0 items-center gap-2 bg-[#08713D] px-3 py-3 text-xs font-bold tracking-wide text-white sm:px-4 sm:text-sm">
+                <svg aria-hidden="true" class="h-4 w-4 shrink-0 text-[#FFD91A]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 10v4h4l5 4V6l-5 4H3Zm13-1a4 4 0 0 1 0 6m2-9a8 8 0 0 1 0 12"/>
+                </svg>
+                <span lang="{{ $locale }}">{{ $locale === 'ne' ? 'ताजा समाचार' : 'LATEST NEWS' }}</span>
+            </div>
+            <div class="min-w-0 flex-1 overflow-hidden">
+                @if ($tickerNotices->isNotEmpty())
                     <div class="news-ticker-track flex w-max items-center" aria-label="{{ $locale === 'ne' ? 'प्रकाशित सूचना' : 'Published notices' }}">
                         @foreach ([false, true] as $isDuplicate)
                             <div @if ($isDuplicate) aria-hidden="true" @endif class="news-ticker-sequence flex shrink-0 items-center gap-8 whitespace-nowrap px-5 py-3">
@@ -52,12 +52,16 @@
                             <a href="{{ route('notices.show', $notice) }}" lang="{{ $locale }}" class="hover:text-[#08713D] hover:underline focus:outline-none focus:ring-2 focus:ring-[#08713D]">{{ $tickerTitle($notice) }}</a>
                         @endforeach
                     </div>
-                </div>
+                @else
+                    <p class="px-4 py-3 text-sm font-semibold text-[#04552F]">
+                        {{ $locale === 'ne' ? 'हाल कुनै नयाँ सूचना छैन।' : 'No latest news is available right now.' }}
+                    </p>
+                @endif
             </div>
-        </section>
-    @endif
+        </div>
+    </section>
 
-    <section class="fade-in px-4 sm:px-6 lg:px-8 {{ $tickerNotices->isNotEmpty() ? 'pb-10 pt-0 lg:pb-14' : 'py-10 lg:py-14' }}">
+    <section class="fade-in px-4 pb-10 pt-0 sm:px-6 lg:px-8 lg:pb-14">
         <div data-hero-carousel class="relative mx-auto flex min-h-[540px] max-w-7xl items-center overflow-hidden rounded-xl bg-[#04552F] shadow-[0_25px_50px_rgba(8,113,61,0.16)] sm:min-h-[600px]" aria-roledescription="carousel" aria-label="{{ __('Maharaj Bachat cooperative') }}">
             <div class="absolute inset-0">
                 <img data-hero-slide src="{{ asset('images/cooperative-service.png') }}" alt="{{ __('A cooperative staff member serving an elderly Nepali member') }}" class="absolute inset-0 h-full w-full scale-100 object-cover opacity-100 transition-[opacity,transform] duration-[1300ms] ease-out motion-reduce:transition-none" aria-hidden="false">
@@ -130,120 +134,6 @@
                         <span data-counter data-target="12" data-prefix="" data-suffix="+" data-format="int">12+</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="member-directory" class="fade-in bg-[#F5F8F5] px-4 py-10 sm:px-6 sm:py-14 lg:px-8" aria-labelledby="member-directory-heading">
-        <div class="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-[#DCE9DF] bg-white shadow-lg shadow-[#14532D]/10">
-            <div class="flex items-center gap-3 bg-gradient-to-r from-[#14532D] to-[#27804A] px-4 py-4 text-white sm:px-6">
-                <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/15 text-[#FACC15]" aria-hidden="true">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <rect x="3" y="4" width="18" height="16" rx="2"/>
-                        <circle cx="9" cy="10" r="2"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 16c.6-1.3 1.6-2 3-2s2.4.7 3 2m3-6h3m-3 4h3"/>
-                    </svg>
-                </span>
-                <div>
-                    <h2 id="member-directory-heading" class="text-base font-extrabold">{{ __('Member Directory') }}</h2>
-                    <p class="mt-0.5 text-xs text-white/80">{{ __('Showing registered members of Maharaj Bachat tatha Rin Sahakari Sanstha Ltd.') }}</p>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#E4E9EF] bg-[#F8FAFC] px-4 py-3 text-xs text-[#617067] sm:px-6">
-                <p>
-                    {{ __('Showing :shown of :total members', [
-                        'shown' => $directoryMembers->count(),
-                        'total' => $activeMemberCount !== null ? number_format($activeMemberCount) : '—',
-                    ]) }}
-                </p>
-                <a href="{{ route('members.index') }}" class="inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-[#27804A] px-3 py-2 font-bold text-white transition hover:bg-[#14532D] focus:outline-none focus:ring-2 focus:ring-[#FACC15] focus:ring-offset-2">
-                    <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2m16-13v6m3-3h-6"/>
-                        <circle cx="9" cy="7" r="4"/>
-                    </svg>
-                    {{ __('View All Members') }}
-                </a>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full min-w-[38rem] border-collapse text-left text-xs">
-                    <thead class="bg-white text-[10px] font-bold uppercase tracking-wide text-[#344054]">
-                        <tr class="border-b border-[#E4E9EF]">
-                            <th scope="col" class="w-14 px-3 py-3 sm:px-4">{{ __('S.N') }}</th>
-                            <th scope="col" class="px-3 py-3 sm:px-4">
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 9a7 7 0 1 1 14 0H5Z"/></svg>
-                                    {{ __('Name') }}
-                                </span>
-                            </th>
-                            <th scope="col" class="px-3 py-3 sm:px-4">
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h16v14H4zM7 8v2h2V8zm4 0v2h6V8zm-4 4v2h2v-2zm4 0v2h6v-2z"/></svg>
-                                    {{ __('Code') }}
-                                </span>
-                            </th>
-                            <th scope="col" class="px-3 py-3 sm:px-4">
-                                <span class="inline-flex items-center gap-1.5">
-                                    <svg aria-hidden="true" class="h-3 w-3 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><path d="M3 7h18v10H3zM6 10h4v4H6z"/></svg>
-                                    {{ __('Share Number') }}
-                                </span>
-                            </th>
-                            <th scope="col" class="w-16 px-3 py-3 text-center sm:px-4">{{ __('Action') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-[#E4E9EF]">
-                        @forelse ($directoryMembers as $index => $directoryMember)
-                            <tr data-member-preview-row class="{{ $index % 2 === 0 ? 'bg-white' : 'bg-[#F8FAFC]' }} transition-colors hover:bg-[#F0FBF3]">
-                                <td class="px-3 py-2.5 sm:px-4">
-                                    <span class="inline-flex h-6 min-w-6 items-center justify-center rounded-md bg-[#F1F5F9] px-1.5 font-bold text-[#617067]">{{ $index + 1 }}</span>
-                                </td>
-                                <td class="px-3 py-2.5 sm:px-4">
-                                    <div class="flex items-center gap-2">
-                                        <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[#B9DCC4] bg-[#EFF8F1] text-[10px] font-bold text-[#14532D]" aria-hidden="true">MB</span>
-                                        <span class="font-bold text-[#182A22]">{{ $directoryMember->user->name }}</span>
-                                    </div>
-                                </td>
-                                <td class="px-3 py-2.5 sm:px-4">
-                                    <span data-member-number-value class="inline-flex rounded-full border border-[#B9DCC4] bg-[#F0FBF3] px-2 py-1 font-mono text-[10px] text-[#27804A]" aria-label="{{ __('Hidden for privacy') }}">••••••••</span>
-                                </td>
-                                <td class="px-3 py-2.5 sm:px-4">
-                                    <span class="inline-flex rounded-full border border-[#F3E28C] bg-[#FFF9D7] px-2 py-1 font-mono text-[10px] text-[#9A7600]" aria-label="{{ __('Hidden for privacy') }}">••••</span>
-                                </td>
-                                <td class="px-3 py-2.5 text-center sm:px-4">
-                                    <button type="button" data-member-number-toggle data-member-number-url="{{ route('members.number', $directoryMember->id) }}" data-hidden-label="{{ __('Hidden for privacy') }}" data-show-label="{{ __('Show member number') }}" data-hide-label="{{ __('Hide member number') }}" data-unavailable-label="{{ __('Not available') }}" aria-label="{{ __('Show member number') }}" aria-pressed="false" class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[#B9DCC4] bg-[#F0FBF3] text-[#14532D] transition hover:bg-[#DDF3E4] focus:outline-none focus:ring-2 focus:ring-[#27804A] focus:ring-offset-1">
-                                        <svg data-member-eye-closed aria-hidden="true" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8M9.9 5.2A10.7 10.7 0 0 1 12 5c6.5 0 10 7 10 7a15.7 15.7 0 0 1-3.1 3.8M6.2 6.2C3.5 8 2 12 2 12s3.5 7 10 7a10.7 10.7 0 0 0 3-.4"/>
-                                        </svg>
-                                        <svg data-member-eye-open aria-hidden="true" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/>
-                                            <circle cx="12" cy="12" r="2.5"/>
-                                        </svg>
-                                    </button>
-                                    <span data-member-number-error role="alert" class="hidden text-[10px] text-red-700">{{ __('Unable to load member number. Please try again.') }}</span>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-4 py-10 text-center text-sm text-[#617067]">{{ __('No registered members to preview.') }}</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="flex flex-col gap-2 border-t border-[#E4E9EF] bg-[#F8FAFC] px-4 py-3 text-[11px] text-[#617067] sm:flex-row sm:items-center sm:justify-between sm:px-6">
-                <p class="inline-flex items-center gap-2">
-                    <svg aria-hidden="true" class="h-3.5 w-3.5 shrink-0 text-[#27804A]" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><path d="M11 10h2v7h-2zm0-4h2v2h-2z" fill="white"/></svg>
-                    {{ __('Previewing :count registered members.', ['count' => $directoryMembers->count()]) }}
-                    <span>{{ __('Use View All Members for the complete directory.') }}</span>
-                </p>
-                <a href="{{ route('login') }}" class="inline-flex items-center gap-1 font-bold text-[#14532D] hover:underline">
-                    <svg aria-hidden="true" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5m5 5H3"/>
-                    </svg>
-                    {{ __('Member Login for Full Access') }}
-                </a>
             </div>
         </div>
     </section>
@@ -696,7 +586,7 @@
                 ];
             @endphp
 
-            <div data-testimonial-carousel role="region" aria-roledescription="{{ __('carousel') }}" aria-label="{{ __('What Our Members Say') }}" class="mx-auto max-w-7xl">
+            <div data-testimonial-carousel data-autoplay-interval="2000" role="region" aria-roledescription="{{ __('carousel') }}" aria-label="{{ __('What Our Members Say') }}" class="mx-auto max-w-7xl">
                 <div data-testimonial-track class="flex snap-x snap-mandatory gap-0 overflow-x-auto scroll-smooth pb-2 sm:gap-5 md:gap-6" aria-live="polite" aria-atomic="false">
                     @foreach ($testimonials as $index => $testimonial)
                         <figure data-testimonial-slide role="group" aria-roledescription="{{ __('slide') }}" aria-label="{{ __(':current of :total', ['current' => $index + 1, 'total' => count($testimonials)]) }}" aria-hidden="false" class="relative flex min-h-[18rem] w-full shrink-0 snap-start flex-col rounded-[1.5rem] border border-[#E5EAF0] bg-[#F8FAFC] p-5 sm:w-[calc(50%-0.75rem)] sm:p-6 lg:w-[calc(33.333%-1rem)]">

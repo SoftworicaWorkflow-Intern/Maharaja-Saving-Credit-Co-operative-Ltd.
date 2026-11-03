@@ -25,6 +25,37 @@
     </div>
 </section>
 
+@if ($operationalCharts !== [])
+    <section class="mb-10" aria-label="{{ __('Operational charts') }}">
+        <h3 class="mb-4 text-lg font-bold text-[#182A22]">{{ __('Operational charts') }}</h3>
+        <div class="grid gap-4 md:grid-cols-2">
+            @foreach ($operationalCharts as $chart)
+                <article class="rounded-xl border border-[#DCE9DF] bg-white p-5 shadow-sm">
+                    <h4 class="font-bold text-[#182A22]">{{ $chart['title'] }}</h4>
+                    @if ($chart['items'] !== [])
+                        @php($maximum = max(1, max(array_column($chart['items'], 'value'))))
+                        <ul class="mt-5 space-y-4">
+                            @foreach ($chart['items'] as $item)
+                                <li>
+                                    <div class="mb-1.5 flex items-center justify-between gap-4 text-sm">
+                                        <span class="text-[#617067]">{{ $item['label'] }}</span>
+                                        <span class="font-semibold tabular-nums text-[#182A22]">{{ number_format($item['value']) }}</span>
+                                    </div>
+                                    <div class="h-2.5 overflow-hidden rounded-full bg-[#EFF3F0]" role="meter" aria-label="{{ $item['label'] }}" aria-valuemin="0" aria-valuemax="{{ $maximum }}" aria-valuenow="{{ $item['value'] }}">
+                                        <div class="h-full rounded-full bg-[#08713D]" style="width: {{ ($item['value'] / $maximum) * 100 }}%"></div>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <p class="mt-4 text-sm text-[#617067]">{{ __('No records are available for this chart.') }}</p>
+                    @endif
+                </article>
+            @endforeach
+        </div>
+    </section>
+@endif
+
 <section class="mb-10" aria-label="{{ __('Quick access') }}">
     <h3 class="mb-4 text-lg font-bold text-[#182A22]">{{ __('Quick access') }}</h3>
     <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

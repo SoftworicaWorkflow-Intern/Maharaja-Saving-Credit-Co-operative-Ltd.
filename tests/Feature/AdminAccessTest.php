@@ -146,6 +146,11 @@ class AdminAccessTest extends TestCase
                 'Unreviewed inquiries',
                 '1',
             ])
+            ->assertSee('Operational charts')
+            ->assertSee('Membership applications')
+            ->assertSee('Member accounts')
+            ->assertSee('Contact inquiries')
+            ->assertSee('Notice status')
             ->assertSee('Quick access')
             ->assertSee('Membership applications');
     }

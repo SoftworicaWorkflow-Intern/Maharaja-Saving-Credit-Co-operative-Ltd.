@@ -56,7 +56,6 @@
                     </summary>
                     <div class="absolute left-0 top-full z-50 mt-2 flex min-w-56 flex-col gap-1 rounded-xl border border-[#DCE9DF] bg-white p-2 text-[#04552F] shadow-xl">
                         <a href="{{ route('about') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('About Maharaj Bachat') }}</a>
-                        <a href="{{ route('about.vision-mission') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Vision & Mission') }}</a>
                         <a href="{{ route('about.board-of-directors') }}" class="rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">{{ __('Board of Directors') }}</a>
                         <details data-committees-dropdown class="group/committees relative">
                             <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 hover:bg-[#EFF8F1]">
@@ -134,7 +133,6 @@
                     </summary>
                     <div class="flex flex-col gap-1 px-3 pb-2 pl-7 text-sm">
                         <a href="{{ route('about') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('About Maharaj Bachat') }}</a>
-                        <a href="{{ route('about.vision-mission') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Vision & Mission') }}</a>
                         <a href="{{ route('about.board-of-directors') }}" class="rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">{{ __('Board of Directors') }}</a>
                         <details data-committees-dropdown class="group/committees">
                             <summary class="flex cursor-pointer list-none items-center justify-between rounded-lg px-3 py-2 text-white/90 hover:bg-white/10">
@@ -201,39 +199,39 @@
         @yield('content')
     </main>
 
-    <footer class="border-t border-gray-700 bg-gray-800 text-white print:hidden">
+    <footer class="border-t border-[#CFE8D5] bg-[#EFF8F1] text-[#14532D] print:hidden">
         <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div>
                 <div class="mb-4 flex items-center gap-3">
                     <img src="{{ asset('images/logo.png') }}" alt="Cooperative logo" class="h-12 w-12 rounded-full bg-white p-1">
                     <div>
-                        <div class="text-xs uppercase tracking-[0.22em] text-[#FFD91A]">Maharaj Bachat</div>
+                        <div class="text-xs uppercase tracking-[0.22em] text-[#08713D]">Maharaj Bachat</div>
                         <div class="text-sm font-semibold">महाराज बचत तथा ऋण सहकारी संस्था लि.</div>
                     </div>
                 </div>
-                <p class="text-sm text-gray-300">Strong Savings, Prosperous Future</p>
+                <p class="text-sm text-[#3F5F4D]">Strong Savings, Prosperous Future</p>
             </div>
             <div>
-                <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">{{ __('Quick Links') }}</h3>
-                <ul class="space-y-2 text-sm text-gray-300">
-                    <li><a href="{{ route('about') }}">{{ __('About Us') }}</a></li>
-                    <li><a href="{{ route('services') }}">{{ __('Services') }}</a></li>
-                    <li><a href="{{ route('notices') }}">{{ __('Notices') }}</a></li>
-                    <li><a href="{{ route('reports.index') }}">{{ __('Reports') }}</a></li>
-                    <li><a href="{{ route('contact') }}">{{ __('Contact') }}</a></li>
+                <h3 class="mb-4 text-lg font-semibold text-[#08713D]">{{ __('Quick Links') }}</h3>
+                <ul class="space-y-2 text-sm text-[#3F5F4D]">
+                    <li><a href="{{ route('about') }}" class="transition hover:text-[#08713D] hover:underline">{{ __('About Us') }}</a></li>
+                    <li><a href="{{ route('services') }}" class="transition hover:text-[#08713D] hover:underline">{{ __('Services') }}</a></li>
+                    <li><a href="{{ route('notices') }}" class="transition hover:text-[#08713D] hover:underline">{{ __('Notices') }}</a></li>
+                    <li><a href="{{ route('reports.index') }}" class="transition hover:text-[#08713D] hover:underline">{{ __('Reports') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="transition hover:text-[#08713D] hover:underline">{{ __('Contact') }}</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">Contact</h3>
-                <ul class="space-y-2 text-sm text-gray-300">
+                <h3 class="mb-4 text-lg font-semibold text-[#08713D]">Contact</h3>
+                <ul class="space-y-2 text-sm text-[#3F5F4D]">
                     <li>Phone: 078-540530</li>
                     <li>Email: saccosmaharaja@gmail.com</li>
                     <li>Address: Kawasoti -2 BP Chowk, Nawalpur</li>
                 </ul>
             </div>
             <div>
-                <h3 class="mb-4 text-lg font-semibold text-[#FFD91A]">Legal</h3>
-                <ul class="space-y-2 text-sm text-gray-300">
+                <h3 class="mb-4 text-lg font-semibold text-[#08713D]">Legal</h3>
+                <ul class="space-y-2 text-sm text-[#3F5F4D]">
                     <li>Registered Cooperative</li>
                     <li>Member-first policy</li>
                     <li>Privacy & data protection</li>
